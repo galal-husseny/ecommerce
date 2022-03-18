@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_locations', function (Blueprint $table) {
-            $table->id();
-            $table->float('latitude');
-            $table->float('longitute');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+        Schema::create('favourits', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('product_id')->constrained();
+            $table->primary(['product_id','user_id']);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_locations');
+        Schema::dropIfExists('favourits');
     }
 };
