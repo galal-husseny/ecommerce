@@ -11,14 +11,14 @@
     <title>@yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{url('favicon.ico')}}" />
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
 
     <!-- css -->
-    <link rel="stylesheet" type="text/css" href="{{url('assets/admin/css/style.css')}}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin/css/style.css') }}" />
     @stack('css')
 </head>
 
@@ -36,9 +36,10 @@
         <nav class="admin-header navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <!-- logo -->
             <div class="text-left navbar-brand-wrapper">
-                <a class="navbar-brand brand-logo" href="index.html"><img src="{{url('assets/admin/images/logo-dark.png')}}" alt=""></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{url('assets/admin/images/logo-icon-dark.png')}}"
-                        alt=""></a>
+                <a class="navbar-brand brand-logo" href="index.html"><img
+                        src="{{ asset('assets/admin/images/logo-dark.png') }}" alt=""></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img
+                        src="{{ asset('assets/admin/images/logo-icon-dark.png') }}" alt=""></a>
             </div>
             <!-- Top bar left -->
             <ul class="nav navbar-nav mr-auto">
@@ -116,7 +117,7 @@
                 <li class="nav-item dropdown mr-30">
                     <a class="nav-link nav-pill user-avatar" data-toggle="dropdown" href="#" role="button"
                         aria-haspopup="true" aria-expanded="false">
-                        <img src="{{url('assets/admin/images/profile-avatar.jpg')}}" alt="avatar">
+                        <img src="{{ asset('assets/admin/images/profile-avatar.jpg') }}" alt="avatar">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <div class="dropdown-header">
@@ -151,29 +152,27 @@
                         <ul class="nav navbar-nav side-menu" id="sidebarnav">
                             <!-- menu item Dashboard-->
                             <li>
-                                <a href="javascript:void(0);" data-toggle="collapse" data-target="#dashboard">
+                                <a href="javascript:void(0);">
                                     <div class="pull-left"><i class="ti-home"></i><span
-                                            class="right-nav-text">Dashboard</span></div>
-                                    <div class="pull-right"><i class="ti-plus"></i></div>
+                                            class="right-nav-text">لوحة التحكم</span>
+                                    </div>
+
                                     <div class="clearfix"></div>
                                 </a>
-                                <ul id="dashboard" class="collapse" data-parent="#sidebarnav">
-                                    <li> <a href="index.html">Dashboard 01</a> </li>
-                                </ul>
+
                             </li>
                             <!-- menu title -->
-                            <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Components </li>
+                            <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">المنتجات </li>
                             <!-- menu item Elements-->
                             <li>
                                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#elements">
                                     <div class="pull-left"><i class="ti-palette"></i><span
-                                            class="right-nav-text">Elements</span></div>
+                                            class="right-nav-text">العلامات التجارية والاقسام</span></div>
                                     <div class="pull-right"><i class="ti-plus"></i></div>
                                     <div class="clearfix"></div>
                                 </a>
                                 <ul id="elements" class="collapse" data-parent="#sidebarnav">
-                                    <li><a href="accordions.html">Accordions</a></li>
-                                    
+                                    <li><a href="{{ route('brands.index') }}">العلامات التجارية</a></li>
                                 </ul>
                             </li>
 
@@ -199,6 +198,17 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-12">
+                            @if (session('success'))
+                                <div class="alert alert-success text-center">
+                                    {{ session('success') }}
+                                </div>
+                            @elseif(session('error'))
+                                <div class="alert alert-danger text-center">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+                        </div>
                         @yield('content')
                     </div>
                     <div class="row">
@@ -233,47 +243,47 @@
     </div>
 
     <!-- jquery -->
-    <script src="{{url('assets/admin/js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/jquery-3.3.1.min.js') }}"></script>
 
     <!-- plugins-jquery -->
-    <script src="{{url('assets/admin/js/plugins-jquery.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/plugins-jquery.js') }}"></script>
 
     <!-- plugin_path -->
     <script>
-        var plugin_path = '{{url("assets/admin/js")}}/';
+        var plugin_path = '{{ asset('assets/admin/js') }}/';
     </script>
 
     <!-- chart -->
-    <script src="{{url('assets/admin/js/chart-init.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/chart-init.js') }}"></script>
 
     <!-- calendar -->
-    <script src="{{url('assets/admin/js/calendar.init.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/calendar.init.js') }}"></script>
 
     <!-- charts sparkline -->
-    <script src="{{url('assets/admin/js/sparkline.init.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/sparkline.init.js') }}"></script>
 
     <!-- charts morris -->
-    <script src="{{url('assets/admin/js/morris.init.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/morris.init.js') }}"></script>
 
     <!-- datepicker -->
-    <script src="{{url('assets/admin/js/datepicker.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/datepicker.js') }}"></script>
 
     <!-- sweetalert2 -->
-    <script src="{{url('assets/admin/js/sweetalert2.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/sweetalert2.js') }}"></script>
 
     <!-- toastr -->
-    <script src="{{url('assets/admin/js/toastr.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/toastr.js') }}"></script>
 
     <!-- validation -->
-    <script src="{{url('assets/admin/js/validation.js')}}"></script>
+    <script src="{{ asset('assets/admin/js/validation.js') }}"></script>
 
 
 
-<!-- lobilist -->
-<script src="{{url('assets/admin/js/lobilist.js')}}"></script>
+    <!-- lobilist -->
+    <script src="{{ asset('assets/admin/js/lobilist.js') }}"></script>
 
-<!-- custom -->
-<script src="{{url('assets/admin/js/custom.js')}}"></script>
+    <!-- custom -->
+    <script src="{{ asset('assets/admin/js/custom.js') }}"></script>
 </body>
 
 </html>
