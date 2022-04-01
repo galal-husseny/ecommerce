@@ -24,10 +24,10 @@ Route::group(['prefix'=>'admin'],function(){
     Route::prefix('brands')->name('brands.')->controller(BrandsController::class)->group(function(){
         Route::get('/','index')->name('index');
         Route::get('create','create')->name('create');
-        Route::get('{id}/edit','edit')->name('edit'); // 4 segments => admin->fixed , brands->fixed, {id}->variable , edit->fixed
+        Route::get('{brand}/edit','edit')->name('edit'); // 4 segments => admin->fixed , brands->fixed, {id}->variable , edit->fixed
         Route::post('store','store')->name('store');
-        Route::put('{id}/update','update')->name('update');
-        Route::delete('{id}/destroy','destroy')->name('destroy');
+        Route::put('{brand}/update','update')->name('update');
+        Route::delete('{brand}/destroy','destroy')->name('destroy');
     });
 
 });

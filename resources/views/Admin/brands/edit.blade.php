@@ -6,7 +6,7 @@
     </div>
     @include('includes.validation-errors')
     <div class="col-12">
-        <form method="post" action="{{ route('brands.update',['id'=>$brand->id]) }}">
+        <form method="post" action="{{ route('brands.update',['brand'=>$brand->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -21,16 +21,44 @@
                     @endforeach
                 </select>
             </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">رفع</span>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="inputGroupFile01">
-                    <label class="custom-file-label" for="inputGroupFile01">أختار لوجو العلامة التجارية</label>
+            <div class="row">
+                <div class="col-3">
+                    <input name="image" type="file" class="custom-file-input d-none" id="inputGroupFile01" onchange="previewImage(event)">
+                    <label for="inputGroupFile01"> <img for="inputGroupFile01" id="image" src="{{asset($brand->getFirstMediaUrl('brands'))}}" class="w-100" alt="{{$brand->name}}" style="cursor: pointer"> </label>
                 </div>
             </div>
-            <button type="submit" name="edit" class="btn btn-primary">تعديل</button>
+            <div class="form-group">
+                <input @checked(old('resize') === 'true') name='resize' type="checkbox" id="resize" value="true">
+                <label for="resize">تغير أبعاد الصورة</label>
+                <div id="resizebox" class="row d-none">
+                    <div class="col-2">
+                        <input type="number"  name="width" value="{{old('width')}}" class="form-control" id="text" placeholder="العرض">
+                    </div>
+                    <div class="col-2">
+                        <input type="number"  name="height" value="{{old('height')}}" class="form-control" id="text" placeholder="الطول">
+                    </div>
+                </div>
+            </div>
+            <button type="submit" name="edit" class="btn btn-primary my-3">تعديل</button>
         </form>
     </div>
 @endsection
+@push('js')
+    <script>
+        var previewImage = function(event) {
+            var output = document.getElementById('image');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+    </script>
+@endpush
+@push('js')
+    <script>
+        $('#resize').on('change',function(){
+           $('#resizebox').toggleClass('d-none');
+        });
+    </script>
+@endpush
+

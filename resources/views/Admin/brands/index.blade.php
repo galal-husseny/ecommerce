@@ -29,8 +29,8 @@
                             </td>
                             <td>{{ $brand->created_at }}</td>
                             <td>{{ $brand->updated_at }}</td>
-                            <td><a href="{{route('brands.edit',['id' => $brand->id])}}" class="btn btn-outline-primary btn-sm">تعديل</a>
-                                <form action="{{route('brands.destroy',['id' => $brand->id])}}" method="post" class="d-inline">
+                            <td><a href="{{route('brands.edit',['brand' => $brand->id])}}" class="btn btn-outline-primary btn-sm">تعديل</a>
+                                <form action="{{route('brands.destroy',['brand' => $brand->id])}}" method="post" class="d-inline">
                                     @csrf
                                     @method("DELETE")
                                     <button class="btn btn-outline-danger btn-sm">حذف</button>
