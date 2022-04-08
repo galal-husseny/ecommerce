@@ -10,8 +10,12 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label for="text">ألاسم</label>
-                <input type="text" name="name" value="{{$brand->name}}" class="form-control" id="text" placeholder="أكتب أسم العلامة التجارية">
+                <label for="text">أسم العلامة التجارية باللغة الانجليزية</label>
+                <input type="text" name="name[en]" value="{{$brand->getTranslation('name', 'en')}}" class="form-control" id="text" >
+            </div>
+            <div class="form-group">
+                <label for="text">أسم العلامة التجارية باللغة العربية</label>
+                <input type="text" name="name[ar]" value="{{$brand->getTranslation('name', 'ar')}}" class="form-control" id="text" >
             </div>
             <div class="form-group">
                 <label for="status">الحالة</label>

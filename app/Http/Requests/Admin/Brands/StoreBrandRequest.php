@@ -25,7 +25,9 @@ class StoreBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required','max:32','unique:brands'],
+            'name'=>['array:en,ar'],
+            'name.en'=>['required','max:32','unique_translation:brands'],
+            'name.ar'=>['required','max:32','unique_translation:brands'],
             'status'=>['required','in:'.implode(',',BrandsController::AVAILABLE_STATUS)],
             'image'=>['required','max:1024','mimes:'.implode(',',BrandsController::AVAILABLE_EXTENSIONS)],
             'width'=>['required_with:resize'], //,'integer','between:50,1080'

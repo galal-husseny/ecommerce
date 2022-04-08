@@ -167,12 +167,13 @@
                             <li>
                                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#elements">
                                     <div class="pull-left"><i class="ti-palette"></i><span
-                                            class="right-nav-text">العلامات التجارية والاقسام</span></div>
+                                            class="right-nav-text">العلامات التجارية والموديلات</span></div>
                                     <div class="pull-right"><i class="ti-plus"></i></div>
                                     <div class="clearfix"></div>
                                 </a>
                                 <ul id="elements" class="collapse" data-parent="#sidebarnav">
                                     <li><a href="{{ route('brands.index') }}">العلامات التجارية</a></li>
+                                    <li><a href="{{ route('models.index') }}">الموديلات</a></li>
                                 </ul>
                             </li>
 
@@ -211,7 +212,7 @@
                         </div>
                         @yield('content')
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-12 ">
                             <footer class="bg-white p-4 w-100" style="position: fixed;bottom:0%">
                                 <div class="row">
@@ -234,7 +235,7 @@
                                 </div>
                             </footer>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                 </div>

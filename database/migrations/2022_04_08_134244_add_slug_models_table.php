@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->id();
-            $table->json('name');
-            $table->string('slug',255);
-            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>not active');
-            $table->timestamps();
+        Schema::table('models', function (Blueprint $table) {
+            $table->string('slug',255)->after('status');
+            $table->json('name')->change();
         });
     }
 
@@ -29,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::table('models', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
     }
 };

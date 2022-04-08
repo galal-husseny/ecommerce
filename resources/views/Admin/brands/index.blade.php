@@ -13,7 +13,8 @@
                 <thead>
                     <tr class="text-dark">
                         <th>الرقم</th>
-                        <th>أسم العلامة التجارية</th>
+                        <th>أسم العلامة التجارية باللغة العربية</th>
+                        <th>أسم العلامة التجارية باللغة الانجليزية</th>
                         <th>الحالة</th>
                         <th>تاريخ الانشاء</th>
                         <th>تاريخ التعديل</th>
@@ -24,7 +25,8 @@
                     @forelse ($brands as  $brand)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $brand->name }}</td>
+                            <td>{{ $brand->getTranslation('name','ar') }}</td>
+                            <td>{{ $brand->getTranslation('name','en') }}</td>
                             <td><label class="badge badge-{{ $brand->status == 1 ? 'success' : 'danger' }}">{{ $brand->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
                             </td>
                             <td>{{ $brand->created_at }}</td>
@@ -39,7 +41,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="alert alert-warning font-weight-bold text-center">لايوجد علامات تجارية
+                            <td colspan="6" class="alert alert-warning font-weight-bold text-center w-100">لايوجد علامات تجارية
                                 حاليا</td>
                         </tr>
                     @endforelse

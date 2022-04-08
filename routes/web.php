@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\BrandsController;
-use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\BrandsController;
+use App\Http\Controllers\Admin\ModelsController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'setAdminLang'],function(){
     Route::get('/',DashboardController::class)->name('dashboard');
     Route::prefix('brands')->name('brands.')->controller(BrandsController::class)->group(function(){
         Route::get('/','index')->name('index');
@@ -29,7 +30,7 @@ Route::group(['prefix'=>'admin'],function(){
         Route::put('{brand}/update','update')->name('update');
         Route::delete('{brand}/destroy','destroy')->name('destroy');
     });
-
+    Route::resource('models', ModelsController::class);
 });
 
 

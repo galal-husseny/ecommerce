@@ -9,13 +9,16 @@
         <form method="post" action="{{ route('brands.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="text">ألاسم</label>
-                <input type="text" name="name" value="{{old('name')}}" class="form-control" id="text" placeholder="أكتب أسم العلامة التجارية">
+                <label for="text">أسم العلامة التجارية باللغة الانجليزية</label>
+                <input type="text" name="name[en]" value="{{old('name.en')}}" class="form-control" id="text" >
+            </div>
+            <div class="form-group">
+                <label for="text">أسم العلامة التجارية باللغة العربية</label>
+                <input type="text" name="name[ar]" value="{{old('name.ar')}}" class="form-control" id="text" >
             </div>
             <div class="form-group">
                 <label for="status">الحالة</label>
                 <select name="status" class="custom-select" id="status">
-                    <option disabled selected>أختار</option>
                     @foreach ($statuses as $status => $value)
                         <option @selected(old('status') === $value) value="{{ $value }}"> {{ $status }} </option>
                     @endforeach

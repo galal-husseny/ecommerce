@@ -27,7 +27,7 @@ class BrandsController extends Controller
 
     public function store(StoreBrandRequest $request)
     {
-        $brand = Brand::create($request->validated());
+        $brand = Brand::create( $request->validated());
         $brand->addMediaFromRequest('image')->toMediaCollection('brands'); // store new image
         if ($request->has('resize')) {
             Image::make($brand->getFirstMediaPath('brands'))->resize($request->input('width'), $request->input('height'))->save($brand->getFirstMediaPath('brands')); // resize & override

@@ -11,15 +11,16 @@ use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Brand extends Model implements HasMedia
+class Models extends Model implements HasMedia
 {
     use HasFactory,
         InteractsWithMedia,
         HasTranslations,
         EscapeUniCodeJson,
         HasTranslatableSlug;
+    protected $table = 'models';
 
-    protected $fillable = ['name', 'status', 'slug'];
+    protected $fillable = ['name', 'status', 'slug','year','brand_id'];
     public $translatable = ['name', 'slug'];
     // /**
     //  * Get the options for generating the slug.
