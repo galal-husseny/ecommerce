@@ -1,8 +1,11 @@
 @extends('layouts.admin')
 @section('title', 'الموديلات')
+@section('breadcrumb')
+    {{Breadcrumbs::render('models.index')}}
+@endsection
 @section('content')
     <div class="col-12">
-        <h1 class="h1 text-center text-dark"> الموديلات </h1>
+        <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
     <div class="col-12">
         <a href="{{ route('models.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء موديل </a>

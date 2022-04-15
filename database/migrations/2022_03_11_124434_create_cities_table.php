@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('name',20);
+            $table->json('name');
             $table->tinyInteger('status')->default(0)->comment('0=>not deliverd,1=> delivered');
             $table->timestamps();
         });

@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->string('name',35);
+            $table->json('name');
             $table->tinyInteger('status')->default(0)->comment('0=>not deliverd,1=> delivered');
             $table->float('latitude');
-            $table->float('logitude');
+            $table->float('longitude');
             $table->decimal('radius',6,3);
             $table->foreignId('city_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

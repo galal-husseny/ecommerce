@@ -1,8 +1,11 @@
 @extends('layouts.admin')
-@section('title', ' أنشاء علامة تجارية')
+@section('title', ' أنشاء العلامات التجارية')
+@section('breadcrumb')
+    {{Breadcrumbs::render('brands.create')}}
+@endsection
 @section('content')
     <div class="col-12">
-        <h1 class="h1 text-center text-dark"> أنشاء علامة تجارية </h1>
+        <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
     @include('includes.validation-errors')
     <div class="col-12">

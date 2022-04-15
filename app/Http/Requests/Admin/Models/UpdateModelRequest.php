@@ -30,9 +30,9 @@ class UpdateModelRequest extends FormRequest
             'name.ar'=>['required','max:32','unique_translation:models'],
             'status'=>['required','in:'.implode(',',ModelsController::AVAILABLE_STATUS)],
             'image'=>['required','max:1024','mimes:'.implode(',',ModelsController::AVAILABLE_EXTENSIONS)],
-            'width'=>['required_with:resize'], //,'integer','between:50,1080'
-            'height'=>['required_with:resize'],
-            'year'=>['required'],
+            'width'=>['required_if:resize,ok','integer','between:50,1080'], //,'integer','between:50,1080'
+            'height'=>['required_if:resize,ok','integer','between:50,1080'],
+            'year'=>['required','integer','min:1970','max:2022'],
             'brand_id'=>['required','exists:brands,id']
         ];
     }

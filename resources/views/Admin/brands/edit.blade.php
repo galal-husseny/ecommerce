@@ -1,8 +1,11 @@
 @extends('layouts.admin')
-@section('title', ' تعديل علامة تجارية')
+@section('title', "تعديل {$brand->name}")
+@section('breadcrumb')
+    {{Breadcrumbs::render('brands.edit',$brand)}}
+@endsection
 @section('content')
     <div class="col-12">
-        <h1 class="h1 text-center text-dark"> تعديل علامة تجارية </h1>
+        <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
     @include('includes.validation-errors')
     <div class="col-12">
@@ -36,10 +39,10 @@
                 <label for="resize">تغير أبعاد الصورة</label>
                 <div id="resizebox" class="row d-none">
                     <div class="col-2">
-                        <input type="number"  name="width" value="{{old('width')}}" class="form-control" id="text" placeholder="العرض">
+                        <input type="text"  name="width" value="{{old('width')}}" class="form-control" id="text" placeholder="العرض">
                     </div>
                     <div class="col-2">
-                        <input type="number"  name="height" value="{{old('height')}}" class="form-control" id="text" placeholder="الطول">
+                        <input type="text"  name="height" value="{{old('height')}}" class="form-control" id="text" placeholder="الطول">
                     </div>
                 </div>
             </div>
@@ -65,4 +68,3 @@
         });
     </script>
 @endpush
-

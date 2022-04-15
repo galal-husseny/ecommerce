@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BrandsController;
+use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\ModelsController;
+use App\Http\Controllers\Admin\RegionsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +22,6 @@ use App\Http\Controllers\Admin\DashboardController;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::group(['prefix'=>'admin','middleware'=>'setAdminLang'],function(){
     Route::get('/',DashboardController::class)->name('dashboard');
     Route::prefix('brands')->name('brands.')->controller(BrandsController::class)->group(function(){
@@ -30,10 +32,10 @@ Route::group(['prefix'=>'admin','middleware'=>'setAdminLang'],function(){
         Route::put('{brand}/update','update')->name('update');
         Route::delete('{brand}/destroy','destroy')->name('destroy');
     });
-    Route::resource('models', ModelsController::class);
+    Route::resource('models', ModelsController::class)->except('show');
+    Route::resource('cities', CitiesController::class)->except('show');
+    Route::resource('regions', RegionsController::class)->except('show');
 });
-
-
 
 
 Route::group([],function(){

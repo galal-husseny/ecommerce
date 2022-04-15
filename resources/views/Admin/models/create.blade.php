@@ -1,11 +1,14 @@
 @extends('layouts.admin')
-@section('title', ' أنشاء موديل')
+@section('title', ' أنشاء الموديلات')
 @push('css')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
 @endpush
+@section('breadcrumb')
+    {{Breadcrumbs::render('models.create')}}
+@endsection
 @section('content')
     <div class="col-12">
-        <h1 class="h1 text-center text-dark"> أنشاء موديل </h1>
+        <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
     @include('includes.validation-errors')
     <div class="col-12">
@@ -57,7 +60,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input @checked(old('resize') === 'true') name='resize' type="checkbox" id="resize" value="true">
+                <input @checked(old('resize') === 'true') name='resize' type="checkbox" id="resize" value="ok">
                 <label for="resize">تغير أبعاد الصورة</label>
                 <div id="resizebox" class="row d-none">
                     <div class="col-2">

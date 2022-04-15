@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "barryvdh/laravel-debugbar": "^3.6",
         "codezero/laravel-unique-translation": "^3.5",
+        "diglactic/laravel-breadcrumbs": "^7.1",
         "doctrine/dbal": "^3.3",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",

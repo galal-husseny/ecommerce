@@ -27,12 +27,12 @@ class BrandsController extends Controller
 
     public function store(StoreBrandRequest $request)
     {
-        $brand = Brand::create( $request->validated());
+        $brand = Brand::create( $request->validated() );
         $brand->addMediaFromRequest('image')->toMediaCollection('brands'); // store new image
         if ($request->has('resize')) {
             Image::make($brand->getFirstMediaPath('brands'))->resize($request->input('width'), $request->input('height'))->save($brand->getFirstMediaPath('brands')); // resize & override
         }
-        return redirectAccordingToRequest($request, 'success');
+        return $this->redirectAccordingToRequest($request, 'success');
     }
 
     public function edit(Brand $brand)
@@ -42,9 +42,11 @@ class BrandsController extends Controller
 
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        $brand->update($request->all());
+        $brand->update($request->validated());
         if ($request->hasFile('image')) {
-            $brand->getMedia('brands')[0]->delete(); // remove old image
+            if(isset($brand->getMedia('brands')[0])){
+                $brand->getMedia('brands')[0]->delete(); // remove old image
+            }
             $brand->addMediaFromRequest('image')->toMediaCollection('brands');
         }
 

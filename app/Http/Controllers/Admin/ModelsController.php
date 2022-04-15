@@ -53,19 +53,9 @@ class ModelsController extends Controller
         if ($request->has('resize')) {
             Image::make($model->getFirstMediaPath('models'))->resize($request->input('width'), $request->input('height'))->save($model->getFirstMediaPath('models')); // resize & override
         }
-        return redirectAccordingToRequest($request, 'success');
+        return $this->redirectAccordingToRequest($request, 'success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,9 +78,11 @@ class ModelsController extends Controller
      */
     public function update(Request $request, Models $model)
     {
-        $model->update($request->all());
+        $model->update($request->validated());
         if ($request->hasFile('image')) {
-            $model->getMedia('models')[0]->delete(); // remove old image
+            if(isset($model->getMedia('models')[0])){
+                $model->getMedia('models')[0]->delete(); // remove old image
+            }
             $model->addMediaFromRequest('image')->toMediaCollection('models');
         }
 
