@@ -125,6 +125,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'admins'=>true,
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

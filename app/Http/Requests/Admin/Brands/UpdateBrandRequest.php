@@ -29,8 +29,8 @@ class UpdateBrandRequest extends FormRequest
             'name.en'=>['required','max:32',"unique_translation:brands,name,{$this->brand->id},id"],
             'name.ar'=>['required','max:32',"unique_translation:brands,name,{$this->brand->id},id"],
             'status'=>['required','in:'.implode(',',BrandsController::AVAILABLE_STATUS)],
-            // 'width'=>['required_if:resize,ok','integer','between:50,1080'], //,'integer','between:50,1080'
-            // 'height'=>['required_if:resize,ok','integer','between:50,1080'],
+            'width'=>['required_if:resize,exist','nullable','integer','between:50,1080'], //,'integer','between:50,1080'
+            'height'=>['required_if:resize,exist','nullable','integer','between:50,1080'],
         ];
     }
 }

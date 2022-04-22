@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\User;
+use App\Models\Admin;
+
+
 return [
 
     /*
@@ -40,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'admin'=>[
+            'driver'=>'session',
+            'provider'=>'admins'
+        ]
     ],
 
     /*
@@ -62,9 +70,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => User::class,
         ],
-
+        'admins'=>[
+            'driver'=> 'eloquent',
+            'model'=> Admin::class
+        ]
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -91,8 +102,14 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
-            'throttle' => 60,
+            'throttle' => 60*60, //seconds
         ],
+        'admins'=>[
+            'provider'=>'admins',
+            'table'=>'admin_password_resets',
+            'expire'=>60,
+            'throttle'=>60*60
+        ]
     ],
 
     /*

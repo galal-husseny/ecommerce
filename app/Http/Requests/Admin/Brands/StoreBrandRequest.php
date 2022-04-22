@@ -30,8 +30,8 @@ class StoreBrandRequest extends FormRequest
             'name.ar'=>['required','max:32','unique_translation:brands'],
             'status'=>['required','in:'.implode(',',BrandsController::AVAILABLE_STATUS)],
             'image'=>['required','max:1024','mimes:'.implode(',',BrandsController::AVAILABLE_EXTENSIONS)],
-            'width'=>['required_if:resize,ok','integer','between:50,1080'], //,'integer','between:50,1080'
-            'height'=>['required_if:resize,ok','integer','between:50,1080'],
+            'width'=>['required_if:resize,exist','nullable','integer','between:50,1080'], //,'integer','between:50,1080'
+            'height'=>['required_if:resize,exist','nullable','integer','between:50,1080'],
         ];
     }
 }

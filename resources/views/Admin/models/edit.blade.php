@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input @checked(old('resize') === 'true') name='resize' type="checkbox" id="resize" value="true">
+                <input  name='resize' type="checkbox" id="resize" value="exist">
                 <label for="resize">تغير أبعاد الصورة</label>
                 <div id="resizebox" class="row d-none">
                     <div class="col-2">

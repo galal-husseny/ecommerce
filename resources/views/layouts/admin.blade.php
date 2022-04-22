@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Webmin - Bootstrap 4 & Angular 5 Admin Dashboard Template" />
     <meta name="author" content="potenzaglobalsolutions.com" />
@@ -123,20 +125,21 @@
                         <div class="dropdown-header">
                             <div class="media">
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-0">Michael Bean</h5>
-                                    <span>michael-bean@mail.com</span>
+                                    <h5 class="mt-0 mb-0">{{ Auth::guard('admin')->user()->name }}</h5>
+                                    <span>{{ Auth::guard('admin')->user()->email }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="text-secondary ti-reload"></i>Activity</a>
-                        <a class="dropdown-item" href="#"><i class="text-success ti-email"></i>Messages</a>
-                        <a class="dropdown-item" href="#"><i class="text-warning ti-user"></i>Profile</a>
-                        <a class="dropdown-item" href="#"><i class="text-dark ti-layers-alt"></i>Projects <span
-                                class="badge badge-info">6</span> </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>Settings</a>
-                        <a class="dropdown-item" href="#"><i class="text-danger ti-unlock"></i>Logout</a>
+                        <a class="dropdown-item" href="#"><i class="text-warning ti-user"></i>الصفحة الشخصية</a>
+                        <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>اعدادات الموقع</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                            <i class="text-danger ti-unlock"></i> تسجيل خروج
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 </li>
             </ul>
@@ -152,7 +155,7 @@
                         <ul class="nav navbar-nav side-menu" id="sidebarnav">
                             <!-- menu item Dashboard-->
                             <li class="@if (Route::is('dashboard')) active @endif">
-                                <a  href="{{route('dashboard')}}">
+                                <a href="{{ route('dashboard') }}">
                                     <div class="pull-left"><i class="ti-home"></i><span
                                             class="right-nav-text"> الصفحة الرئيسية </span>
                                     </div>
@@ -166,28 +169,34 @@
                             <!-- menu item Elements-->
                             <li>
                                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#brands-models"
-                                @if(Request::is('admin/brands*') || Request::is('admin/models*') ) class="" aria-expanded="true" @endif>
+                                    @if (Request::is('admin/brands*') || Request::is('admin/models*')) class="" aria-expanded="true" @endif>
                                     <div class="pull-left"><i class="ti-palette"></i><span
                                             class="right-nav-text">العلامات التجارية والموديلات</span></div>
                                     <div class="pull-right"><i class="ti-plus"></i></div>
                                     <div class="clearfix"></div>
                                 </a>
-                                <ul id="brands-models" class="collapse @if(Request::is('admin/brands*') || Request::is('admin/models*') ) show @endif" data-parent="#sidebarnav">
-                                    <li class="@if(Request::is('admin/brands*')) active @endif"><a href="{{ route('brands.index') }}">العلامات التجارية</a></li>
-                                    <li class="@if(Request::is('admin/models*')) active @endif"><a href="{{ route('models.index') }}">الموديلات</a></li>
+                                <ul id="brands-models" class="collapse @if (Request::is('admin/brands*') || Request::is('admin/models*')) show @endif"
+                                    data-parent="#sidebarnav">
+                                    <li class="@if (Request::is('admin/brands*')) active @endif"><a
+                                            href="{{ route('brands.index') }}">العلامات التجارية</a></li>
+                                    <li class="@if (Request::is('admin/models*')) active @endif"><a
+                                            href="{{ route('models.index') }}">الموديلات</a></li>
                                 </ul>
                             </li>
                             <li>
                                 <a href="javascript:void(0);" data-toggle="collapse" data-target="#cities-regions"
-                                @if(Request::is('admin/cities*') || Request::is('admin/regions*') ) class="" aria-expanded="true" @endif>
+                                    @if (Request::is('admin/cities*') || Request::is('admin/regions*')) class="" aria-expanded="true" @endif>
                                     <div class="pull-left"><i class="ti-palette"></i><span
                                             class="right-nav-text">المدن والمناطق</span></div>
                                     <div class="pull-right"><i class="ti-plus"></i></div>
                                     <div class="clearfix"></div>
                                 </a>
-                                <ul id="cities-regions" class="collapse @if(Request::is('admin/cities*') || Request::is('admin/regions*') ) show @endif" data-parent="#sidebarnav">
-                                    <li class="@if(Request::is('admin/cities*')) active @endif"><a href="{{ route('cities.index') }}">المدن</a></li>
-                                    <li class="@if(Request::is('admin/regions*')) active @endif"><a href="{{ route('regions.index') }}">المناطق</a></li>
+                                <ul id="cities-regions" class="collapse @if (Request::is('admin/cities*') || Request::is('admin/regions*')) show @endif"
+                                    data-parent="#sidebarnav">
+                                    <li class="@if (Request::is('admin/cities*')) active @endif"><a
+                                            href="{{ route('cities.index') }}">المدن</a></li>
+                                    <li class="@if (Request::is('admin/regions*')) active @endif"><a
+                                            href="{{ route('regions.index') }}">المناطق</a></li>
                                 </ul>
                             </li>
 
@@ -200,7 +209,7 @@
                     <div class="page-title">
                         <div class="row">
                             <div class="col-sm-6">
-                                    <h4>@yield('breadcrumb')</h4>
+                                <h4>@yield('breadcrumb')</h4>
                             </div>
 
                         </div>
