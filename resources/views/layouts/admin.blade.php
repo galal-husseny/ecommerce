@@ -199,7 +199,23 @@
                                             href="{{ route('regions.index') }}">المناطق</a></li>
                                 </ul>
                             </li>
-
+                            <li>
+                                <a href="javascript:void(0);" data-toggle="collapse" data-target="#admins-roles"
+                                    @if (Request::is('admin/admins*') || Request::is('admin/roles*')) class="" aria-expanded="true" @endif>
+                                    <div class="pull-left"><i class="ti-palette"></i><span
+                                            class="right-nav-text"> المُشرفين والوظائف</span></div>
+                                    <div class="pull-right"><i class="ti-plus"></i></div>
+                                    <div class="clearfix"></div>
+                                </a>
+                                <ul id="admins-roles"
+                                    class="collapse @if (Request::is('admin/admins*') || Request::is('admin/roles*')) show @endif"
+                                    data-parent="#sidebarnav">
+                                    <li class="@if (Request::is('admin/admins*')) active @endif"><a
+                                            href="{{ route('admins.index') }}">المُشرفين</a></li>
+                                    <li class="@if (Request::is('admin/roles*')) active @endif"><a
+                                            href="{{ route('roles.index') }}">الوظائف</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </div>

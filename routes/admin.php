@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\ModelsController;
 use App\Http\Controllers\Admin\RegionsController;
 use App\Http\Controllers\Admin\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +36,8 @@ Route::middleware('verified:admin')->group(function () {
     Route::resource('models', ModelsController::class)->except('show');
     Route::resource('cities', CitiesController::class)->except('show');
     Route::resource('regions', RegionsController::class)->except('show');
+    Route::resource('admins' , AdminsController::class)->except('show');
+    Route::resource('roles' , RolesController::class)->except('show');
 });
 Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
+

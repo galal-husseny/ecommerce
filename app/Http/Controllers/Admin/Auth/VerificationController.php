@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use App\Services\PermissionGenerator;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class VerificationController extends Controller
 {
     /*
@@ -58,5 +60,25 @@ class VerificationController extends Controller
         return $request->user()->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
                         : view('admin.auth.verify');
+    }
+
+    /**
+     * The user has been verified.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function verified(Request $request)
+    {
+        //create super admin role and assign it to the current authenticated user
+        $role = Role::create(['name' => 'Super Admin','guard_name'=>'admin']);
+        $this->guard()->user()->assignRole($role);
+        // get all current permissions and assign it to db
+        $controllers_permissions = (new PermissionGenerator)->generate()->exceptNamespaces(["App\Http\Controllers\Admin\Auth"])->get();
+        foreach($controllers_permissions AS $controller => $permissions){
+            foreach($permissions AS $permission){
+                Permission::create(['name'=>"{$permission} {$controller}",'guard_name'=>'admin','controller'=>$controller]);
+            }
+        }
     }
 }

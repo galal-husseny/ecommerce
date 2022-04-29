@@ -23,7 +23,7 @@
                 <label for="status">الحالة</label>
                 <select name="status" class="custom-select" id="status">
                     @foreach ($statuses as $status => $value)
-                        <option @selected(old('status') === $value) value="{{ $value }}"> {{ $status }} </option>
+                        <option @selected(old('status') == $value) value="{{ $value }}"> {{ $status }} </option>
                     @endforeach
                 </select>
             </div>

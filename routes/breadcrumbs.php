@@ -37,5 +37,7 @@ Breadcrumbs::resource('brands','العلامات التجارية');
 Breadcrumbs::resource('models','الموديلات');
 Breadcrumbs::resource('cities','المدن');
 Breadcrumbs::resource('regions','المناطق');
+Breadcrumbs::resource('admins','المُشرفين');
+Breadcrumbs::resource('roles','الوظائف');
 
 
