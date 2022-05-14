@@ -12,6 +12,13 @@ use App\Http\Requests\Admin\Roles\UpdateRoleRequest;
 
 class RolesController extends Controller
 {
+    public function __construct() {
+        $this->middleware('superadmin.prevent.update')->only('edit','update','destroy');
+        $this->middleware('permission:Update Roles,admin')->only('edit','update');
+        $this->middleware('permission:Store Roles,admin')->only('create','store');
+        $this->middleware('permission:Index Roles,admin')->only('index');
+        $this->middleware('permission:Destroy Roles,admin')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +26,7 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::whereNot('id',1)->get();
         return view('Admin.roles.index',compact('roles'));
     }
 
@@ -44,7 +51,9 @@ class RolesController extends Controller
     {
         try{
             $role = Role::create(['name'=>$request->name,'guard_name'=>'admin']);
-            $role->syncPermissions($request->permission_id);
+            if($request->has('permission_id')){
+                $role->syncPermissions($request->permission_id);
+            }
             return $this->redirectAccordingToRequest($request,'success');
         }catch(\Exception $e){
             return $this->redirectAccordingToRequest($request,'error');
@@ -86,7 +95,11 @@ class RolesController extends Controller
     {
         try{
             $role->update(['name'=>$request->name]);
-            $role->syncPermissions($request->permission_id);
+            if($request->has('permission_id'))
+               $permissions = $request->permission_id;
+            else
+                $permissions = [];
+            $role->syncPermissions($permissions);
             return redirect()->route('roles.index')->with('success', 'تمت العملية بنجاح');
         }catch(\Exception $e){
             return redirect()->route('roles.index')->with('error', 'فشلت العملية');

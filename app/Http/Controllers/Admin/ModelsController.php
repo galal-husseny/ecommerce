@@ -11,6 +11,12 @@ use Intervention\Image\Facades\Image;
 
 class ModelsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:Index Models,admin')->only('index');
+        $this->middleware('permission:Store Models,admin')->only('create','store');
+        $this->middleware('permission:Update Models,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Models,admin')->only('destroy');
+    }
     public const AVAILABLE_STATUS = ['مفعل' => 1, 'غير مفعل' => 0];
     public const AVAILABLE_EXTENSIONS = ['png', 'jpg', 'jpeg'];
     /**

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Roles;
+namespace App\Http\Requests\Admin\Admins;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\Admin\AdminsController;
 
-class UpdateRoleRequest extends FormRequest
+class UpdateAdminProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +25,8 @@ class UpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required',"unique:roles,name,{$this->role->id},id"],
-            'permission_id'=>['array'],
-            'permission_id.*'=>['integer','exists:permissions,id']
+            'name' => ['required', 'string', 'max:255'],
+            'image'=>['nullable','max:1024','mimes:'.implode(',',AdminsController::AVAILABLE_EXTENSIONS)],
         ];
     }
 }

@@ -11,6 +11,12 @@ use App\Http\Requests\Admin\Regions\UpdateRegionRequest;
 
 class RegionsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:Index Regions,admin')->only('index');
+        $this->middleware('permission:Store Regions,admin')->only('create','store');
+        $this->middleware('permission:Update Regions,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Regions,admin')->only('destroy');
+    }
     public const AVAILABLE_STATUS = ['متاح التوصيل' => 1, 'غير متاح التوصيل' => 0];
     /**
      * Display a listing of the resource.

@@ -7,9 +7,11 @@
     <div class="col-12">
         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
+    @if(can('Store Roles','admin'))
     <div class="col-12">
-        <a href="{{ route('roles.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء وظيفة جديدة </a>
-    </div>
+            <a href="{{ route('roles.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء وظيفة جديدة </a>
+        </div>
+    @endif
     <div class="col-12">
         <div class="table-responsive mt-15">
             <table class="table center-aligned-table mb-0">
@@ -31,13 +33,17 @@
                             <td>{{ $role->updated_at }}</td>
                             <td>
                                 {{-- @if($role->name != 'Super Admin') --}}
+                                @if(can('Update Roles','admin'))
                                     <a href="{{route('roles.edit',['role' => $role->id])}}" class="btn btn-outline-primary btn-sm">تعديل</a>
+                                @endif
+                                @if(can('Destroy Roles','admin'))
+
                                     <form action="{{route('roles.destroy',['role' => $role->id])}}" method="post" class="d-inline">
                                         @csrf
                                         @method("DELETE")
                                         <button class="btn btn-outline-danger btn-sm">حذف</button>
                                     </form>
-                                {{-- @endif --}}
+                                @endif
                             </td>
                         </tr>
                     @empty

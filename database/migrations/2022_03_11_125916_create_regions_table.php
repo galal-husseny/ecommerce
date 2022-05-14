@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->json('name');
             $table->tinyInteger('status')->default(0)->comment('0=>not deliverd,1=> delivered');
-            $table->float('latitude');
-            $table->float('longitude');
-            $table->decimal('radius',6,3);
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->decimal('radius',6,3)->nullable();
             $table->foreignId('city_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

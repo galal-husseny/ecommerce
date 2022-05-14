@@ -1,14 +1,12 @@
 ///////////////////////////////OLD////////////////////////////////////////
 1. design authentication pages
 2. seeders
-3. env(APP_ENV)
-4. Admin Profile
-5. dashboard setting
+3. arabic font - fontsize:
 ///////////////////////////////NEW////////////////////////////////////////
-1. Admins => all -> except('super admin')
-2. Super Admin Role|Model -> only one user & one Role
-3. Super Admin -> only -> can edit his informations
-4. Super Admin Role|Model -> Can't Deleted , can't Updated
-5. Any Admin who have Roles and Permissions for deleting or updating other admins can delete or update them
-6. Protected Views , Routes According To Permissions
-7. merge between [edit,update] , [create,store] permissions
+1.nested-set -> categories - subcategories
+2.specs
+
+3.sellers
+4.shops
+5.products
+6.reCaptcha with dashboard

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('models', function (Blueprint $table) {
-            $table->string('slug',255)->after('status');
+            $table->string('slug',255)->after('status')->nullable();
             $table->json('name')->change();
         });
     }

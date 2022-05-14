@@ -30,10 +30,10 @@ class PermissionsUpdate extends Command
     public function handle()
     {
         try{
-            $controllers_permissions = (new PermissionGenerator)->generate()->exceptNamespaces(["App\Http\Controllers\Admin\Auth"])->get();
+            $controllers_permissions = (new PermissionGenerator)->generate()->exceptNamespaces(["App\Http\Controllers\Admin\Auth"])->exceptMethods(['edit','create'])->get();
             foreach($controllers_permissions AS $controller => $permissions){
                 foreach($permissions AS $permission){
-                    Permission::updateOrCreate(['name'=>"{$permission} {$controller}",'guard_name'=>'admin','controller'=>$controller],[
+                    Permission::updateOrCreate(['name'=>ucwords("{$permission} {$controller}"),'guard_name'=>'admin','controller'=>$controller],[
                         'name',
                         'guard_name',
                         'controller'

@@ -1,15 +1,17 @@
 @extends('layouts.admin')
 @section('title', 'المدن')
 @section('breadcrumb')
-    {{Breadcrumbs::render('cities.index')}}
+    {{ Breadcrumbs::render('cities.index') }}
 @endsection
 @section('content')
     <div class="col-12">
         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
-    <div class="col-12">
-        <a href="{{ route('cities.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء مدينة </a>
-    </div>
+    @if (can('Store Cities', 'admin'))
+        <div class="col-12">
+            <a href="{{ route('cities.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء مدينة </a>
+        </div>
+    @endif
     <div class="col-12">
         <div class="table-responsive mt-15">
             <table class="table center-aligned-table mb-0">
@@ -28,18 +30,25 @@
                     @forelse ($cities as  $city)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $city->getTranslation('name','ar') }}</td>
-                            <td>{{ $city->getTranslation('name','en') }}</td>
-                            <td><label class="badge badge-{{ $city->status == 1 ? 'success' : 'danger' }}">{{ $city->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
+                            <td>{{ $city->getTranslation('name', 'ar') }}</td>
+                            <td>{{ $city->getTranslation('name', 'en') }}</td>
+                            <td><label
+                                    class="badge badge-{{ $city->status == 1 ? 'success' : 'danger' }}">{{ $city->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
                             </td>
                             <td>{{ $city->created_at }}</td>
                             <td>{{ $city->updated_at }}</td>
-                            <td><a href="{{route('cities.edit',['city' => $city->id])}}" class="btn btn-outline-primary btn-sm">تعديل</a>
-                                <form action="{{route('cities.destroy',['city' => $city->id])}}" method="post" class="d-inline">
+                            @if (can('Update Cities', 'admin'))
+                                <td><a href="{{ route('cities.edit', ['city' => $city->id]) }}"
+                                        class="btn btn-outline-primary btn-sm">تعديل</a>
+                            @endif
+                            @if (can('Destroy Cities', 'admin'))
+                                <form action="{{ route('cities.destroy', ['city' => $city->id]) }}" method="post"
+                                    class="d-inline">
                                     @csrf
                                     @method("DELETE")
                                     <button class="btn btn-outline-danger btn-sm">حذف</button>
                                 </form>
+                            @endif
                             </td>
                         </tr>
                     @empty

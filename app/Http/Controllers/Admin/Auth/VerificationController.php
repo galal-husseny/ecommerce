@@ -74,10 +74,10 @@ class VerificationController extends Controller
         $role = Role::create(['name' => 'Super Admin','guard_name'=>'admin']);
         $this->guard()->user()->assignRole($role);
         // get all current permissions and assign it to db
-        $controllers_permissions = (new PermissionGenerator)->generate()->exceptNamespaces(["App\Http\Controllers\Admin\Auth"])->get();
+        $controllers_permissions = (new PermissionGenerator)->generate()->exceptNamespaces(["App\Http\Controllers\Admin\Auth"])->exceptMethods(['edit','create'])->get();
         foreach($controllers_permissions AS $controller => $permissions){
             foreach($permissions AS $permission){
-                Permission::create(['name'=>"{$permission} {$controller}",'guard_name'=>'admin','controller'=>$controller]);
+                Permission::create(['name'=>ucwords("{$permission} {$controller}"),'guard_name'=>'admin','controller'=>$controller]);
             }
         }
     }

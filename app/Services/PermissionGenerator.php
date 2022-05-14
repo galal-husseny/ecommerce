@@ -10,12 +10,12 @@ class PermissionGenerator {
         foreach(Route::getRoutes() AS $route){
             $action = $route->getAction();
             if(array_key_exists('controller',$action) && !in_array('api',$action['middleware'])
-            && str_starts_with($action['controller'],"App\Http\Controllers\Admin") && str_contains($action['controller'],"@")){
+            && str_starts_with($action['controller'],"App\Http\Controllers\Admin")
+             && str_contains($action['controller'],"@")){
                 $actionArray = explode('@',$action['controller']);
                 $controller = $actionArray[0];
                 $method = $actionArray[1];
                 $this->perimssions[$controller][] = $method;
-
             }
         }
         return $this;
@@ -28,6 +28,18 @@ class PermissionGenerator {
             foreach( $namespaces AS $namespace){
                 if(str_starts_with($fullNamespace,$namespace)){
                     unset($this->perimssions[$fullNamespace]);
+                }
+            }
+        }
+        return $this;
+    }
+
+    public function exceptMethods(array $removedMethods)
+    {
+        foreach ( $this->perimssions AS $fullNamespace => $methods){
+            foreach( $methods AS $index=> $method){ // index
+                if(in_array($method,$removedMethods)){
+                    unset($this->perimssions[$fullNamespace][$index]);
                 }
             }
         }

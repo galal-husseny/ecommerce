@@ -15,7 +15,11 @@ use App\Http\Requests\Admin\Admins\UpdateAdminRequest;
 class AdminsController extends Controller
 {
     public function __construct() {
-
+        $this->middleware('superadmin.prevent.update')->only('edit','update','destroy');
+        $this->middleware('permission:Index Admins,admin')->only('index');
+        $this->middleware('permission:Store Admins,admin')->only('create','store');
+        $this->middleware('permission:Update Admins,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Admins,admin')->only('edit','destroy');
     }
     public const AVAILABLE_STATUS = ['مفعل' => 1, 'غير مفعل' => 0];
     public const AVAILABLE_EXTENSIONS = ['png', 'jpg', 'jpeg'];
@@ -26,7 +30,7 @@ class AdminsController extends Controller
      */
     public function index()
     {
-        $admins = Admin::all();
+        $admins = Admin::whereNot('id',1)->get(); // except super admin
         return view('Admin.admins.index',compact('admins'));
     }
 

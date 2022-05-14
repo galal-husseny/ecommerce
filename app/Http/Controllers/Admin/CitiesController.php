@@ -10,6 +10,12 @@ use App\Http\Requests\Admin\Cities\UpdateCityRequest;
 
 class CitiesController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:Index Cities,admin')->only('index');
+        $this->middleware('permission:Store Cities,admin')->only('create','store');
+        $this->middleware('permission:Update Cities,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Cities,admin')->only('destroy');
+    }
     public const AVAILABLE_STATUS = ['مفعل' => 1, 'غير مفعل' => 0];
     /**
      * Display a listing of the resource.
