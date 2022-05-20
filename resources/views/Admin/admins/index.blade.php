@@ -34,7 +34,13 @@
                             <td>{{ $admin->name }}</td>
                             <td>{{ $admin->email }}</td>
                             <td>{{ $admin->getRoleNames()->toArray()[0] }}</td> {{-- lazy loading --}}
-                            <td>{{ $admin->email_verified_at ? 'مُفعل' : 'غير مُفعل' }}</td>
+                            <label class="badge badge-{{ $seller->status == 1 ? 'success' : 'danger' }}">{{ $seller->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
+
+                            <td>
+                                <label class="badge badge-{{ $admin->email_verified_at ? 'success' : 'danger' }}">
+                                {{ $admin->email_verified_at ? 'مُفعل' : 'غير مُفعل' }}
+                                </label>
+                            </td>
                             <td>{{ $admin->created_at }}</td>
                             <td>{{ $admin->updated_at }}</td>
                             <td>

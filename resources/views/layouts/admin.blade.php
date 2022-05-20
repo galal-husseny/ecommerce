@@ -187,6 +187,54 @@
                             <!-- menu title -->
                             <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">المنتجات </li>
                             <!-- menu item Elements-->
+                            @if (can('Index Products', 'admin') || can('Index Categories', 'admin'))
+                                <li>
+                                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#categories-products"
+                                        @if (Request::is('admin/categories*') || Request::is('admin/products*')) class="" aria-expanded="true" @endif>
+                                        <div class="pull-left"><i class="ti-palette"></i><span
+                                                class="right-nav-text">الأقسام والمنتجات </span></div>
+                                        <div class="pull-right"><i class="ti-plus"></i></div>
+                                        <div class="clearfix"></div>
+                                    </a>
+                                    <ul id="categories-products"
+                                        class="collapse @if (Request::is('admin/products*') || Request::is('admin/categories*')) show @endif"
+                                        data-parent="#sidebarnav">
+                                        @if (can('Index Categories', 'admin'))
+                                            <li class="@if (Request::is('admin/categories*')) active @endif"><a
+                                                    href="{{ route('categories.index') }}">الأقسام</a></li>
+                                        @endif
+                                        @if (can('Index Products', 'admin'))
+                                            <li class="@if (Request::is('admin/products*')) active @endif"><a
+                                                    href="{{ route('products.index') }}">المنتجات</a></li>
+                                        @endif
+
+                                    </ul>
+                                </li>
+                            @endif
+                            {{-- @if (can('Index Sellers', 'admin') || can('Index Shops', 'admin')) --}}
+                                <li>
+                                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#Shops-Sellers"
+                                        @if (Request::is('admin/sellers*') || Request::is('admin/shops*')) class="" aria-expanded="true" @endif>
+                                        <div class="pull-left"><i class="ti-palette"></i><span
+                                                class="right-nav-text">المحلات والتجار </span></div>
+                                        <div class="pull-right"><i class="ti-plus"></i></div>
+                                        <div class="clearfix"></div>
+                                    </a>
+                                    <ul id="Shops-Sellers"
+                                        class="collapse @if (Request::is('admin/sellers*') || Request::is('admin/shops*')) show @endif"
+                                        data-parent="#sidebarnav">
+                                        {{-- @if (can('Index Shops', 'admin')) --}}
+                                            <li class="@if (Request::is('admin/shops*')) active @endif"><a
+                                                    href="{{ route('shops.index') }}">المحلات</a></li>
+                                        {{-- @endif --}}
+                                         {{-- @if (can('Index Sellers', 'admin')) --}}
+                                            <li class="@if (Request::is('admin/sellers*')) active @endif"><a
+                                                    href="{{ route('sellers.index') }}">التجار</a></li>
+                                        {{-- @endif --}}
+
+                                    </ul>
+                                </li>
+                            {{-- @endif --}}
                             @if (can('Index Brands', 'admin') || can('Index Models', 'admin'))
                                 <li>
                                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#brands-models"

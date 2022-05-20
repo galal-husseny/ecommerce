@@ -194,11 +194,15 @@ return [
         'true'=>'صحيح',
         'name.en'=>'الاسم باللغة الانجليزية',
         'name.ar'=>'الاسم باللغة العربية',
-        'permission_id'=>'الصلاحية'
+        'permission_id'=>'الصلاحية',
+        'national_id'=>'رقم البطاقة'
     ],
     'values'=>[
         'resize'=>[
             'exist'=>'موجود'
+        ],
+        'social_links'=>[
+            'url'=>'ء'
         ]
     ]
 ];

@@ -5,7 +5,6 @@
 ///////////////////////////////NEW////////////////////////////////////////
 1.nested-set -> categories - subcategories
 2.specs
-
 3.sellers
 4.shops
 5.products
