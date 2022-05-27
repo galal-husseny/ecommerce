@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('floor',255);
             $table->string('flat',255);
             $table->string('notes',255);
+            $table->string('latitude',20);
+            $table->string('longitude',20);
             $table->tinyInteger('status')->default(0)->comment('1=>delivered_in , 0=>not_deliverd_in');
             $table->foreignId('user_id')->constrained()->restrictOnDelete()->restrictOnUpdate();
             $table->foreignId('region_id')->constrained()->restrictOnDelete()->restrictOnUpdate();

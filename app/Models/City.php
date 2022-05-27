@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Region;
 use App\Traits\EscapeUniCodeJson;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -14,4 +15,8 @@ class City extends Model
     EscapeUniCodeJson;
     protected $fillable = ['name', 'status'];
     public $translatable = ['name'];
+    public function regions()
+    {
+        $this->hasMany(Region::class);
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Admin\Sellers\StoreSellerRequest;
 use App\Http\Requests\Admin\Sellers\UpdateSellerRequest;
+use App\Models\Region;
 
 class SellersController extends Controller
 {
@@ -38,7 +39,8 @@ class SellersController extends Controller
      */
     public function create()
     {
-        return view('admin.sellers.create',['statuses'=>self::AVAILABLE_STATUS]);
+        $regions = Region::all();
+        return view('admin.sellers.create',['statuses'=>self::AVAILABLE_STATUS,'regions'=>$regions]);
     }
 
     /**
@@ -64,6 +66,7 @@ class SellersController extends Controller
         if($request->hasFile('image')){
             $seller->addMediaFromRequest('image')->toMediaCollection('sellers'); // store new image
         }
+        $seller->shops()->createMany($request->shop);
         return $this->redirectAccordingToRequest($request,'success');
     }
 
@@ -86,6 +89,7 @@ class SellersController extends Controller
      */
     public function edit(Seller $seller)
     {
+        $seller = $seller->with('shops.region.city')->where('id',$seller->id)->first();
         return view('Admin.sellers.edit',['seller'=>$seller,'statuses'=>self::AVAILABLE_STATUS]);
     }
 

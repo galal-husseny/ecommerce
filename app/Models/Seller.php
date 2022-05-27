@@ -53,4 +53,9 @@ class Seller extends Authenticatable implements CanResetPassword,MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function shops()
+    {
+        return $this->hasMany(Shop::class);
+    }
 }

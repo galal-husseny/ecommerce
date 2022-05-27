@@ -2,10 +2,13 @@
 1. design authentication pages
 2. seeders
 3. arabic font - fontsize:
+////////////////////////////// bugs //////////////////////////////////////
+1. update password (admin profile)
 ///////////////////////////////NEW////////////////////////////////////////
-1.nested-set -> categories - subcategories
-2.specs
-3.sellers
-4.shops
-5.products
-6.reCaptcha with dashboard
+1. permissions (shop-seller module)
+2. remove marker (multi pin google maps)
+3. review (national_id task)
+4. endless array with loop task
+5. specs
+6. products
+7. reCaptcha with supplier login

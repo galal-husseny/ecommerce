@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Shop;
+use App\Models\Region;
+use App\Models\Seller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Shop\StoreShopRequest;
 
 class ShopsController extends Controller
 {
@@ -14,7 +18,8 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        //
+        $shops = Shop::with(['seller','region.city'])->get(); // select
+        return view('Admin.shops.index',compact('shops'));
     }
 
     /**
@@ -22,9 +27,15 @@ class ShopsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $chooseSeller = false;
+        if($request->has('seller_id')){
+            $chooseSeller = $request->seller_id;
+        }
+        $sellers = Seller::orderBy('name')->get();
+        $regions = Region::with('city')->get();
+        return view('Admin.shops.create',compact('sellers','regions','chooseSeller'));
     }
 
     /**
@@ -33,9 +44,10 @@ class ShopsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreShopRequest $request)
     {
-        //
+        Shop::create($request->validated());
+        return $this->redirectAccordingToRequest($request,'success');
     }
 
     /**
@@ -55,9 +67,15 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,Shop $shop)
     {
-        //
+        $chooseSeller = false;
+        if($request->has('seller_id')){
+            $chooseSeller = $request->seller_id;
+        }
+        $sellers = Seller::orderBy('name')->get();
+        $regions = Region::with('city')->get();
+        return view('Admin.shops.edit',compact('sellers','regions','shop','chooseSeller'));
     }
 
     /**
@@ -67,9 +85,10 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreShopRequest $request, Shop $shop)
     {
-        //
+        $shop->update($request->validated());
+        return redirect()->back()->with('success', 'تمت العملية بنجاح');
     }
 
     /**
@@ -78,8 +97,10 @@ class ShopsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Shop $shop)
     {
-        //
+        $shop->delete();
+        return redirect()->back()->with('success', 'تمت العملية بنجاح');
+
     }
 }

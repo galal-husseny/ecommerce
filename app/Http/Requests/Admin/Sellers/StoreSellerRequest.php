@@ -36,7 +36,16 @@ class StoreSellerRequest extends FormRequest
             'image'=>['nullable','max:1024','mimes:'.implode(',',SellersController::AVAILABLE_EXTENSIONS)],
             'gender'=>['required','in:m,f'],
             'social_links'=>['nullable','array'],
-            'social_links.*.social_link'=>['nullable','url']
+            'social_links.*.social_link'=>['nullable','url'],
+            'shop'=>['required','array'],
+            'shop.*.name'=>['required','max:255'],
+            'shop.*.street'=>['required','max:255'],
+            'shop.*.floor'=>['required','max:255'],
+            'shop.*.building'=>['required','max:255'],
+            'shop.*.notes'=>['nullable','string'],
+            'shop.*.latitude'=>['required','max:20'],
+            'shop.*.longitude'=>['required','max:20'],
+            'shop.*.region_id'=>['required','integer','exists:regions,id'],
         ];
     }
 }
