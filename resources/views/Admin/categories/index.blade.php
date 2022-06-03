@@ -57,7 +57,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="alert alert-warning font-weight-bold text-center w-100">لايوجد أقسام حاليا</td>
+                            <td colspan="8" class="alert alert-warning font-weight-bold text-center w-100">لايوجد أقسام حاليا</td>
                         </tr>
                     @endforelse
                 </tbody>

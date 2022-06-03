@@ -102,7 +102,6 @@ class SellersController extends Controller
      */
     public function update(UpdateSellerRequest $request, Seller $seller)
     {
-
         $data = [
             'name'=>$request->name,
             'email'=>$request->email,

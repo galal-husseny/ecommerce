@@ -11,6 +11,12 @@ use App\Http\Requests\Admin\Shop\StoreShopRequest;
 
 class ShopsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:Update Shops,admin')->only('edit','update');
+        $this->middleware('permission:Store Shops,admin')->only('create','store');
+        $this->middleware('permission:Index Shops,admin')->only('index');
+        $this->middleware('permission:Destroy Shops,admin')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *

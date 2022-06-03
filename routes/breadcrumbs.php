@@ -43,3 +43,4 @@ Breadcrumbs::resource('categories','ألاقسام');
 Breadcrumbs::resource('products','المنتجات');
 Breadcrumbs::resource('shops','المحلات');
 Breadcrumbs::resource('sellers','التجار');
+Breadcrumbs::resource('specs','المُواصفات');

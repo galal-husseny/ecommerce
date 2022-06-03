@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\ShopsController;
+use App\Http\Controllers\Admin\SpecsController;
 use App\Http\Controllers\Admin\AdminsController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CitiesController;
@@ -50,6 +51,7 @@ Route::middleware('verified:admin')->group(function () {
     Route::resource('products',ProductsController::class)->except('show');
     Route::resource('sellers',SellersController::class)->except('show');
     Route::resource('shops',ShopsController::class)->except('show');
+    Route::resource('specs',SpecsController::class)->except('show');
 
     Route::prefix('profile')->name('profile')->controller(ProfileController::class)->group(function(){
         Route::get('/','index');

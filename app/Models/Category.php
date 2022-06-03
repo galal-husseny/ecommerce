@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Spec;
 use Kalnoy\Nestedset\NodeTrait;
 use App\Traits\EscapeUniCodeJson;
 use Spatie\Sluggable\SlugOptions;
@@ -26,5 +27,9 @@ class Category extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
+    }
+    public function specs()
+    {
+        return $this->belongsToMany(Spec::class);
     }
 }

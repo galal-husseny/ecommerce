@@ -7,11 +7,11 @@
     <div class="col-12">
         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
-    {{-- @if (can('Store Shops', 'admin')) --}}
+    @if (can('Store Shops', 'admin'))
     <div class="col-12">
         <a href="{{ route('shops.create') }}" class="btn btn-primary rounded btn-sm"> أنشاء محل </a>
     </div>
-    {{-- @endif --}}
+    @endif
     <div class="col-12">
         <div class="table-responsive mt-15">
             <table class="table center-aligned-table mb-0">
@@ -40,18 +40,18 @@
                             <td>{{ $shop->notes }}</td>
                             <td>{{ $shop->region->name . '-' . $shop->region->city->name }}</td>
                             <td>
-                                {{-- @if (can('Update Shops', 'admin')) --}}
+                                @if (can('Update Shops', 'admin'))
                                     <a href="{{ route('shops.edit', ['shop' => $shop->id]) }}"
                                         class="btn btn-outline-primary btn-sm">تعديل</a>
-                                {{-- @endif --}}
-                                {{-- @if (can('Destroy Shops', 'admin')) --}}
+                                @endif
+                                @if (can('Destroy Shops', 'admin'))
                                     <form action="{{ route('shops.destroy', ['shop' => $shop->id]) }}" method="post"
                                         class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm">حذف</button>
                                     </form>
-                                {{-- @endif --}}
+                                @endif
 
                             </td>
                         </tr>

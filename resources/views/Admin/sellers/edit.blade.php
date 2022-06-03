@@ -7,34 +7,37 @@
     <div class="col-12">
         <div class="row">
             <div class="col-12">
-                <form method="post" action="{{ route('sellers.update', ['seller' => $seller->id]) }}"
-                    enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="col-12">
-                        <h1 class="h1 text-center text-dark"> @yield('title') </h1>
-                    </div>
-                    @include('includes.validation-errors')
-                    <div class="col-12">
-                        <div class="accordion" id="accordionExample">
-                            <div class="row my-4">
-                                <div class="col-6">
-                                    <button class="btn btn-primary form-control bg-primary text-light" type="button"
-                                        data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne" id="seller">
-                                        التاجر
-                                    </button>
-                                </div>
-                                <div class="col-6">
+
+                <div class="col-12">
+                    <h1 class="h1 text-center text-dark"> @yield('title') </h1>
+                </div>
+                @include('includes.validation-errors')
+                <div class="col-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="row my-4">
+                            <div class="col-6">
+                                <button class="btn btn-primary form-control bg-primary text-light" type="button"
+                                    data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne" id="seller">
+                                    التاجر
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                @if (can('index Shops', 'admin'))
                                     <button class="btn btn-outline-primary form-control" type="button"
                                         data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
                                         aria-controls="collapseTwo" id="branches">
                                         المحلات
                                     </button>
-                                </div>
-                                <div class="col-12 mt-4">
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                        data-parent="#accordionExample">
+                                @endif
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordionExample">
+                                    <form method="post" action="{{ url("admin/sellers/{$seller->id}") }}"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
                                         <div class="form-group">
                                             <label for="text">الأسم </label>
                                             <input type="text" name="name" value="{{ $seller->name }}"
@@ -138,48 +141,48 @@
                                             </div>
                                         </div>
                                         <button type="submit" name="edit" class="btn btn-primary my-3">تعديل</button>
-
-                                    </div>
+                                    </form>
 
                                 </div>
 
-                                <div class="col-12 mt-4">
-                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                        data-parent="#accordionExample">
-                                        <table class="table table-striped">
-                                            <thead class="thead-inverse">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordionExample">
+                                    <table class="table table-striped">
+                                        <thead class="thead-inverse">
+                                            <tr>
+                                                <th>رقم المحل</th>
+                                                <th>اسم المحل</th>
+                                                <th>شارع المحل</th>
+                                                <th>المبنى</th>
+                                                <th>الدور</th>
+                                                <th>ملاحظات</th>
+                                                <th>المنطقه</th>
+                                                <th>تاريخ الانشاء</th>
+                                                <th>تاريخ التعديل</th>
+                                                <th>العمليات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($seller->shops as $shop)
                                                 <tr>
-                                                    <th>رقم المحل</th>
-                                                    <th>اسم المحل</th>
-                                                    <th>شارع المحل</th>
-                                                    <th>المبنى</th>
-                                                    <th>الدور</th>
-                                                    <th>ملاحظات</th>
-                                                    <th>المنطقه</th>
-                                                    <th>تاريخ الانشاء</th>
-                                                    <th>تاريخ التعديل</th>
-                                                    <th>العمليات</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($seller->shops as $shop)
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $shop->name }}</td>
-                                                        <td>{{ $shop->street }}</td>
-                                                        <td>{{ $shop->building }}</td>
-                                                        <td>{{ $shop->floor }}</td>
-                                                        <td>{{ $shop->notes }}</td>
-                                                        <td>{{ $shop->region->name . '-' . $shop->region->city->name }}
-                                                        </td>
-                                                        <td>{{ $shop->created_at }}</td>
-                                                        <td>{{ $shop->updated_at }}</td>
-                                                        <td>
-                                                            {{-- @if (can('Edit Shops', 'admin')) --}}
-                                                            <a href="{{ route('shops.edit', ['shop' => $shop->id]) }}?seller_id={{$seller->id}}"
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $shop->name }}</td>
+                                                    <td>{{ $shop->street }}</td>
+                                                    <td>{{ $shop->building }}</td>
+                                                    <td>{{ $shop->floor }}</td>
+                                                    <td>{{ $shop->notes }}</td>
+                                                    <td>{{ $shop->region->name . '-' . $shop->region->city->name }}
+                                                    </td>
+                                                    <td>{{ $shop->created_at }}</td>
+                                                    <td>{{ $shop->updated_at }}</td>
+                                                    <td>
+                                                        @if (can('Edit Shops', 'admin'))
+                                                            <a href="{{ route('shops.edit', ['shop' => $shop->id]) }}?seller_id={{ $seller->id }}"
                                                                 class="btn btn-outline-primary btn-sm">تعديل</a>
-                                                            {{-- @endif --}}
-                                                            {{-- @if (can('Destroy Shops', 'admin')) --}}
+                                                        @endif
+                                                        @if (can('Destroy Shops', 'admin'))
                                                             <form
                                                                 action="{{ route('shops.destroy', ['shop' => $shop->id]) }}"
                                                                 method="post" class="d-inline">
@@ -187,49 +190,44 @@
                                                                 @method('DELETE')
                                                                 <button class="btn btn-outline-danger btn-sm">حذف</button>
                                                             </form>
-                                                            {{-- @endif --}}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        {{-- @if (can('Store Shops', 'admin')) --}}
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @if (can('Store Shops', 'admin'))
                                         <div class="col-12">
-                                            <a href="{{ route('shops.create') }}?seller_id={{$seller->id}}"
+                                            <a href="{{ route('shops.create') }}?seller_id={{ $seller->id }}"
                                                 class="btn btn-primary rounded btn-sm my-3"> أنشاء محل </a>
                                         </div>
-                                        {{-- @endif --}}
-                                    </div>
+                                    @endif
                                 </div>
-
                             </div>
-
-
                         </div>
-                </form>
-
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-@endsection
-@push('js')
-    <script>
-        var previewImage = function(event) {
-            var output = document.getElementById('image');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function() {
-                URL.revokeObjectURL(output.src) // free memory
-            }
-        };
-    </script>
-    <script>
-        $('#seller').on('click', function() {
-            $('#seller').toggleClass('bg-primary text-light');
-            $('#branches').removeClass('bg-primary text-light');
-        });
-        $('#branches').on('click', function() {
-            $('#branches').toggleClass('bg-primary text-light');
-            $('#seller').removeClass('bg-primary text-light');
-        });
-    </script>
-@endpush
+    @endsection
+    @push('js')
+        <script>
+            var previewImage = function(event) {
+                var output = document.getElementById('image');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+            };
+        </script>
+        <script>
+            $('#seller').on('click', function() {
+                $('#seller').toggleClass('bg-primary text-light');
+                $('#branches').removeClass('bg-primary text-light');
+            });
+            $('#branches').on('click', function() {
+                $('#branches').toggleClass('bg-primary text-light');
+                $('#seller').removeClass('bg-primary text-light');
+            });
+        </script>
+    @endpush

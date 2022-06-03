@@ -29,13 +29,13 @@
             </div>
             <div class="form-group">
                 <label for="category"> مُتفرع من قسم</label>
-                @php
-                echo "<select name='category_id' class='custom-select' id='category'>
-                    <option value=''> لايوجد <option>";
 
+                @php
+
+                echo "<select name='category_id' class='custom-select' id='category'>
+                    <option value=''> لايوجد </option>";
                 $traverse = function ($categories, $prefix = '&nbsp') use (&$traverse) {
                     foreach ($categories as $category) {
-
                         $option =  "<option ";
                         if(is_null($category->parent_id)){
                             $option .= " style='font-weight:600;' ";
@@ -48,6 +48,7 @@
                         $traverse($category->children, $prefix.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
                     }
                 };
+
                 $traverse($nodes);
                 echo '</select>';
                 @endphp
