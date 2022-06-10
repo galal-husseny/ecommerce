@@ -116,4 +116,18 @@ class SpecsController extends Controller
         $spec->delete();
         return redirect()->route('specs.index')->with('success','تمت العملية بنجاح');
     }
+
+    public function specsByCategory(Request $request)
+    {
+        $request->validate([
+            'id'=>['required','integer','exists:category_spec,category_id']
+        ]);
+        $category = Category::find($request->id);
+         $specs = $category->specs()->select('id','name')->get();
+         $options = "<option value=''></option>";
+         foreach($specs AS $spec){
+            $options.= "<option value='{$spec->id}'>{$spec->getTranslation('name','ar')} - {$spec->getTranslation('name','en')}</option>";
+         }
+         return response()->json(['options'=>$options]);
+    }
 }

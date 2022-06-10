@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name',512);
+            $table->longText('name',512);
             $table->string('code',32)->unique();
             $table->longText('description');
+            $table->longText('slug',512);
             $table->decimal('price');
             $table->tinyInteger('quantity');
             $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>block');

@@ -11,7 +11,7 @@ use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Brand extends Model implements HasMedia
+class Product extends Model implements HasMedia
 {
     use HasFactory,
         InteractsWithMedia,
@@ -19,13 +19,19 @@ class Brand extends Model implements HasMedia
         EscapeUniCodeJson,
         HasTranslatableSlug;
 
-    protected $fillable = ['name', 'status', 'slug'];
-    public $translatable = ['name', 'slug','model_name','brand_name'];
+    protected $fillable = ['name', 'status', 'slug','description',
+    'code','price','quantity','model_id','category_id','shop_id'];
+    public $translatable = ['name', 'slug','description'];
     // /**
     //  * Get the options for generating the slug.
     //  */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
+    }
+
+    public function specs()
+    {
+        return $this->belongsToMany(Spec::class);
     }
 }

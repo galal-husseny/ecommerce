@@ -298,4 +298,13 @@
             markers = [];
         }
     </script>
+    <script>
+            $(document).ready(function() {
+                $('.repeater, .repeater-file, .repeater-add').repeater({
+                    show: function() {
+                        $(this).slideDown();
+                    }
+                });
+            });
+    </script>
 @endpush

@@ -5,9 +5,10 @@
 ////////////////////////////// bugs //////////////////////////////////////
 1. update password (admin profile)
 ///////////////////////////////NEW////////////////////////////////////////
-1. permissions (shop-seller module)
-2. remove marker (multi pin google maps)
-3. review (national_id task)
+0. store product - ajax request - empty all options
+1. select2 with form repeater
+2. resize product images
+3. validation messages x.0.d , fontawesome social links
 4. endless array with loop task
 5. specs
 6. products

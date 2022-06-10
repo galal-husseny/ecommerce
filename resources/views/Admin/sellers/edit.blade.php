@@ -230,4 +230,13 @@
                 $('#seller').removeClass('bg-primary text-light');
             });
         </script>
+        <script>
+            $(document).ready(function() {
+                $('.repeater, .repeater-file, .repeater-add').repeater({
+                    show: function() {
+                        $(this).slideDown();
+                    }
+                });
+            });
+        </script>
     @endpush
