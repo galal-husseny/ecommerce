@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('product_spec', function (Blueprint $table) {
             $table->foreignId('spec_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->primary(['spec_id', 'product_id']);
             $table->string('value');
             $table->timestamps();

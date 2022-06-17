@@ -1,13 +1,14 @@
 @extends('layouts.admin')
-@section('title', ' أنشاء منتج')
+@section('title', "تعديل {$product->name}")
 @section('breadcrumb')
-    {{ Breadcrumbs::render('products.create') }}
+    {{ Breadcrumbs::render('products.edit', $product) }}
 @endsection
 @section('content')
     <div class="col-12">
         <div class="row">
             <div class="col-12">
-                <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('products.update', ['product' => $product->id]) }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="col-12">
                         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
@@ -24,7 +25,7 @@
                                     </button>
                                 </div>
                                 <div class="col-4">
-                                    @if (can('Store Specs', 'admin'))
+                                    @if (can('Update Specs', 'admin'))
                                         <button class="btn btn-outline-primary form-control" type="button"
                                             data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
                                             aria-controls="collapseTwo" id="specs">
@@ -45,24 +46,26 @@
                                         <div class="form-row">
                                             <div class="col-6">
                                                 <label for="nameen">الاسم بالانجليزي </label>
-                                                <input type="text" name="name[en]" value="{{ old('name.en') }}"
+                                                <input type="text" name="name[en]"
+                                                    value="{{ $product->getTranslation('name', 'en') }}"
                                                     class="form-control" id="nameen">
                                             </div>
                                             <div class="col-6">
                                                 <label for="namear">الاسم بالعربي </label>
-                                                <input type="text" name="name[ar]" value="{{ old('name.ar') }}"
+                                                <input type="text" name="name[ar]"
+                                                    value="{{ $product->getTranslation('name', 'ar') }}"
                                                     class="form-control" id="namear">
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="col-6">
                                                 <label for="price"> السعر </label>
-                                                <input type="number" name="price" value="{{ old('price') }}"
+                                                <input type="number" name="price" value="{{ $product->price }}"
                                                     class="form-control" id="price">
                                             </div>
                                             <div class="col-6">
                                                 <label for="quantity"> الكمية </label>
-                                                <input type="number" name="quantity" value="{{ old('quantity') }}"
+                                                <input type="number" name="quantity" value="{{ $product->quantity }}"
                                                     class="form-control" id="quantity">
                                             </div>
                                         </div>
@@ -71,7 +74,7 @@
                                                 <label for="status">الحالة</label>
                                                 <select name="status" class="custom-select" id="status">
                                                     @foreach ($statuses as $status => $value)
-                                                        <option @selected(old('status') == $value) value="{{ $value }}">
+                                                        <option @selected($product->status == $value) value="{{ $value }}">
                                                             {{ $status }} </option>
                                                     @endforeach
                                                 </select>
@@ -80,9 +83,11 @@
                                                 <label for="category_id">القسم</label>
                                                 <select name="category_id" class="custom-select" id="category_id">
                                                     @foreach ($categories as $category)
-                                                        <option @selected(old('category_id') == $category->id) nameValue="{{$category->getTranslation('name', 'en')}}" value="{{ $category->id }}">
+                                                        <option @selected($product->category_id == $category->id)
+                                                            nameValue="{{ $category->getTranslation('name', 'en') }}"
+                                                            value="{{ $category->id }}">
                                                             {{ $category->getTranslation('name', 'en') }} -
-                                                             {{ $category->getTranslation('name', 'ar') }}</option>
+                                                            {{ $category->getTranslation('name', 'ar') }}</option>
                                                     @endforeach
                                                 </select>
                                                 <input type="hidden" name="category_name" class="form-control"
@@ -93,8 +98,11 @@
                                                 <label for="model_id">موديل</label>
                                                 <select name="model_id" class="custom-select" id="model_id">
                                                     @foreach ($models as $model)
-                                                        <option @selected(old('model_id') == $model->id) nameValue="{{$model->getTranslation('brand_name', 'en')}}" value="{{ $model->id }}">
-                                                            {{ $model->getTranslation('brand_name', 'ar') }} - {{ $model->getTranslation('model_name', 'ar') }}</option>
+                                                        <option @selected($product->model_id == $model->id)
+                                                            nameValue="{{ $model->getTranslation('brand_name', 'en') }}"
+                                                            value="{{ $model->id }}">
+                                                            {{ $model->getTranslation('brand_name', 'ar') }} -
+                                                            {{ $model->getTranslation('model_name', 'ar') }}</option>
                                                     @endforeach
                                                 </select>
                                                 <input type="hidden" name="brand_name" class="form-control"
@@ -105,7 +113,7 @@
                                                 <label for="shop_id">التاجر والمحل</label>
                                                 <select name="shop_id" class="custom-select" id="shop_id">
                                                     @foreach ($shops as $shop)
-                                                        <option @selected(old('shop_id') == $shop->id) value="{{ $shop->id }}">
+                                                        <option @selected($product->shop_id == $shop->id) value="{{ $shop->id }}">
                                                             {{ $shop->name }} </option>
                                                     @endforeach
                                                 </select>
@@ -114,11 +122,11 @@
                                         <div class="form-row">
                                             <div class="col-12">
                                                 <label for="descriptionen"> التفاصيل بالانجليزية </label>
-                                                <textarea name="description[en]" class="form-control" id="descriptionen">{{ old('description.en') }}</textarea>
+                                                <textarea name="description[en]" class="form-control" id="descriptionen">{{ $product->getTranslation('description', 'en') }}</textarea>
                                             </div>
                                             <div class="col-12">
                                                 <label for="descriptionar"> التفاصيل بالعربية </label>
-                                                <textarea name="description[ar]" class="form-control" id="descriptionar">{{ old('description.ar') }}</textarea>
+                                                <textarea name="description[ar]" class="form-control" id="descriptionar">{{ $product->getTranslation('description', 'ar') }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -129,34 +137,42 @@
                                         <div class="form-group">
                                             <div class="repeater">
                                                 <div data-repeater-list="specs">
-                                                    <div data-repeater-item class="my-3">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <label for="spec_id">الصفة</label>
-                                                                <select name="spec_id" class="custom-select spec_id"
-                                                                    id="spec_id">
-                                                                    <option value=""></option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="text"> القيمة باللغة الانجليزية</label>
-                                                                <input type="text" name="en"
-                                                                    class="form-control specValue" id="text">
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <label for="text"> القيمة باللغة العربية</label>
-                                                                <input type="text" name="ar"
-                                                                    class="form-control specValue" id="text">
-                                                            </div>
+                                                    @foreach ($productSpecs as $productSpec)
+                                                        <div data-repeater-item class="my-3">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <label for="spec_id">الصفة</label>
+                                                                    <select name="spec_id" class="custom-select spec_id"
+                                                                        id="spec_id">
+                                                                        @foreach ($specs as $spec)
+                                                                            <option @selected($productSpec->id == $spec->id) value="{{ $spec->id }}">
+                                                                                {{ $spec->getTranslation('name', 'ar') }} -
+                                                                                {{ $spec->getTranslation('name', 'en') }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <label for="text"> القيمة باللغة الانجليزية</label>
+                                                                    <input type="text" name="en"
+                                                                        class="form-control specValue" id="text" value="{{$productSpec->getTranslation('value','en')}}">
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <label for="text"> القيمة باللغة العربية</label>
+                                                                    <input type="text" name="ar"
+                                                                        class="form-control specValue" id="text" value="{{$productSpec->getTranslation('value','ar')}}">
+                                                                </div>
 
-                                                            <div class="col-lg-12">
+                                                                <div class="col-lg-12">
 
-                                                                <input class="btn btn-danger btn-lg" data-repeater-delete
-                                                                    type="button" value="مسح الصفة" />
+                                                                    <input class="btn btn-danger btn-lg"
+                                                                        data-repeater-delete type="button"
+                                                                        value="مسح الصفة" />
 
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                                 <input class="button btn-success btn-lg my-5" id="add"
                                                     data-repeater-create type="button" value="أضافة صفة" />
@@ -169,10 +185,24 @@
                                 <div class="col-12 mt-4">
                                     <div id="collapseThree" class="collapse" aria-labelledby="headingTwo"
                                         data-parent="#accordionExample">
+                                        <div class="row">
+                                            @foreach ($product->getMedia('products') as $image)
+                                            <div class="col-md-3">
+                                                <button type="button" class="close text-danger text-right" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                <img name="image"
+                                                    src="{{ asset($image->getUrl()) }}"
+                                                    class="w-100" style="cursor: pointer" alt="صورة المنتج">
+                                            </div>
+                                            @endforeach
+                                        </div>
                                         <div class="repeater-file">
                                             <div data-repeater-list="images">
                                                 <div data-repeater-item>
+
                                                     <div class="row mb-20">
+
                                                         <div class="col-md-3">
                                                             {{-- <label for="customFile"> --}}
                                                             <img name="image"
@@ -241,22 +271,7 @@
             $('#specs').removeClass('bg-primary text-light');
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            getCategoryName($('#category_id'));
-            getBrandName($('#model_id'));
-        });
 
-        function getCategoryName(element) {
-            var category_name = $(element).find('option:selected').attr('nameValue');
-            $('#category_name').val(category_name);
-        }
-
-        function getBrandName(element) {
-            var brand_name = $(element).find('option:selected').attr('nameValue');
-            $('#brand_name').val(brand_name);
-        }
-    </script>
     <script>
         var options = "";
         var selectNameCounter = 0;
@@ -268,6 +283,16 @@
         $('#model_id').on('change', function() {
             getBrandName(this);
         });
+
+        function getCategoryName(element) {
+            var category_name = $(element).find('option:selected').attr('nameValue');
+            $('#category_name').val(category_name);
+        }
+
+        function getBrandName(element) {
+            var brand_name = $(element).find('option:selected').attr('nameValue');
+            $('#brand_name').val(brand_name);
+        }
 
         function specsRequest(id) {
             $.ajax({
@@ -291,13 +316,13 @@
     </script>
     <script>
         $(document).ready(function() {
-            var category_id = $('#category_id').val();
-            specsRequest(category_id);
+            getCategoryName($('#category_id'));
+            getBrandName($('#model_id'));
             $('.repeater').repeater({
                 show: function() {
                     $(this).slideDown();
                     ++selectNameCounter;
-                    $('select[name="specs[' + selectNameCounter + '][spec_id]"]').html(options);
+                    // $('select[name="specs[' + selectNameCounter + '][spec_id]"]').html(options);
                 }
             });
             $('.repeater-file').repeater({
@@ -308,6 +333,8 @@
                     });
                 }
             });
+            var category_id = $('#category_id').val();
+            // specsRequest(category_id);
         });
     </script>
     <script>

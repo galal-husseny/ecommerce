@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin\products;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,7 +33,9 @@ class StoreProductRequest extends FormRequest
             "quantity" => ['required','numeric','between:1,9999'],
             'status'=>['required','in:'.implode(',',ProductsController::AVAILABLE_STATUS)],
             "category_id" => ['required','integer','exists:categories,id'],
+            "category_name" => ['required','string'],
             "model_id" => ['required','integer','exists:models,id'],
+            "brand_name" => ['required','string'],
             "shop_id" => ['required','integer','exists:shops,id'],
             "description" => ['required','array:en,ar'],
             "description.en" => ['required','string'],
@@ -43,7 +45,9 @@ class StoreProductRequest extends FormRequest
             "specs.*.en" => ['required','string','max:255'],
             "specs.*.ar" => ['required','string','max:255'],
             "images" => ['nullable','array'],
-            "images.*.image" => [Rule::requiredIf(!empty($this->images)),'image','mimes:'.implode(',',ProductsController::AVAILABLE_EXTENSIONS),'max:1024'],
+            "images.*.image" => ['nullable','image','mimes:'.implode(',',ProductsController::AVAILABLE_EXTENSIONS),'max:1024'],
+            "images.*.width"=>['required_with:images.*.height','nullable','integer','between:50,1080'],
+            "images.*.height"=>['required_with:images.*.width','nullable','integer','between:50,1080']
         ];
     }
 }

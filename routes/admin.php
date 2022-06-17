@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\Auth\SettingsController;
-
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------

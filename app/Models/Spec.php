@@ -15,7 +15,7 @@ class Spec extends Model
     use HasFactory,HasTranslations,EscapeUniCodeJson;
 
     protected $fillable = ['name'];
-    public $translatable = ['name'];
+    public $translatable = ['name','value'];
     public function categories()
     {
         return $this->belongsToMany(Category::class);

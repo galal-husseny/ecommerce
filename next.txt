@@ -5,11 +5,12 @@
 ////////////////////////////// bugs //////////////////////////////////////
 1. update password (admin profile)
 ///////////////////////////////NEW////////////////////////////////////////
-0. store product - ajax request - empty all options
+0. review all relations (cascade-setnull-restrict)
 1. select2 with form repeater
-2. resize product images
+2. datatables
 3. validation messages x.0.d , fontawesome social links
 4. endless array with loop task
-5. specs
-6. products
+5. specs (divide many to many between specs & products [ 2 one to many])
+6. products (delete images (edit page) , product update)
 7. reCaptcha with supplier login
+8. specs create (Error => repeat)

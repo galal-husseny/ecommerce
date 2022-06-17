@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Spec;
+use App\Models\Brand;
 use App\Models\Models;
+use App\Models\Product;
 use App\Models\Category;
+use App\Models\ProductSpec;
 use Illuminate\Http\Request;
+use App\Services\ProductCode;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductRequest;
-use App\Models\Brand;
-use App\Models\Product;
-use App\Models\ProductSpec;
+use Intervention\Image\Facades\Image;
+use App\Http\Requests\Admin\products\StoreProductRequest;
 
 class ProductsController extends Controller
 {
@@ -30,7 +33,16 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return view('Admin.products.index');
+        $products = Product::leftJoin('categories','categories.id','=','products.category_id')
+        ->leftJoin('models','models.id','=','products.model_id')
+        ->leftJoin('brands','brands.id','=','models.brand_id')
+        ->leftJoin('shops','shops.id','=','products.shop_id')
+        ->leftJoin('sellers','sellers.id','=','shops.seller_id')
+        ->select('products.*','categories.name AS category_name',
+        'brands.name AS brand_name','models.name AS model_name'
+        ,'shops.name AS shop_name','sellers.name AS seller_name',
+        'sellers.id AS seller_id')->latest()->get();
+        return view('Admin.products.index',compact('products'));
     }
 
     /**
@@ -46,7 +58,7 @@ class ProductsController extends Controller
         $shops =  DB::table('shops')
             ->leftJoin('sellers', 'sellers.id', '=', 'shops.seller_id')
             ->select('shops.id')
-            ->selectRaw('CONCAT(`shops`.`name`, " - ", `sellers`.`name` ) AS `name` ')
+            ->selectRaw('CONCAT(shops.name, " - ", sellers.name ) AS name ')
             ->get();
         return view('Admin.products.create', [
             'statuses' => self::AVAILABLE_STATUS,
@@ -65,25 +77,18 @@ class ProductsController extends Controller
     public function store(StoreProductRequest $request)
     {
         try {
+            $code = (new ProductCode)->setCategoryName($request->category_name)
+            ->setBrandName($request->brand_name)->generate();
             DB::beginTransaction();
-            $product = Product::create($request->safe()->except(['images', 'specs']));
+            $product = Product::create(array_merge(
+                $request->safe()->except(['images', 'specs','category_name','model_name'])
+                ,['code'=>$code]
+            ));
             if ($request->has('specs')) {
-                foreach ($request->specs as $spec) {
-                    $specData = [
-                        'product_id'=>$product->id,
-                        'spec_id' => $spec['spec_id'],
-                        'value' => [
-                            'en' => $spec['en'],
-                            'ar' => $spec['ar']
-                        ]
-                    ];
-                    ProductSpec::create($specData);
-                }
+                $product->storeSpecs($request->specs);
             }
-            if ($request->has('images')) {
-                foreach ($request->images as $image) {
-                    $product->addMedia($image['image'])->toMediaCollection('products'); // store new image
-                }
+            if (isset($request->images[0]['image'])) {
+                $product->storeImages($request->images)->resize();
             }
             DB::commit();
             return $this->redirectAccordingToRequest($request, 'success');
@@ -111,9 +116,27 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::whereIsLeaf()->get();
+        $models = Brand::rightJoin('models', 'brands.id', '=', 'models.brand_id')
+            ->select('models.id', 'models.name AS model_name', 'brands.name AS brand_name')->get();
+        $shops =  DB::table('shops')
+            ->leftJoin('sellers', 'sellers.id', '=', 'shops.seller_id')
+            ->select('shops.id')
+            ->selectRaw('CONCAT(shops.name, " - ", sellers.name ) AS name ')
+            ->get();
+        $specs = Spec::get();
+        $productSpecs = ProductSpec::where('product_id',$product->id)->get();
+        return view('Admin.products.edit', [
+            'statuses' => self::AVAILABLE_STATUS,
+            'categories' => $categories,
+            'models' => $models,
+            'shops' => $shops,
+            'specs' => $specs,
+            'productSpecs'=> $productSpecs,
+            'product'=> $product,
+        ]);
     }
 
     /**
@@ -134,9 +157,12 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->back()->with('success', 'تمت العملية بنجاح');
     }
+
+
 
 }

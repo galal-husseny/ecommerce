@@ -6,6 +6,8 @@ use App\Traits\EscapeUniCodeJson;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Sluggable\SlugOptions;
 use App\Traits\HasTranslatableSlug;
+use App\Traits\ProductImages;
+use App\Traits\ProductSpecs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -17,11 +19,13 @@ class Product extends Model implements HasMedia
         InteractsWithMedia,
         HasTranslations,
         EscapeUniCodeJson,
-        HasTranslatableSlug;
+        HasTranslatableSlug,
+        ProductSpecs,
+        ProductImages;
 
     protected $fillable = ['name', 'status', 'slug','description',
     'code','price','quantity','model_id','category_id','shop_id'];
-    public $translatable = ['name', 'slug','description'];
+    public $translatable = ['name', 'slug','description','brand_name','value','category_name','model_name'];
     // /**
     //  * Get the options for generating the slug.
     //  */
@@ -34,4 +38,5 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany(Spec::class);
     }
+
 }
