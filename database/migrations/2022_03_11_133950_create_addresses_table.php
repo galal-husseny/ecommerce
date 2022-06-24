@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('latitude',20);
             $table->string('longitude',20);
             $table->tinyInteger('status')->default(0)->comment('1=>delivered_in , 0=>not_deliverd_in');
-            $table->foreignId('user_id')->constrained()->restrictOnDelete()->restrictOnUpdate();
-            $table->foreignId('region_id')->constrained()->restrictOnDelete()->restrictOnUpdate();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('region_id')->nullable()->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

@@ -115,7 +115,7 @@ return [
     'timezone'             => 'يجب أن يكون :attribute نطاقًا زمنيًا صحيحًا.',
     'unique'               => 'قيمة :attribute مُستخدمة من قبل.',
     'uploaded'             => 'فشل في تحميل الـ :attribute.',
-    'url'                  => 'صيغة الرابط :attribute غير صحيحة.',
+    'url'                  => 'صيغة رابط :attribute غير صحيحة.',
     'uuid'                 => ':attribute يجب أن يكون بصيغة UUID سليمة.',
 
     /*
@@ -132,6 +132,10 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+        ],
+        'g-recaptcha-response' => [
+            'required' => 'Please verify that you are not a robot.',
+            'captcha' => 'Captcha error! try again later or contact site admin.',
         ],
     ],
 
@@ -180,29 +184,37 @@ return [
         'image'                 => 'الصورة',
         'rate'                  => 'التقيم',
         'id'                    => 'العنصر',
-        'code'                  =>'الكود',
-        'STC'                   =>'بسنت',
-        'name_ar'=>'الاسم باللغة العربية',
-        'name_en'=>'الاسم باللغة الانجليزية',
-        'subcategory_id'       =>'الفئة الفرعية',
-        'Code'=>'كود',
-        'SubCat_ID'=>'الفئة الفرعية ',
-        'status'=>'الحالة',
-        'resize'=>'تغير الابعاد',
-        'width'=>'العرض',
-        'height'=>'الطول',
-        'true'=>'صحيح',
-        'name.en'=>'الاسم باللغة الانجليزية',
-        'name.ar'=>'الاسم باللغة العربية',
-        'permission_id'=>'الصلاحية',
-        'national_id'=>'رقم البطاقة'
+        'code'                  => 'الكود',
+        'STC'                   => 'بسنت',
+        'name_ar' => 'الاسم باللغة العربية',
+        'name_en' => 'الاسم باللغة الانجليزية',
+        'subcategory_id'       => 'الفئة الفرعية',
+        'Code' => 'كود',
+        'SubCat_ID' => 'الفئة الفرعية ',
+        'status' => 'الحالة',
+        'resize' => 'تغير الابعاد',
+        'width' => 'العرض',
+        'height' => 'الطول',
+        'true' => 'صحيح',
+        'name.en' => 'الاسم باللغة الانجليزية',
+        'name.ar' => 'الاسم باللغة العربية',
+        'permission_id' => 'الصلاحية',
+        'national_id' => 'رقم البطاقة',
+        'social_links.*.social_link' => 'التواصل الاجتماعي :position',
+        'shop.*.name'=>'اسم المحل :position',
+        'shop.*.street'=>'اسم الشارع :position',
+        'shop.*.building'=>'اسم المبنى :position',
+        'shop.*.floor'=>' الطابق :position',
+        'shop.*.latitude'=>'خط الطول :position',
+        'shop.*.longitude'=>'خط العرض :position',
+        'g-recaptcha-response'=>'رمز التحقق'
     ],
-    'values'=>[
-        'resize'=>[
-            'exist'=>'موجود'
+    'values' => [
+        'resize' => [
+            'exist' => 'موجود'
         ],
-        'social_links'=>[
-            'url'=>'ء'
+        'social_links' => [
+            'url' => 'ء'
         ]
     ]
 ];

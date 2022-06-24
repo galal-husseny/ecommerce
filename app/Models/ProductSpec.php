@@ -6,14 +6,12 @@ use App\Traits\EscapeUniCodeJson;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ProductSpec extends Model
+class ProductSpec extends Pivot
 {
-    use HasFactory,
-        HasTranslations,
+    use HasTranslations,
         EscapeUniCodeJson;
     protected $table = "product_spec";
-
-    protected $fillable = ['spec_id', 'product_id', 'value'];
     public $translatable = ['value'];
 }

@@ -5,16 +5,27 @@ use App\Models\ProductSpec;
 trait ProductSpecs {
     public function storeSpecs(array $specs) :void
     {
+        $specs = $this->specsForm($specs);
+        $this->specs()->attach($specs);
+    }
+    public function updateSpecs(array $specs) :void
+    {
+        $specs = $this->specsForm($specs);
+        $this->specs()->sync($specs);
+    }
+
+    private function specsForm(array $specs){
+        $specsData = [];
         foreach ($specs as $spec) {
             $specData = [
-                'product_id'=>$this->id,
                 'spec_id' => $spec['spec_id'],
                 'value' => [
                     'en' => $spec['en'],
                     'ar' => $spec['ar']
                 ]
             ];
-            ProductSpec::create($specData);
+            $specsData[] = $specData;
         }
+        return $specsData;
     }
 }

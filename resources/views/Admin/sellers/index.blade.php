@@ -50,7 +50,7 @@
                             </td>
                             <td>
                                 @foreach (json_decode($seller->social_links) as $link)
-                                    <a class="h6" href="{{$link->social_link}}" target="_blank"><i class=" fa fa-{{str_ireplace('.com','',str_ireplace('www.','', parse_url($link->social_link,PHP_URL_HOST)))}}"></i></a>
+                                    <a class="h6" href="{{$link->social_link}}"  target="_blank"><i title="{{$link->social_link}}" class=" fa fa-{{str_ireplace('.com','',str_ireplace('www.','', parse_url($link->social_link,PHP_URL_HOST)))}}  fa-exclamation-triangle"></i></a>
                                 @endforeach
                             </td>
                             <td>{{ $seller->created_at }}</td>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->string('latitude',20);
             $table->string('longitude',20);
-            $table->foreignId('region_id')->constrained();
+            $table->foreignId('region_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('seller_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

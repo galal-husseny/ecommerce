@@ -5,12 +5,10 @@
 ////////////////////////////// bugs //////////////////////////////////////
 1. update password (admin profile)
 ///////////////////////////////NEW////////////////////////////////////////
-0. review all relations (cascade-setnull-restrict)
 1. select2 with form repeater
 2. datatables
-3. validation messages x.0.d , fontawesome social links
-4. endless array with loop task
-5. specs (divide many to many between specs & products [ 2 one to many])
-6. products (delete images (edit page) , product update)
-7. reCaptcha with supplier login
-8. specs create (Error => repeat)
+3. Oauth mail with laravel
+
+3. test validation errors in all modules ( translate validation attributes - old values )
+4. plan to change price & quantity of products
+5. endless array with loop task

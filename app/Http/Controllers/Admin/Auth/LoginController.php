@@ -81,4 +81,14 @@ class LoginController extends Controller
     {
         return Auth::guard('admin');
     }
+
+    protected function validateLogin(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response' => ['required','recaptcha'],
+        ]);
+    }
 }

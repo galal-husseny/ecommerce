@@ -15,65 +15,32 @@ $oldInputs = session()->getOldInput();
     </div>
     @include('includes.validation-errors')
     <div class="col-12">
-        <form method="post" action="{{ route('specs.store') }}">
+        <form method="post" action="{{ route('specs.store') }}" id="form">
             @csrf
             <div class="repeater">
                 <div data-repeater-list="specs">
-                    <div data-repeater-item class="my-3">
-                        @if (isset($oldInputs['specs']))
-                            @foreach ($oldInputs['specs'] as $spec)
-                                <div data-repeater-item class="my-3">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label for="text"> الصفة باللغة الانجليزية</label>
-                                            <input type="text" name="en" value="{{ $spec['en'] }}" class="form-control"
-                                                id="text">
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="text"> الصفة باللغة العربية</label>
-                                            <input type="text" name="ar" value="{{ $spec['ar'] }}" class="form-control"
-                                                id="text">
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="js-example-basic-hide-search-multi">القسم</label>
-                                            <select name="category_id" class="custom-select select2-container"
-                                                id="js-example-basic-hide-search-multi" multiple>
-                                                @foreach ($subcategories as $sub)
-                                                    <option
-                                                        @isset($spec['category_id']) @selected(in_array($sub->id, $spec['category_id'])) @endisset
-                                                        value="{{ $sub->id }}">
-                                                        {{ $sub->getTranslation('name', 'en') }} -
-                                                        {{ $sub->getTranslation('name', 'ar') }} </option>
-                                                @endforeach
-                                            </select>
-                                            <small class="text-warning font-weight-bold"> ctrl+click لأختيار أكثر من قسم
-                                            </small>
-                                        </div>
-                                        <div class="col-3">
-                                            <label for=""> </label>
-                                            <input class="btn btn-danger btn-lg form-control" data-repeater-delete
-                                                type="button" value="مسح الصفة " />
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
+                    @if (isset($oldInputs['specs']))
+                        @foreach ($oldInputs['specs'] as $spec)
                             <div data-repeater-item class="my-3">
                                 <div class="row">
                                     <div class="col-3">
                                         <label for="text"> الصفة باللغة الانجليزية</label>
-                                        <input type="text" name="en" class="form-control" id="text">
+                                        <input type="text" name="en" value="{{ $spec['en'] }}"
+                                            class="form-control" id="text">
                                     </div>
                                     <div class="col-3">
                                         <label for="text"> الصفة باللغة العربية</label>
-                                        <input type="text" name="ar" class="form-control" id="text">
+                                        <input type="text" name="ar" value="{{ $spec['ar'] }}"
+                                            class="form-control" id="text">
                                     </div>
                                     <div class="col-3">
                                         <label for="js-example-basic-hide-search-multi">القسم</label>
                                         <select name="category_id" class="custom-select select2-container"
                                             id="js-example-basic-hide-search-multi" multiple>
                                             @foreach ($subcategories as $sub)
-                                                <option value="{{ $sub->id }}">
+                                                <option
+                                                    @isset($spec['category_id']) @selected(in_array($sub->id, $spec['category_id'])) @endisset
+                                                    value="{{ $sub->id }}">
                                                     {{ $sub->getTranslation('name', 'en') }} -
                                                     {{ $sub->getTranslation('name', 'ar') }} </option>
                                             @endforeach
@@ -83,14 +50,44 @@ $oldInputs = session()->getOldInput();
                                     </div>
                                     <div class="col-3">
                                         <label for=""> </label>
-                                        <input class="btn btn-danger btn-lg form-control" data-repeater-delete type="button"
-                                            value="مسح الصفة " />
+                                        <input class="btn btn-danger btn-lg form-control" data-repeater-delete
+                                            type="button" value="مسح الصفة " />
                                     </div>
                                 </div>
                             </div>
-                        @endif
-                    </div>
-
+                        @endforeach
+                    @else
+                        <div data-repeater-item class="my-3">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="text"> الصفة باللغة الانجليزية</label>
+                                    <input type="text" name="en" class="form-control" id="text">
+                                </div>
+                                <div class="col-3">
+                                    <label for="text"> الصفة باللغة العربية</label>
+                                    <input type="text" name="ar" class="form-control" id="text">
+                                </div>
+                                <div class="col-3">
+                                    <label for="js-example-basic-hide-search-multi">القسم</label>
+                                    <select name="category_id" class="custom-select select2-container"
+                                        id="js-example-basic-hide-search-multi" multiple>
+                                        @foreach ($subcategories as $sub)
+                                            <option value="{{ $sub->id }}">
+                                                {{ $sub->getTranslation('name', 'en') }} -
+                                                {{ $sub->getTranslation('name', 'ar') }} </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-warning font-weight-bold"> ctrl+click لأختيار أكثر من قسم
+                                    </small>
+                                </div>
+                                <div class="col-3">
+                                    <label for=""> </label>
+                                    <input class="btn btn-danger btn-lg form-control" data-repeater-delete type="button"
+                                        value="مسح الصفة " />
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <input class="button btn-success btn-lg my-5" id="add" data-repeater-create type="button"
                     value="أَضافة صفة جديدة " />
@@ -102,12 +99,16 @@ $oldInputs = session()->getOldInput();
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // $('.select2-container').select2();
+        $(document).ready(function() {
+
+            // var form = $('#form');
+            // form.find('select').select2();
+
             $('.repeater, .repeater-file, .repeater-add').repeater({
-                show: function () {
-                    $(this).slideDown();
-                    // $('.select2-container').select2();
+                show: function() {
+                    $(this).show(function() {
+
+                    });
                 }
             });
         });

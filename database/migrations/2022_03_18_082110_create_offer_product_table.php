@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('offer_product', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained();
-            $table->foreignId('offer_id')->constrained();
+
+            $table->foreignId('offer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->decimal('price_after_discount');
             $table->timestamps();
         });

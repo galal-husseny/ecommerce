@@ -1,0 +1,19 @@
+# delete region => (prevent deleting as long as this region had addresss, shops)
+# delete user => (all addresses,locations,cart,favs will be deleted)
+# delete product => (all  related carts,favs,reviews,specs,offers will be deleted
+  // prevent deleting as long as it related to orders)
+
+#delete category => (all related specs will be deleted ,
+ // prevent deleting as lon as this model has products)
+
+#delete spec => (all related categories,products will be deleted )
+#delete brand (prevent deleting As long As it owns model)
+#delete order (all related products will be deleted also)
+#delete address (prevent deleting as long as this address had orders)
+#delete coupons (prevent deleting as long as this coupon related to orders)
+#delete payments (prevent deleting as long as this payment related to orders)
+#delete offer (delete all related products)
+#delete shop (all products will be deleted)
+#delete model (prevent deleting as lon as this model has products)
+#delete city (prevent deleting as long as this city has regions)
+#delete seller (all shops will be deleted)

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\Admin\products\StoreProductRequest;
+use App\Http\Requests\Admin\products\UpdateProductRequest;
 
 class ProductsController extends Controller
 {
@@ -84,9 +85,7 @@ class ProductsController extends Controller
                 $request->safe()->except(['images', 'specs','category_name','model_name'])
                 ,['code'=>$code]
             ));
-            if ($request->has('specs')) {
-                $product->storeSpecs($request->specs);
-            }
+            $product->storeSpecs($request->specs);
             if (isset($request->images[0]['image'])) {
                 $product->storeImages($request->images)->resize();
             }
@@ -146,9 +145,22 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $product->update($request->safe()->except(['images', 'specs']));
+            $product->updateSpecs($request->specs);
+            if (isset($request->images[0]['image'])) {
+                $product->storeImages($request->images)->resize();
+            }
+            DB::commit();
+            return $this->redirectAccordingToRequest($request, 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->route('products.index')->with('success', 'تمت العملية بنجاح');
+        }
     }
 
     /**
@@ -161,6 +173,22 @@ class ProductsController extends Controller
     {
         $product->delete();
         return redirect()->back()->with('success', 'تمت العملية بنجاح');
+    }
+    public function mediaDestroy(Request $request)
+    {
+        $request->validate([
+            'product_id'=>['required','integer','exists:products,id'],
+            'media_id'=>['required','integer','exists:media,id']
+        ]);
+        $product = Product::find($request->product_id);
+        $mediaItems = $product->getMedia('products');
+            foreach($mediaItems AS $index => $item){
+                if($item->id == $request->media_id){
+                    $mediaItems[$index]->delete();
+                    return response()->json(['success'=>true]);
+                }
+            }
+            return response()->json(['success'=>false],404);
     }
 
 

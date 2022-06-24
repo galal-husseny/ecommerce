@@ -10,6 +10,7 @@
                 <form method="post" action="{{ route('products.update', ['product' => $product->id]) }}"
                     enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="col-12">
                         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
                     </div>
@@ -90,8 +91,6 @@
                                                             {{ $category->getTranslation('name', 'ar') }}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="hidden" name="category_name" class="form-control"
-                                                    id="category_name">
                                                 <p id="category_error" class="text-danger font-weight-bold"></p>
                                             </div>
                                             <div class="col-3">
@@ -105,8 +104,6 @@
                                                             {{ $model->getTranslation('model_name', 'ar') }}</option>
                                                     @endforeach
                                                 </select>
-                                                <input type="hidden" name="brand_name" class="form-control"
-                                                    id="brand_name">
 
                                             </div>
                                             <div class="col-3">
@@ -145,8 +142,10 @@
                                                                     <select name="spec_id" class="custom-select spec_id"
                                                                         id="spec_id">
                                                                         @foreach ($specs as $spec)
-                                                                            <option @selected($productSpec->id == $spec->id) value="{{ $spec->id }}">
-                                                                                {{ $spec->getTranslation('name', 'ar') }} -
+                                                                            <option @selected($productSpec->id == $spec->id)
+                                                                                value="{{ $spec->id }}">
+                                                                                {{ $spec->getTranslation('name', 'ar') }}
+                                                                                -
                                                                                 {{ $spec->getTranslation('name', 'en') }}
                                                                             </option>
                                                                         @endforeach
@@ -155,12 +154,14 @@
                                                                 <div class="col-3">
                                                                     <label for="text"> القيمة باللغة الانجليزية</label>
                                                                     <input type="text" name="en"
-                                                                        class="form-control specValue" id="text" value="{{$productSpec->getTranslation('value','en')}}">
+                                                                        class="form-control specValue" id="text"
+                                                                        value="{{ $productSpec->getTranslation('value', 'en') }}">
                                                                 </div>
                                                                 <div class="col-3">
                                                                     <label for="text"> القيمة باللغة العربية</label>
                                                                     <input type="text" name="ar"
-                                                                        class="form-control specValue" id="text" value="{{$productSpec->getTranslation('value','ar')}}">
+                                                                        class="form-control specValue" id="text"
+                                                                        value="{{ $productSpec->getTranslation('value', 'ar') }}">
                                                                 </div>
 
                                                                 <div class="col-lg-12">
@@ -185,29 +186,40 @@
                                 <div class="col-12 mt-4">
                                     <div id="collapseThree" class="collapse" aria-labelledby="headingTwo"
                                         data-parent="#accordionExample">
-                                        <div class="row">
-                                            @foreach ($product->getMedia('products') as $image)
-                                            <div class="col-md-3">
-                                                <button type="button" class="close text-danger text-right" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                <img name="image"
-                                                    src="{{ asset($image->getUrl()) }}"
-                                                    class="w-100" style="cursor: pointer" alt="صورة المنتج">
-                                            </div>
+                                        <div class="row ">
+                                            @foreach ($product->getMedia('products') as $index=> $image)
+                                                <div class="col-12">
+                                                    <div class="row ProductImage align-items-center" number="{{$image->id}}">
+                                                        <div class="col-md-4 mt-4">
+                                                            {{-- <div class="text-danger text-left" >
+                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                        </div> --}}
+                                                            <img name="image" src="{{ asset($image->getUrl()) }}"
+                                                                class="w-100" style="cursor: pointer" alt="صورة المنتج"
+                                                                >
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div  class="btn btn-danger btn-block d-none deleteProductImage"
+                                                                data-repeater-delete type="button" number="{{$image->id}}">مسح الصورة</div>
+                                                        </div>
+                                                        <div class="col-4">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endforeach
+                                            <div id="sweetalert-03" class="btn btn-primary d-none" aria-label="حدث خطأ ما">Try me!</div>
                                         </div>
                                         <div class="repeater-file">
                                             <div data-repeater-list="images">
                                                 <div data-repeater-item>
 
                                                     <div class="row mb-20">
-
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-4">
                                                             {{-- <label for="customFile"> --}}
                                                             <img name="image"
                                                                 src="{{ asset('assets/admin/images/default.png') }}"
-                                                                class="w-100" style="cursor: pointer" alt="صورة المنتج">
+                                                                class="w-100" style="cursor: pointer" alt="صورة المنتج" >
                                                             {{-- </label> --}}
                                                             <input type="file" class="custom-file-input d-none"
                                                                 id="customFile" name="image"
@@ -238,7 +250,7 @@
                                             </div>
                                         </div>
                                         <div class="my-5">
-                                            @include('includes.create-submit-buttons')
+                                            <button class="btn btn-primary"> تعديل </button>
                                         </div>
                                     </div>
                                 </div>
@@ -271,29 +283,13 @@
             $('#specs').removeClass('bg-primary text-light');
         });
     </script>
-
     <script>
         var options = "";
         var selectNameCounter = 0;
         $('#category_id').on('change', function() {
             var category_id = $('#category_id').val();
-            getCategoryName(this);
             specsRequest(category_id);
         });
-        $('#model_id').on('change', function() {
-            getBrandName(this);
-        });
-
-        function getCategoryName(element) {
-            var category_name = $(element).find('option:selected').attr('nameValue');
-            $('#category_name').val(category_name);
-        }
-
-        function getBrandName(element) {
-            var brand_name = $(element).find('option:selected').attr('nameValue');
-            $('#brand_name').val(brand_name);
-        }
-
         function specsRequest(id) {
             $.ajax({
                 type: "get",
@@ -316,8 +312,6 @@
     </script>
     <script>
         $(document).ready(function() {
-            getCategoryName($('#category_id'));
-            getBrandName($('#model_id'));
             $('.repeater').repeater({
                 show: function() {
                     $(this).slideDown();
@@ -368,5 +362,47 @@
                 ['view', ['undo', 'redo', 'fullscreen', 'codeview', 'help']]
             ]
         });
+    </script>
+    <script>
+        $('.ProductImage').mouseenter(function(){
+            $('.deleteProductImage[number="'+$(this).attr('number')+'"]').removeClass('d-none');
+        });
+        $('.ProductImage').mouseleave(function(){
+            $('.deleteProductImage[number="'+$(this).attr('number')+'"]').addClass('d-none');
+        });
+        $('.deleteProductImage').click(function(){
+            var product_id = {{$product->id}};
+            var media_id = $(this).attr('number');
+
+            $.ajax({
+                type: "post",
+                url: "{{ url('api/v1/product/media/destroy/') }}",
+                data: {
+                    "product_id": product_id,
+                    "media_id":media_id
+                },
+                headers: {
+                    "accept": "application/json"
+                },
+                success: function(response, status) {
+                    $('.ProductImage[number="'+media_id+'"]').addClass('d-none');
+                },
+                error: function(xhr, status, error) {
+                    $('#sweetalert-03').click();
+                }
+            });
+        });
+
+    </script>
+    <script>
+        (function($){
+            $('#sweetalert-03').click(function(e) {
+                swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'حدث خظأ ما!'
+                })
+            });
+        })(jQuery);
     </script>
 @endpush

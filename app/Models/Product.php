@@ -36,7 +36,7 @@ class Product extends Model implements HasMedia
 
     public function specs()
     {
-        return $this->belongsToMany(Spec::class);
+        return $this->belongsToMany(Spec::class)->using(ProductSpec::class)->withTimestamps();
     }
 
 }

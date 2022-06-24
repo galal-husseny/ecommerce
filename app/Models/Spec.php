@@ -22,6 +22,6 @@ class Spec extends Model
     }
     public function products()
     {
-        return $this->belongsToMany(product::class);
+        return $this->belongsToMany(product::class)->using(ProductSpec::class)->withTimestamps();
     }
 }
