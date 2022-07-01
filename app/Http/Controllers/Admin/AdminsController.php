@@ -56,8 +56,9 @@ class AdminsController extends Controller
         $data = [
             'name'=>$request->name,
             'email'=>$request->email,
+            'status'=>$request->status,
             'password'=>Hash::make($request->password),
-            'email_verified_at' => $request->status ? date('Y-m-d H:i:s') : NULL,
+            'email_verified_at' => $request->email_verified_at ? date('Y-m-d H:i:s') : NULL,
         ];
         DB::beginTransaction();
         try{

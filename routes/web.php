@@ -1,8 +1,10 @@
 <?php
 
+use App\Mail\test;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Services\PermissionGenerator;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BrandsController;

@@ -5,10 +5,11 @@
 ////////////////////////////// bugs //////////////////////////////////////
 1. update password (admin profile)
 ///////////////////////////////NEW////////////////////////////////////////
-1. select2 with form repeater
 2. datatables
 3. Oauth mail with laravel
+4. alerts all deletes (try catch)
+5. nested breadcrumb
 
-3. test validation errors in all modules ( translate validation attributes - old values )
-4. plan to change price & quantity of products
-5. endless array with loop task
+6. test validation errors in all modules ( translate validation attributes - old values )
+7. plan to change price & quantity of products
+8. endless array with loop task

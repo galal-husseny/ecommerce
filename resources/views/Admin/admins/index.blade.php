@@ -34,7 +34,7 @@
                             <td>{{ $admin->name }}</td>
                             <td>{{ $admin->email }}</td>
                             <td>{{ $admin->getRoleNames()->toArray()[0] }}</td> {{-- lazy loading --}}
-                            <label class="badge badge-{{ $seller->status == 1 ? 'success' : 'danger' }}">{{ $seller->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
+                            <label class="badge badge-{{ $admin->status == 1 ? 'success' : 'danger' }}">{{ $admin->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
 
                             <td>
                                 <label class="badge badge-{{ $admin->email_verified_at ? 'success' : 'danger' }}">

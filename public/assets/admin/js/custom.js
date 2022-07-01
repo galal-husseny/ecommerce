@@ -801,59 +801,59 @@ POTENZA.calendarlist = function () {
    wizard form
 *************************/
 
-POTENZA.wizardform = function () {
- if ($('#example-form, #example-basic, #example-manipulation, #example-vertical').exists()) {
-   var form = $("#example-form");
-      form.validate({
-        errorPlacement: function errorPlacement(error, element) { element.before(error); },
-        rules: {
-            confirm: {
-                equalTo: "#password"
-            }
-        }
-      });
-     form.children("div").steps({
-        headerTag: "h3",
-        bodyTag: "section",
-        transitionEffect: "fade",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            form.validate().settings.ignore = ":disabled";
-            return form.valid();
-        },
-        onFinished: function (event, currentIndex)
-        {
-            alert("Submitted!");
-        }
-     });
+// POTENZA.wizardform = function () {
+//  if ($('#example-form, #example-basic, #example-manipulation, #example-vertical').exists()) {
+//    var form = $("#example-form");
+//       form.validate({
+//         errorPlacement: function errorPlacement(error, element) { element.before(error); },
+//         rules: {
+//             confirm: {
+//                 equalTo: "#password"
+//             }
+//         }
+//       });
+//      form.children("div").steps({
+//         headerTag: "h3",
+//         bodyTag: "section",
+//         transitionEffect: "fade",
+//         onStepChanging: function (event, currentIndex, newIndex)
+//         {
+//             form.validate().settings.ignore = ":disabled,:hidden";
+//             return form.valid();
+//         },
+//         onFinishing: function (event, currentIndex)
+//         {
+//             form.validate().settings.ignore = ":disabled";
+//             return form.valid();
+//         },
+//         onFinished: function (event, currentIndex)
+//         {
+//             alert("Submitted!");
+//         }
+//      });
 
-     $("#example-basic").steps({
-      headerTag: "h3",
-      bodyTag: "section",
-      transitionEffect: "fade",
-      autoFocus: true
-    });
+//      $("#example-basic").steps({
+//       headerTag: "h3",
+//       bodyTag: "section",
+//       transitionEffect: "fade",
+//       autoFocus: true
+//     });
 
-    $("#example-manipulation").steps({
-      headerTag: "h3",
-      bodyTag: "section",
-      enableAllSteps: true,
-      enablePagination: false
-    });
+//     $("#example-manipulation").steps({
+//       headerTag: "h3",
+//       bodyTag: "section",
+//       enableAllSteps: true,
+//       enablePagination: false
+//     });
 
-    $("#example-vertical").steps({
-      headerTag: "h3",
-      bodyTag: "section",
-      transitionEffect: "fade",
-      stepsOrientation: "vertical"
-    });
-  }
- }
+//     $("#example-vertical").steps({
+//       headerTag: "h3",
+//       bodyTag: "section",
+//       transitionEffect: "fade",
+//       stepsOrientation: "vertical"
+//     });
+//   }
+//  }
 
 /*************************
    Dynamic active menu
@@ -917,7 +917,7 @@ var _arr  = {};
         POTENZA.ptrating(),
         POTENZA.calendarlist(),
         // POTENZA.repeaterform(),
-        POTENZA.wizardform(),
+        // POTENZA.wizardform(),
         POTENZA.navactivation(),
         POTENZA.Fullscreenwindow();
     });

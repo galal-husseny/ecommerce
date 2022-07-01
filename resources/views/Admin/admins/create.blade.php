@@ -20,6 +20,14 @@
                 <input type="email" name="email" value="{{old('email')}}" class="form-control" id="text" >
             </div>
             <div class="form-group">
+                <label for="status">حالة البريد الالكتروني</label>
+                <select name="email_verified_at" class="custom-select" id="status">
+                    @foreach ($statuses as $status => $value)
+                        <option @selected(old('email_verified_at') == $value) value="{{ $value }}"> {{ $status }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="text">كلمة مرور </label>
                 <input type="password" name="password" value="{{old('password')}}" class="form-control" id="text" >
             </div>
@@ -28,7 +36,7 @@
                 <input type="password" name="password_confirmation" value="{{old('password_confirmation')}}" class="form-control" id="text" >
             </div>
             <div class="form-group">
-                <label for="status">الحالة</label>
+                <label for="status">حالة المشرف</label>
                 <select name="status" class="custom-select" id="status">
                     @foreach ($statuses as $status => $value)
                         <option @selected(old('status') == $value) value="{{ $value }}"> {{ $status }} </option>

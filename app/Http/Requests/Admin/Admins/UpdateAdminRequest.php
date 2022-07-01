@@ -37,6 +37,7 @@ class UpdateAdminRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', "unique:admins,email,{$this->admin->id},id"],
             'password' => ['nullable', 'string', "regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/", 'confirmed'],
             'status'=>['required','in:'.implode(',',AdminsController::AVAILABLE_STATUS)],
+            'email_verified_at'=>['required','in:'.implode(',',AdminsController::AVAILABLE_STATUS)],
             'image'=>['nullable','max:1024','mimes:'.implode(',',AdminsController::AVAILABLE_EXTENSIONS)],
             'role_id'=>['required','integer','exists:roles,id',] // 'not_in:1'
         ];

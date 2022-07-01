@@ -32,6 +32,16 @@ Breadcrumbs::macro('resource', function (string $name, string $title) {
         $trail->parent("{$name}.index", $model);
         $trail->push("تعديل {$model->name}", route("{$name}.edit", $model->id));
     });
+
+    Breadcrumbs::for("{$name}.nested.index", function (BreadcrumbTrail $trail,$model) use ($name, $title) {
+        $trail->parent('dashboard');
+        $trail->push($title, route("{$name}.index",$model->id));
+    });
+
+    Breadcrumbs::for("{$name}.nested.create", function (BreadcrumbTrail $trail,$model) use ($name,$title) {
+        $trail->parent("{$name}.nested.index",$model);
+        $trail->push("انشاء {$title}", route("{$name}.create",$model->id));
+    });
 });
 Breadcrumbs::resource('brands','العلامات التجارية');
 Breadcrumbs::resource('models','الموديلات');
@@ -44,3 +54,5 @@ Breadcrumbs::resource('products','المنتجات');
 Breadcrumbs::resource('shops','المحلات');
 Breadcrumbs::resource('sellers','التجار');
 Breadcrumbs::resource('specs','المُواصفات');
+Breadcrumbs::resource('users','المستخدمين');
+Breadcrumbs::resource('users.addresses','العناوين');

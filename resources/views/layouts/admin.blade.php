@@ -182,11 +182,21 @@
 
                                     <div class="clearfix"></div>
                                 </a>
-
                             </li>
                             <!-- menu title -->
                             <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">المنتجات </li>
                             <!-- menu item Elements-->
+                            @if (can('Index Users', 'admin'))
+                                <li class="@if (Request::is('admin/users*')) active @endif">
+                                    <a href="{{ route('users.index') }}">
+                                        <div class="pull-left"><i class="ti-user"></i><span
+                                                class="right-nav-text"> المستخدمين </span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a>
+
+                                </li>
+                            @endif
                             @if (can('Index Products', 'admin') || can('Index Categories', 'admin') || can('Index Specs', 'admin'))
                                 <li>
                                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#categories-products"

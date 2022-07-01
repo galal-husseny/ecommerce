@@ -27,7 +27,8 @@ class Admin extends Authenticatable implements CanResetPassword,MustVerifyEmail,
         'email',
         'password',
         'email_verified_at',
-        'image'
+        'image',
+        'status'
     ];
 
     /**

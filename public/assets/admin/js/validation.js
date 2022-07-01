@@ -4,7 +4,7 @@ Template:  Webmin - Bootstrap 4 & Angular 5 Admin Dashboard Template
 Author: potenzaglobalsolutions.com
 Design and Developed by: potenzaglobalsolutions.com
 
-NOTE: 
+NOTE:
 
 */
 
@@ -12,12 +12,12 @@ NOTE:
   "use strict";
     $.validator.setDefaults( {
         submitHandler: function () {
-          alert( "submitted!" );
+          alert( "ok!" );
         }
       });
      $.validator.setDefaults( {
       submitHandler: function () {
-        alert( "submitted!" );
+        alert( "done!" );
       }
     });
 
