@@ -29,14 +29,19 @@ class ProfileController extends Controller
         $admin->update(['name'=>$request->name]);
         return redirect()->back()->with('success', 'تمت العملية بنجاح');
     }
-    public function passwordReset()
+    public function passwordChange()
     {
         return view('Admin.admins.password-reset');
     }
     public function passwordUpdate(UpdateAdminPasswordRequest $request)
     {
         $admin = Admin::findOrFail(Auth::guard('admin')->id());
-        $admin->update(['password'=>Hash::make($request->password)]);
-        return redirect()->back()->with('success', 'تمت العملية بنجاح');
+        if(Hash::check($request->safe()->old_password,$request->user('admin')->password)){
+            $admin->update(['password'=>Hash::make($request->password)]);
+            return redirect()->back()->with('success', 'تمت العملية بنجاح');
+        }else{
+            return redirect()->back()->with('error', '.صيغة كلمة المرور القديمة .غير صحيحة');
+        }
+
     }
 }

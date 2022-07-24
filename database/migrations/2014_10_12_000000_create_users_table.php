@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('gender',['f','m']);
-            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>block');
+            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>fake , 2=> blocked');
             $table->rememberToken();
             $table->timestamps();
         });

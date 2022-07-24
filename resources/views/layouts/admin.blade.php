@@ -197,6 +197,18 @@
 
                                 </li>
                             @endif
+                            <!-- menu item Elements-->
+                            @if (can('Index Offers', 'admin'))
+                                <li class="@if (Request::is('admin/offers*')) active @endif">
+                                    <a href="{{ route('offers.index') }}">
+                                        <div class="pull-left"><i class="ti-palette"></i><span
+                                                class="right-nav-text"> العروض </span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a>
+
+                                </li>
+                            @endif
                             @if (can('Index Products', 'admin') || can('Index Categories', 'admin') || can('Index Specs', 'admin'))
                                 <li>
                                     <a href="javascript:void(0);" data-toggle="collapse" data-target="#categories-products"
@@ -323,12 +335,10 @@
                         </ul>
                     </div>
                 </div>
-
-
                 <div class="content-wrapper">
                     <div class="page-title">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <h4>@yield('breadcrumb')</h4>
                             </div>
 

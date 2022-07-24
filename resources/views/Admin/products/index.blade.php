@@ -48,6 +48,14 @@
                             <td>{{ $product->created_at }}</td>
                             <td>{{ $product->updated_at }}</td>
                             <td>
+                                @if (can('Show Products', 'admin'))
+                                    <a href="{{ route('products.show', ['product' => $product->id]) }}"
+                                        class="btn btn-outline-primary btn-sm">عرض</a>
+                                @endif
+                                @if (can('Index Reviews', 'admin'))
+                                    <a href="{{ route('reviews.index', ['product' => $product->id]) }}"
+                                        class="btn btn-outline-primary btn-sm">التقيمات</a>
+                                @endif
                                 @if (can('Update Products', 'admin'))
                                     <a href="{{ route('products.edit', ['product' => $product->id]) }}"
                                         class="btn btn-outline-primary btn-sm">تعديل</a>

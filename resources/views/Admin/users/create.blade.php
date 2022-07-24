@@ -27,11 +27,8 @@
                     <div class="form-group">
                         <label for="email_verified_at">حالة البريد الالكتروني</label>
                         <select name="email_verified_at" class="custom-select" id="email_verified_at">
-                            @foreach ($statuses as $status => $value)
-                                <option @selected(old('email_verified_at') == $value) value="{{ $value }}">
-                                    {{ $status }}
-                                </option>
-                            @endforeach
+                            <option value="1">مفعل</option>
+                            <option value="0">غير مفعل</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -53,7 +50,7 @@
                         <label for="status">حالة المستخدم</label>
                         <select name="status" class="custom-select" id="status">
                             @foreach ($statuses as $status => $value)
-                                <option @selected(old('status') == $value) value="{{ $value }}">
+                                <option @selected(old('status') !== null && old('status') == $value) value="{{ $value }}">
                                     {{ $status }}
                                 </option>
                             @endforeach

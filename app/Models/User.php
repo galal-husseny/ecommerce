@@ -52,4 +52,9 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Address::class);
     }
+
+    public function reviews()
+    {
+        return $this->belongsToMany(Product::class,'reviews','user_id','product_id')->withPivot('rate','comment')->withTimestamps();
+    }
 }

@@ -13,8 +13,14 @@ use App\Http\Requests\Admin\Users\UpdateUserRequest;
 
 class UsersController extends Controller
 {
-    public const AVAILABLE_STATUS = ['مفعل' => 1, 'غير مفعل' => 0];
+    public const AVAILABLE_STATUS = ['مفعل' => 1, 'وهمي' => 0,'محظور'=>2];
     public const AVAILABLE_EXTENSIONS = ['png', 'jpg', 'jpeg'];
+    public function __construct() {
+        $this->middleware('permission:Index Users,admin')->only('index');
+        $this->middleware('permission:Store Users,admin')->only('create','store');
+        $this->middleware('permission:Update Users,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Users,admin')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -134,6 +140,12 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+        return redirect()->back()->with('success', 'تمت العملية بنجاح');
+    }
+
+    public function changeStatus(User $user)
+    {
+        $user->update(['status'=>$user->status == 2 ? 1 : 2]);
         return redirect()->back()->with('success', 'تمت العملية بنجاح');
     }
 }

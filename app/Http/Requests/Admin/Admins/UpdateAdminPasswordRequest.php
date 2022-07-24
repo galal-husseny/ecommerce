@@ -24,7 +24,7 @@ class UpdateAdminPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password'=>['required'],
+            'old_password'=>['required','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/'],
             'password'=>['required','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/','confirmed'],
             'password_confirmation'=>['required']
         ];

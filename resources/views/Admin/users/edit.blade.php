@@ -142,7 +142,7 @@
                             </tbody>
                         </table>
                         @if (can('Store Addresses', 'admin'))
-                            <div class="col-12">
+                            <div class="col-12 mt-3">
                                 <a href="{{ route('users.addresses.create', ['user' => $user->id]) }}"
                                     class="btn btn-primary rounded btn-sm"> إنشاء عنوان ل{{ $user->name }} </a>
                             </div>

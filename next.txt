@@ -3,13 +3,13 @@
 2. seeders
 3. arabic font - fontsize:
 ////////////////////////////// bugs //////////////////////////////////////
-1. update password (admin profile)
+1. add products to offer
 ///////////////////////////////NEW////////////////////////////////////////
 2. datatables
 3. Oauth mail with laravel
 4. alerts all deletes (try catch)
-5. nested breadcrumb
 
 6. test validation errors in all modules ( translate validation attributes - old values )
 7. plan to change price & quantity of products
 8. endless array with loop task
+9. reviews in products

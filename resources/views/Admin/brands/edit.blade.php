@@ -31,7 +31,9 @@
             <div class="row">
                 <div class="col-3">
                     <input name="image" type="file" class="custom-file-input d-none" id="inputGroupFile01" onchange="previewImage(event)">
-                    <label for="inputGroupFile01"> <img for="inputGroupFile01" id="image" src="{{asset($brand->getFirstMediaUrl('brands'))}}" class="w-100" alt="{{$brand->name}}" style="cursor: pointer"> </label>
+                    <label for="inputGroupFile01">
+                        <img for="inputGroupFile01" id="image" src="{{asset($brand->getFirstMediaUrl('brands'))}}" class="w-100" alt="{{$brand->name}}" style="cursor: pointer">
+                    </label>
                 </div>
             </div>
             <div class="form-group">

@@ -25,7 +25,7 @@
                         <input type="text" name="name" id="Name" class="form-control" placeholder=""  aria-describedby="helpId" value="{{ $admin->name }}">
                     </div>
                     <div class="form-group">
-                        <a class="text-primary" href="{{ route('profile.reset.password') }}" class="float-right">هل تريد تعديل كلمة
+                        <a class="text-primary" href="{{ route('profile.change.password') }}" class="float-right">هل تريد تعديل كلمة
                             المرور؟</a>
                     </div>
                     <div class="form-group">

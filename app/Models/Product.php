@@ -39,4 +39,14 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Spec::class)->using(ProductSpec::class)->withTimestamps();
     }
 
+    public function reviews()
+    {
+        return $this->belongsToMany(User::class,'reviews','product_id','user_id')->withPivot('rate','comment')->withTimestamps();
+    }
+
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class)->withPivot('discount')->withTimestamps();
+    }
+
 }

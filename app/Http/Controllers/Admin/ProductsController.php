@@ -104,9 +104,28 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        $categories = Category::whereIsLeaf()->get();
+        $models = Brand::rightJoin('models', 'brands.id', '=', 'models.brand_id')
+            ->select('models.id', 'models.name AS model_name', 'brands.name AS brand_name')->get();
+        $shops =  DB::table('shops')
+            ->leftJoin('sellers', 'sellers.id', '=', 'shops.seller_id')
+            ->select('shops.id')
+            ->selectRaw('CONCAT(shops.name, " - ", sellers.name ) AS name ')
+            ->get();
+        $specs = Spec::get();
+        $productSpecs = ProductSpec::where('product_id',$product->id)->get();
+        return view('Admin.products.show', [
+            'statuses' => self::AVAILABLE_STATUS,
+            'categories' => $categories,
+            'models' => $models,
+            'shops' => $shops,
+            'specs' => $specs,
+            'productSpecs'=> $productSpecs,
+            'product'=> $product->with('reviews:id,name,email')->where('id',$product->id)->first(),
+        ]);
+
     }
 
     /**

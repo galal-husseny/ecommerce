@@ -14,11 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('offer_product', function (Blueprint $table) {
-            $table->id();
-
             $table->foreignId('offer_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->decimal('price_after_discount');
+            $table->decimal('discount');
+            $table->primary(['offer_id', 'product_id']);
             $table->timestamps();
         });
     }

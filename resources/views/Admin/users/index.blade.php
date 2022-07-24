@@ -7,7 +7,7 @@
     <div class="col-12">
         <h1 class="h1 text-center text-dark"> @yield('title') </h1>
     </div>
-    @if (can('Store Users','admin'))
+    @if (can('Store Users', 'admin'))
         <div class="col-12">
             <a href="{{ route('users.create') }}" class="btn btn-primary rounded btn-sm"> إنشاء مُستخدم </a>
         </div>
@@ -35,44 +35,67 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td >
+                            <td>
                                 <label @class([
                                     'badge',
-                                    'badge-success'=> !is_null($user->email_verified_at) ,
-                                    'badge-danger'=> is_null($user->email_verified_at)
+                                    'badge-success' => !is_null($user->email_verified_at),
+                                    'badge-danger' => is_null($user->email_verified_at),
                                 ])>
-                                {{ $user->email_verified_at ?? "لم يتم التحقق" }} </label>
+                                    {{ $user->email_verified_at ?? 'لم يتم التحقق' }} </label>
                             </td>
                             <td>{{ $user->phone }}</td>
                             <td>{{ $user->gender == 'm' ? 'ذكر' : 'انثى' }}</td>
                             <td>
                                 <label @class([
-                                'badge',
-                                'badge-success'=> $user->status == 1,
-                                'badge-danger'=> $user->status == 0
-                            ])>{{ $user->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
+                                    'badge',
+                                    'badge-success' => $user->status == 1,
+                                    'badge-warning' => $user->status == 0,
+                                    'badge-danger' => $user->status == 2,
+                                ])>
+                                    @if ($user->status == 1)
+                                        {{ 'مفعل' }}
+                                    @elseif($user->status == 0)
+                                        {{ 'وهمي' }}
+                                    @elseif($user->status == 2)
+                                        {{ 'محظور' }}
+                                    @endif
+                                </label>
                             </td>
                             <td>{{ $user->created_at }}</td>
                             <td>{{ $user->updated_at }}</td>
                             <td>
-                                @if (can('Update Users','admin'))
+                                @if (can('Index Addresses', 'admin'))
+                                    <a href="{{ route('users.addresses.index', ['user' => $user->id]) }}"
+                                        class="btn btn-outline-info btn-sm">العناوين</a>
+                                @endif
+
+                                <form action="{{ route('users.status', ['user' => $user->id]) }}" method="post"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button @class(['btn' ,'btn-sm',
+                                     'btn-outline-success' => $user->status == 2,
+                                     'btn-outline-danger' => $user->status != 2
+                                     ]) >{{$user->status == 2 ? 'فك الحظر' : 'حظر'}}</button>
+                                </form>
+                                @if (can('Update Users', 'admin'))
                                     <a href="{{ route('users.edit', ['user' => $user->id]) }}"
                                         class="btn btn-outline-primary btn-sm">تعديل</a>
                                 @endif
-                                @if (can('Destroy Users','admin'))
+                                @if (can('Destroy Users', 'admin'))
                                     <form action="{{ route('users.destroy', ['user' => $user->id]) }}" method="post"
                                         class="d-inline">
                                         @csrf
-                                        @method("DELETE")
+                                        @method('DELETE')
                                         <button class="btn btn-outline-danger btn-sm">حذف</button>
                                     </form>
                                 @endif
-
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" class="alert alert-warning font-weight-bold text-center w-100">لايوجد مُستخدمين
+                            <td colspan="10" class="alert alert-warning font-weight-bold text-center w-100">لايوجد
+                                مُستخدمين
                                 حاليا</td>
                         </tr>
                     @endforelse

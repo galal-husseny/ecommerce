@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', ' أنشاء عنوان ل'.$user->name)
 @section('breadcrumb')
-    {{-- {{ Breadcrumbs::render('users.addresses.nested.create',$user) }} --}}
+    {{ Breadcrumbs::render('users.addresses.create',$user) }}
 @endsection
 @section('content')
     <div class="col-12">

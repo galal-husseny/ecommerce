@@ -12,14 +12,21 @@ use App\Http\Requests\Admin\Address\UpdateAddressRequest;
 
 class AddressesController extends Controller
 {
+    public function __construct() {
+        $this->middleware('permission:Index Addresses,admin')->only('index');
+        $this->middleware('permission:Store Addresses,admin')->only('create','store');
+        $this->middleware('permission:Update Addresses,admin')->only('edit','update');
+        $this->middleware('permission:Destroy Addresses,admin')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
+        $user = $user->with('addresses.region.city')->where('id',$user->id)->first();
+        return view('Admin.users.addresses.index',compact('user'));
     }
 
     /**
@@ -42,7 +49,7 @@ class AddressesController extends Controller
     public function store(StoreAddressRequest $request,User $user)
     {
         $user->addresses()->create($request->safe()->except('_token','create'));
-        return redirect()->route('users.edit',['user'=>$user->id])->with('success','تمت العملية بنجاح');
+        return redirect()->route('users.addresses.index',$user->id)->with('success','تمت العملية بنجاح');
     }
 
     /**
@@ -78,7 +85,7 @@ class AddressesController extends Controller
     public function update(StoreAddressRequest $request,User $user, Address $address)
     {
         $address->update($request->safe()->except('_token','_method'));
-        return redirect()->route('users.edit',['user'=>$user->id])->with('success','تمت العملية بنجاح');
+        return redirect()->route('users.addresses.index',$user->id)->with('success','تمت العملية بنجاح');
     }
 
     /**
@@ -90,6 +97,6 @@ class AddressesController extends Controller
     public function destroy(User $user, Address $address)
     {
        $address->delete();
-       return redirect()->route('users.edit',['user'=>$user->id])->with('success','تمت العملية بنجاح');
+       return redirect()->route('users.addresses.index',$user->id)->with('success','تمت العملية بنجاح');
     }
 }
