@@ -42,7 +42,7 @@ class StoreUserRequest extends FormRequest
             'address.building'=>['required_if:address_exist,true','max:255'],
             'address.latitude'=>['required_if:address_exist,true','max:20'],
             'address.longitude'=>['required_if:address_exist,true','max:20'],
-            'address.notes'=>['nullable,true','max:255'],
+            'address.notes'=>['nullable','max:255'],
             'address.region_id'=>['required_if:address_exist,true','integer','exists:regions,id'],
         ];
     }

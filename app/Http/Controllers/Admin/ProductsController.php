@@ -178,7 +178,7 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e->getMessage());
-            return redirect()->route('products.index')->with('success', 'تمت العملية بنجاح');
+            return redirect()->route('products.index')->with('error', 'فشلت العملية');
         }
     }
 

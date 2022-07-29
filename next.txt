@@ -3,10 +3,10 @@
 2. seeders
 3. arabic font - fontsize:
 ////////////////////////////// bugs //////////////////////////////////////
-1. add products to offer
+
 ///////////////////////////////NEW////////////////////////////////////////
+1. Apply Coupon function () :false|float
 2. datatables
-3. Oauth mail with laravel
 4. alerts all deletes (try catch)
 
 6. test validation errors in all modules ( translate validation attributes - old values )

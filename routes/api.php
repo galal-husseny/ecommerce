@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandsController;
+use App\Http\Controllers\Admin\OffersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SpecsController;
 use Illuminate\Http\Request;
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('category/specs/',[SpecsController::class,'specsByCategory']);
 Route::post('product/media/destroy',[ProductsController::class,'mediaDestroy']);
+Route::get('products/except/offer/',[OffersController::class,'productsNotInOffer']);

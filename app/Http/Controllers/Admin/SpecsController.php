@@ -101,7 +101,7 @@ class SpecsController extends Controller
             return redirect()->route('specs.index')->with('success','تمت العملية بنجاح');
         }catch(\Exception $e){
             DB::rollBack();
-            return redirect()->route('specs.index')->with('error',' فشلت العملية بنجاح');
+            return redirect()->route('specs.index')->with('error',' فشلت العملية');
         }
     }
 

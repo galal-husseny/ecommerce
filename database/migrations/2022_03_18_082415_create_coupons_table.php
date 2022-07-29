@@ -23,8 +23,9 @@ return new class extends Migration
             $table->smallInteger('max_usage_count')->nullable();
             $table->smallInteger('max_usage_count_per_user')->nullable();
             $table->tinyInteger('website_percentage')->default('100');
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
+            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>Not Active');
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('end_at')->nullable();
             $table->timestamps();
         });
     }

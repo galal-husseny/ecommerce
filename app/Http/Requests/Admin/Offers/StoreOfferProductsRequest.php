@@ -24,11 +24,13 @@ class StoreOfferProductsRequest extends FormRequest
     public function rules()
     {
         return [
+            // "products" => ['required','array'],
+            // "products.*.offer_id" => ['required','integer','exists:offers,id'],
+            // "products.*.product_id" => ['required','integer','exists:products,id'],
+            // "products.*.discount" => ['required','numeric','between:1,100'],
             "offer_id" => ['required','integer','exists:offers,id'],
-            "products" => ['required','array'],
-            "products.*.offer_id" => ['required','integer','exists:offers,id'],
-            "products.*.product_id" => ['required','integer','exists:products,id'],
-            "products.*.discount" => ['required','numeric','between:1,100'],
+            "product_id" => ['required','integer','exists:products,id'],
+            "discount" => ['required','numeric','between:1,100'],
         ];
     }
 }

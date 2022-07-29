@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\Auth\SettingsController;
+use App\Http\Controllers\Admin\CouponsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,7 @@ Route::middleware('verified:admin')->group(function () {
     Route::patch('users/change/status/{user}',[UsersController::class,'changeStatus'])->name('users.status');
     Route::resource('users.addresses',AddressesController::class)->except('show');
     Route::resource('offers', OffersController::class)->except('show');
+    Route::resource('coupons', CouponsController::class)->except('show');
     Route::post('offers/products/store',[OffersController::class,'productsStore'])->name('offers.products.store');
     Route::prefix('profile')->name('profile')->controller(ProfileController::class)->group(function(){
         Route::get('/','index');
@@ -70,4 +72,3 @@ Route::middleware('verified:admin')->group(function () {
     });
 });
 Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
-

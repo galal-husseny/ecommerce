@@ -138,10 +138,27 @@ class OffersController extends Controller
     {
         $offer = Offer::find($request->safe()->offer_id);
         try{
-            $offer->products()->attach($request->safe()->products);
+            $offer->products()->attach($request->product_id,['discount' => $request->discount]);
             return redirect()->back()->with('success','تمت العملية بنجاح');
         }catch(\Exception $e){
             return redirect()->back()->with('error','هذا المنتج موجود في العرض');
         }
+    }
+
+    public function productsNotInOffer(Request $request)
+    {
+        $request->validate([
+            'id'=>['required','integer','exists:offers']
+        ]);
+        $products = Product::select('id','name')->whereNotIn('id',function($subquery) use($request){
+            $subquery->select('product_id AS id')
+            ->from('offer_product')
+            ->where('offer_product.offer_id', $request->id);
+        })->get();
+        $options = "<option value=''></option>";
+         foreach($products AS $pro){
+            $options.= "<option value='{$pro->id}'>{$pro->id}-{$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')}</option>";
+         }
+        return response()->json(compact('options','products'));
     }
 }

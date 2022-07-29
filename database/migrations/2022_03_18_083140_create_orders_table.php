@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('code',10)->unique();
             $table->timestamp('delivered_at')->nullable();
             $table->foreignId('address_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreignId('coupon_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('coupon_id')->nullable()->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('payment_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->timestamps();
         });

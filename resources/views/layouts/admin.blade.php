@@ -21,11 +21,10 @@
 
     <!-- css -->
     @php
-        $mode = Cookie::get(Auth::guard('admin')->id()) ?? "light" ;
+        $mode = Cookie::get(Auth::guard('admin')->id()) ?? 'light';
         $cssFile = "style-{$mode}.css";
     @endphp
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset("assets/admin/css/$cssFile") }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset("assets/admin/css/$cssFile") }}" />
     @stack('css')
 </head>
 
@@ -85,8 +84,8 @@
                     @endif
                 </li>
                 <li class="nav-item dropdown ">
-                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                        aria-expanded="false">
+                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="ti-bell"></i>
                         <span class="badge badge-danger notification-status"> </span>
                     </a>
@@ -102,15 +101,16 @@
                                 class="float-right text-muted time">22 mins</small> </a>
                         <a href="#" class="dropdown-item">Server error report<small
                                 class="float-right text-muted time">7 hrs</small> </a>
-                        <a href="#" class="dropdown-item">Database report<small class="float-right text-muted time">1
+                        <a href="#" class="dropdown-item">Database report<small
+                                class="float-right text-muted time">1
                                 days</small> </a>
                         <a href="#" class="dropdown-item">Order confirmation<small
                                 class="float-right text-muted time">2 days</small> </a>
                     </div>
                 </li>
                 <li class="nav-item dropdown ">
-                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                        aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
+                    <a class="nav-link top-nav" data-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="true" aria-expanded="true"> <i class=" ti-view-grid"></i> </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-big">
                         <div class="dropdown-header">
                             <strong>Quick Links</strong>
@@ -152,8 +152,10 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('profile') }}"><i
                                 class="text-warning ti-user"></i>الصفحة الشخصية</a>
-                        <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>اعدادات الموقع</a>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        <a class="dropdown-item" href="#"><i class="text-info ti-settings"></i>اعدادات
+                            الموقع</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">
                             <i class="text-danger ti-unlock"></i> تسجيل خروج
                         </a>
@@ -176,8 +178,8 @@
                             <!-- menu item Dashboard-->
                             <li class="@if (Route::is('dashboard')) active @endif">
                                 <a href="{{ route('dashboard') }}">
-                                    <div class="pull-left"><i class="ti-home"></i><span
-                                            class="right-nav-text"> الصفحة الرئيسية </span>
+                                    <div class="pull-left"><i class="ti-home"></i><span class="right-nav-text">
+                                            الصفحة الرئيسية </span>
                                     </div>
 
                                     <div class="clearfix"></div>
@@ -189,8 +191,8 @@
                             @if (can('Index Users', 'admin'))
                                 <li class="@if (Request::is('admin/users*')) active @endif">
                                     <a href="{{ route('users.index') }}">
-                                        <div class="pull-left"><i class="ti-user"></i><span
-                                                class="right-nav-text"> المستخدمين </span>
+                                        <div class="pull-left"><i class="ti-user"></i><span class="right-nav-text">
+                                                المستخدمين </span>
                                         </div>
                                         <div class="clearfix"></div>
                                     </a>
@@ -198,20 +200,34 @@
                                 </li>
                             @endif
                             <!-- menu item Elements-->
-                            @if (can('Index Offers', 'admin'))
-                                <li class="@if (Request::is('admin/offers*')) active @endif">
-                                    <a href="{{ route('offers.index') }}">
+                            @if (can('Index Cities', 'admin') || can('Index Regions', 'admin'))
+                                <li>
+                                    <a href="javascript:void(0);" data-toggle="collapse"
+                                        data-target="#cities-regions"
+                                        @if (Request::is('admin/cities*') || Request::is('admin/regions*')) class="" aria-expanded="true" @endif>
                                         <div class="pull-left"><i class="ti-palette"></i><span
-                                                class="right-nav-text"> العروض </span>
-                                        </div>
+                                                class="right-nav-text">المدن والمناطق</span></div>
+                                        <div class="pull-right"><i class="ti-plus"></i></div>
                                         <div class="clearfix"></div>
                                     </a>
-
+                                    <ul id="cities-regions"
+                                        class="collapse @if (Request::is('admin/cities*') || Request::is('admin/regions*')) show @endif"
+                                        data-parent="#sidebarnav">
+                                        @if (can('Index Cities', 'admin'))
+                                            <li class="@if (Request::is('admin/cities*')) active @endif"><a
+                                                    href="{{ route('cities.index') }}">المدن</a></li>
+                                        @endif
+                                        @if (can('Index Regions', 'admin'))
+                                            <li class="@if (Request::is('admin/regions*')) active @endif"><a
+                                                    href="{{ route('regions.index') }}">المناطق</a></li>
+                                        @endif
+                                    </ul>
                                 </li>
                             @endif
                             @if (can('Index Products', 'admin') || can('Index Categories', 'admin') || can('Index Specs', 'admin'))
                                 <li>
-                                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#categories-products"
+                                    <a href="javascript:void(0);" data-toggle="collapse"
+                                        data-target="#categories-products"
                                         @if (Request::is('admin/categories*') || Request::is('admin/products*') || Request::is('admin/specs*')) class="" aria-expanded="true" @endif>
                                         <div class="pull-left"><i class="ti-palette"></i><span
                                                 class="right-nav-text">الأقسام والمنتجات </span></div>
@@ -230,9 +246,34 @@
                                                     href="{{ route('products.index') }}">المنتجات</a></li>
                                         @endif
                                         @if (can('Index Specs', 'admin'))
-                                        <li class="@if (Request::is('admin/specs*')) active @endif"><a
-                                                href="{{ route('specs.index') }}">مُواصفات المنتجات</a></li>
+                                            <li class="@if (Request::is('admin/specs*')) active @endif"><a
+                                                    href="{{ route('specs.index') }}">مُواصفات المنتجات</a></li>
                                         @endif
+                                    </ul>
+                                </li>
+                            @endif
+                            @if (can('Index Offers', 'admin') || can('Index Coupons', 'admin'))
+                                <li>
+                                    <a href="javascript:void(0);" data-toggle="collapse"
+                                        data-target="#Offers-Coupons"
+                                        @if (Request::is('admin/offers*') || Request::is('admin/coupons*')) class="" aria-expanded="true" @endif>
+                                        <div class="pull-left"><i class="ti-palette"></i><span
+                                                class="right-nav-text">العروض وأكواد الخصم </span></div>
+                                        <div class="pull-right"><i class="ti-plus"></i></div>
+                                        <div class="clearfix"></div>
+                                    </a>
+                                    <ul id="Offers-Coupons"
+                                        class="collapse @if (Request::is('admin/offers*') || Request::is('admin/coupons*')) show @endif"
+                                        data-parent="#sidebarnav">
+                                        @if (can('Index Offers', 'admin'))
+                                            <li class="@if (Request::is('admin/offers*')) active @endif"><a
+                                                    href="{{ route('offers.index') }}">العروض</a></li>
+                                        @endif
+                                        @if (can('Index Sellers', 'admin'))
+                                            <li class="@if (Request::is('admin/coupons*')) active @endif"><a
+                                                    href="{{ route('coupons.index') }}"> أكواد الخصم</a></li>
+                                        @endif
+
                                     </ul>
                                 </li>
                             @endif
@@ -252,7 +293,7 @@
                                             <li class="@if (Request::is('admin/shops*')) active @endif"><a
                                                     href="{{ route('shops.index') }}">المحلات</a></li>
                                         @endif
-                                         @if (can('Index Sellers', 'admin'))
+                                        @if (can('Index Sellers', 'admin'))
                                             <li class="@if (Request::is('admin/sellers*')) active @endif"><a
                                                     href="{{ route('sellers.index') }}">التجار</a></li>
                                         @endif
@@ -284,29 +325,7 @@
                                     </ul>
                                 </li>
                             @endif
-                            @if (can('Index Cities', 'admin') || can('Index Regions', 'admin'))
-                                <li>
-                                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#cities-regions"
-                                        @if (Request::is('admin/cities*') || Request::is('admin/regions*')) class="" aria-expanded="true" @endif>
-                                        <div class="pull-left"><i class="ti-palette"></i><span
-                                                class="right-nav-text">المدن والمناطق</span></div>
-                                        <div class="pull-right"><i class="ti-plus"></i></div>
-                                        <div class="clearfix"></div>
-                                    </a>
-                                    <ul id="cities-regions"
-                                        class="collapse @if (Request::is('admin/cities*') || Request::is('admin/regions*')) show @endif"
-                                        data-parent="#sidebarnav">
-                                        @if (can('Index Cities', 'admin'))
-                                            <li class="@if (Request::is('admin/cities*')) active @endif"><a
-                                                    href="{{ route('cities.index') }}">المدن</a></li>
-                                        @endif
-                                        @if (can('Index Regions', 'admin'))
-                                            <li class="@if (Request::is('admin/regions*')) active @endif"><a
-                                                    href="{{ route('regions.index') }}">المناطق</a></li>
-                                        @endif
-                                    </ul>
-                                </li>
-                            @endif
+
 
                             @if (can('Index Roles', 'admin') || can('Index Admins', 'admin'))
                                 <li>
