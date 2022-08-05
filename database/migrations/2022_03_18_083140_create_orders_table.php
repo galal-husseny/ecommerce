@@ -18,10 +18,11 @@ return new class extends Migration
             $table->decimal('total_price');
             $table->tinyInteger('status')->default(1)->comment('1=>pending (default),2=>shipped,3=>delivered,0=>canceled');
             $table->string('code',10)->unique();
-            $table->timestamp('delivered_at')->nullable();
             $table->foreignId('address_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
-            $table->foreignId('coupon_id')->nullable()->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('payment_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('coupon_id')->nullable()->constrained()->cascadeOnUpdate()->restrictOnDelete();
+            $table->decimal('final_price');
+            $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });
     }

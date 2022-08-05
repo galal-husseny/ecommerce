@@ -40,7 +40,9 @@
                             <td>{{ $offer->title }}</td>
                             <td>{!! $offer->description !!}</td>
                             <td>{{ $offer->max_discount }} </td>
-                            <td>{{ $offer->status }}</td>
+                            <td><label
+                                    class="badge badge-{{ $offer->status == 1 ? 'success' : 'danger' }}">{{ $offer->status == 1 ? 'مفعل' : 'غير مفعل' }}</label>
+                            </td>
                             <td>{{ $offer->start_at }}</td>
                             <td>{{ $offer->end_at }}</td>
                             <td>{{ $offer->products_count }}</td>
@@ -195,7 +197,7 @@
         });
     </script>
     <script>
-        function getProducts(offer_id){
+        function getProducts(offer_id) {
             $.ajax({
                 type: "get",
                 url: "{{ url('api/v1/products/except/offer/') }}",
@@ -216,9 +218,5 @@
                 }
             });
         }
-
-
     </script>
-
 @endpush
-

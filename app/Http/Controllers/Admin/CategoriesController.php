@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Categories\StoreCategoryRequest;
 use App\Http\Requests\Admin\Categories\UpdateCategoryRequest;
+use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -100,6 +102,43 @@ class CategoriesController extends Controller
     {
         $category->delete();
         return redirect()->back()->with('success', 'تمت العملية بنجاح');
+    }
+
+    public function products(Request $request)
+    {
+        $request->validate([
+            'category_id'=>['required','integer','exists:categories,id'],
+            'model_id'=>['required','integer','exists:models,id']
+        ]);
+        $products = Product::select('id','name','price','quantity')->where([['category_id','=',$request->category_id],['model_id','=',$request->model_id]])->get();
+        $options = "";
+         foreach($products AS $pro){
+            $options.= "<option value='{$pro->id}' >{$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
+         }
+        return response()->json(compact('options','products'));
+    }
+
+    public function brands(Request $request)
+    {
+        $request->validate([
+            'category_id'=>['required','integer','exists:categories,id'],
+        ]);
+        $brands =  Brand::select('id','name')->whereIn('id',function($subquery) use($request){
+            $subquery->select('brand_id')
+            ->distinct()
+            ->from('models')
+            ->whereIn('id',function($subquery2) use($request){
+                $subquery2->select('model_id')
+                ->distinct()
+                ->from('products')
+                ->where('category_id', $request->category_id);
+            });
+        })->get();
+        $options = "<option value=''></option>";
+         foreach($brands AS $brand){
+            $options.= "<option value='{$brand->id}' >{$brand->id} -{$brand->getTranslation('name','ar')} - {$brand->getTranslation('name','en')}</option>";
+         }
+        return response()->json(compact('options','brands'));
     }
 }
 

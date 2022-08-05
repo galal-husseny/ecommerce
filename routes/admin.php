@@ -64,6 +64,7 @@ Route::middleware('verified:admin')->group(function () {
     Route::resource('offers', OffersController::class)->except('show');
     Route::resource('coupons', CouponsController::class)->except('show');
     Route::post('offers/products/store',[OffersController::class,'productsStore'])->name('offers.products.store');
+    Route::resource('orders',OrdersController::class);
     Route::prefix('profile')->name('profile')->controller(ProfileController::class)->group(function(){
         Route::get('/','index');
         Route::put('/','update')->name('.update');

@@ -224,6 +224,18 @@
                                     </ul>
                                 </li>
                             @endif
+                            <!-- menu item Elements-->
+                            @if (can('Index Orders', 'admin'))
+                                <li class="@if (Request::is('admin/orders*')) active @endif">
+                                    <a href="{{ route('orders.index') }}">
+                                        <div class="pull-left"><i class="ti-plus"></i><span class="right-nav-text">
+                                                الطلبات </span>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a>
+
+                                </li>
+                            @endif
                             @if (can('Index Products', 'admin') || can('Index Categories', 'admin') || can('Index Specs', 'admin'))
                                 <li>
                                     <a href="javascript:void(0);" data-toggle="collapse"

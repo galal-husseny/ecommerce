@@ -81,5 +81,6 @@ Breadcrumbs::resource('specs','المُواصفات');
 Breadcrumbs::resource('users','المستخدمين');
 Breadcrumbs::resource('offers','العروض');
 Breadcrumbs::resource('coupons','أكواد الخصم');
+Breadcrumbs::resource('orders','الطلبات');
 
 Breadcrumbs::nested_resource('users.addresses','المستخدمين.العناوين');

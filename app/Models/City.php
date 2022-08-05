@@ -17,6 +17,6 @@ class City extends Model
     public $translatable = ['name'];
     public function regions()
     {
-        $this->hasMany(Region::class);
+        return $this->hasMany(Region::class);
     }
 }

@@ -28,4 +28,9 @@ class Brand extends Model implements HasMedia
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
     }
+
+    public function models()
+    {
+        return $this->hasMany(Models::class);
+    }
 }

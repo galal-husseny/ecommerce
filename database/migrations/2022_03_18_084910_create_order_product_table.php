@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->primary(['order_id', 'product_id']);
             $table->decimal('price');
-            $table->tinyInteger('quantity');
+            $table->tinyInteger('quantity')->default(1);
             $table->tinyInteger('discount')->nullable();
             $table->tinyInteger('status')->default(1)->comment('1=>pending (default),2=>shipped');
             $table->timestamps();

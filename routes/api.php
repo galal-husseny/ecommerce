@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandsController;
+use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\OffersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SpecsController;
@@ -24,3 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('category/specs/',[SpecsController::class,'specsByCategory']);
 Route::post('product/media/destroy',[ProductsController::class,'mediaDestroy']);
 Route::get('products/except/offer/',[OffersController::class,'productsNotInOffer']);
+Route::get('category/products/',[CategoriesController::class,'products']); //return brands
+Route::get('category/brands/',[CategoriesController::class,'brands']);
+Route::get('brand/models/',[BrandsController::class,'models']);  // return models

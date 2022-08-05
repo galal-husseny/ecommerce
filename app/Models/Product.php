@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Spec;
+use App\Models\User;
+use App\Models\Offer;
+use App\Models\Order;
+use App\Models\Category;
+use App\Models\ProductSpec;
+use App\Traits\ProductSpecs;
+use App\Traits\ProductImages;
 use App\Traits\EscapeUniCodeJson;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Sluggable\SlugOptions;
 use App\Traits\HasTranslatableSlug;
-use App\Traits\ProductImages;
-use App\Traits\ProductSpecs;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -47,6 +53,21 @@ class Product extends Model implements HasMedia
     public function offers()
     {
         return $this->belongsToMany(Offer::class)->withPivot('discount')->withTimestamps();
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function model()
+    {
+        return $this->belongsTo(Models::class,'model_id');
     }
 
 }

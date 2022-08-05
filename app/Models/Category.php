@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Spec;
+use App\Models\Product;
 use Kalnoy\Nestedset\NodeTrait;
 use App\Traits\EscapeUniCodeJson;
 use Spatie\Sluggable\SlugOptions;
@@ -31,5 +32,10 @@ class Category extends Model
     public function specs()
     {
         return $this->belongsToMany(Spec::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

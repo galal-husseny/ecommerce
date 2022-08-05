@@ -29,4 +29,14 @@ class Models extends Model implements HasMedia
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class,'model_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }
