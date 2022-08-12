@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\User;
 
 class OrdersController extends Controller
 {
@@ -40,7 +41,8 @@ class OrdersController extends Controller
             $subQuery->select('category_id')->from('products');
         })->get();
         $brands = Brand::all();
-        return view('Admin.orders.create',['categories'=>$categories,'brands'=>$brands]);
+        $users = User::all();
+        return view('Admin.orders.create',['categories'=>$categories,'brands'=>$brands,'users'=>$users]);
     }
 
     /**

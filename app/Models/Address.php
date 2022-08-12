@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Region;
+use App\Traits\EscapeUniCodeJson;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Address extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations,
+    EscapeUniCodeJson;
     protected $fillable = [
         'street',
         'flat',
@@ -19,6 +24,7 @@ class Address extends Model
         'notes',
         'user_id'
     ];
+    protected $translatable = ['city_name','region_name'];
     public function user()
     {
         return $this->belongsTo(User::class);

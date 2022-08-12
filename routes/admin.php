@@ -1,8 +1,12 @@
 <?php
 
 use App\Models\Product;
+use App\Services\Coupon\Coupon;
+use App\Services\Discount\Discount;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Coupon AS CouponModel;
 use Illuminate\Support\Facades\Route;
+use App\Services\Discount\PercentageDiscount;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\ShopsController;
 use App\Http\Controllers\Admin\SpecsController;
@@ -12,6 +16,7 @@ use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\ModelsController;
 use App\Http\Controllers\Admin\OffersController;
+use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\RegionsController;
 use App\Http\Controllers\Admin\ReviewsController;
 use App\Http\Controllers\Admin\SellersController;
@@ -20,8 +25,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\Auth\SettingsController;
-use App\Http\Controllers\Admin\CouponsController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,3 +76,7 @@ Route::middleware('verified:admin')->group(function () {
     });
 });
 Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
+Route::get('test',function(){
+    $coupon = CouponModel::where('code','10000')->first();
+    dd(Coupon::validate($coupon,3,550),Discount::make(new PercentageDiscount($coupon,100)));
+});

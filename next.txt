@@ -5,8 +5,9 @@
 ////////////////////////////// bugs //////////////////////////////////////
 
 ///////////////////////////////NEW////////////////////////////////////////
-1. Apply Coupon function () :false|float
+1. AJAX (Validate Coupon,Apply Discount)
 2. datatables
+3. products select (X price => price after discount if this product in any offers)
 4. alerts all deletes (try catch)
 
 6. test validation errors in all modules ( translate validation attributes - old values )
