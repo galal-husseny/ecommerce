@@ -77,12 +77,6 @@ $oldInputs = session()->getOldInput();
                                     <label for="brand_id"> العلامة التجارية</label>
                                     <select name="brand_id" class="form-control select2 brand_id">
                                         <option value="" readonly></option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">
-                                                {{ $brand->id }} -
-                                                {{ $brand->getTranslation('name', 'en') }} -
-                                                {{ $brand->getTranslation('name', 'ar') }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-2 d-none model_div">
@@ -99,18 +93,20 @@ $oldInputs = session()->getOldInput();
                                 </div>
                                 <div class="col-1 d-none product_div">
                                     <label for="quantity"> الكمية</label>
-                                    <input type="number" name="quantity" min=1 max=999 class="form-control quantity" >
+                                    <input type="number" name="quantity" min=1 class="form-control quantity">
                                 </div>
                                 <div class="col-1">
-                                    <label for=""> </label>
-                                    <input class="btn btn-danger text-center btn-lg form-control" data-repeater-delete
-                                        type="button" value="مسح" />
+                                    <label for="" class="d-block text-danger"> مسح </label>
+                                    <button class="close removeRow text-danger" data-repeater-delete style="float: initial;opacity:1;font-size:2rem;"
+                                        type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     @endif
                 </div>
-                <input class="btn btn-primary btn-lg my-5" id="add" data-repeater-create type="button"
+                <input class="btn btn-primary btn-lg my-5 " id="add" data-repeater-create type="button"
                     value="أَضافة منتج جديد " />
             </div>
             <div class="form-row">
@@ -131,7 +127,6 @@ $oldInputs = session()->getOldInput();
                         </div>
                         <div class="col-12 my-5">
                             <div class="row d-none address">
-
                             </div>
                         </div>
                     </div>
@@ -151,13 +146,16 @@ $oldInputs = session()->getOldInput();
                     <div class="form-group">
                         <label for="coupon">كود الخصم </label>
                         <div class="input-group mb-3">
-                            <input type="text" name="coupon" id="coupon" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" name="coupon" id="coupon" class="form-control"
+                                aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                              <button class="btn btn-primary" id="applyCoupon" type="button">تطبيق</button>
+                                <button class="btn btn-primary rounded-right" id="applyCoupon" type="button">تطبيق</button>
+                                <button class="close text-danger rounded-right d-none"  type="button" style="opacity:1;font-size:2rem; cursor: pointer" id="removeCoupon"  aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
                             </div>
                         </div>
-                        {{-- <small class="text-success"> تم تطبيق الكوبون بنجاح </small> --}}
-                        {{-- <small class="text-danger"> هذا الكوبون غير صالح </small> --}}
+                        <small class="text-success " id="coupon-success"> </small>
+                        <small class="text-danger" id="coupon-error"> </small>
                     </div>
                     <div class="form-group">
                         <label for="final_price">السعر النهائي</label>
@@ -169,6 +167,17 @@ $oldInputs = session()->getOldInput();
                             </div>
                         </div>
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="">طريقة الدفع</label>
+                        <div class="row mt-1">
+                        @foreach ($payments as $index=>$payment)
+                            <label for="payment_id_{{$index}}" class="col-6">
+                                <img style="cursor: pointer" class="@if( $loop->first) border border-primary @endif w-100 h-50 paymentImage" src="{{ $payment->getTranslation('type','en') == 'Credit Card' ? asset('25630-8-credit-card-visa-and-master-card-hd.png') : asset('—Pngtree—cash on delivery png_6271116.png')}}" alt="">
+                            </label>
+                            <input type="radio" class="d-none" name="payment_id" id="payment_id_{{$index}}" value="{{$payment->id}}">
+                        @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
             @include('includes.create-submit-buttons')
@@ -178,6 +187,7 @@ $oldInputs = session()->getOldInput();
 @push('js')
     <script src="{{ asset('assets/admin/js/select2.js') }}"></script>
     <script>
+        var discount = null;
         $(document).ready(function() {
             $(".select2").select2({
                 allowClear: true,
@@ -205,15 +215,19 @@ $oldInputs = session()->getOldInput();
                             getProducts(this);
                         });
                         $('.product_id').on('select2:select', function(e) {
+                            var index = getIndex($(this)[0].name);
+                            $('input[name="products[' + index + '][quantity]').val(1).attr('max',$(this).find(':selected').data('quantity'));
                             updateTotalPrice();
                         });
-                        $('.quantity').on('change keyup', function() {
+                        $('.quantity').on('input', function() {
+                            maxLengthCheck(this);
                             updateTotalPrice();
                         });
                     });
                 },
                 hide: function(remove) {
-                    if (confirm('Confirm Question')) {
+                    if (confirm('هل تريد مسح المنتج')) {
+
                         $(this).slideUp(remove);
                     }
                 },
@@ -229,9 +243,12 @@ $oldInputs = session()->getOldInput();
                         getProducts(this);
                     });
                     $('.product_id').on('select2:select', function(e) {
+                        var index = getIndex($(this)[0].name);
+                        $('input[name="products[' + index + '][quantity]').val(1).attr('max',$(this).find(':selected').data('quantity'));
                         updateTotalPrice();
                     });
-                    $('.quantity').on('change keyup', function() {
+                    $('.quantity').on('input', function() {
+                        maxLengthCheck(this);
                         updateTotalPrice();
                     });
                 }
@@ -241,8 +258,63 @@ $oldInputs = session()->getOldInput();
                 getAddresses($(this).val());
             });
 
-            $('#applyCoupon').on('click',function(){
-                alert('Apply');
+            $('#applyCoupon').on('click', function() {
+                var code = $('#coupon').val();
+                var user_id = $('#user_id').val();
+                var total_price = $('#total_price').val();
+                if (code != '' && user_id != '' && total_price != '') {
+                    $.ajax({
+                        type: "post",
+                        url: "{{ url('api/v1/apply/coupon/') }}",
+                        data: {
+                            "code": code,
+                            "user_id": user_id,
+                            "total_price": total_price
+                        },
+                        headers: {
+                            "accept": "application/json","accept-language":'ar'
+                        },
+                        success: function(response, status) {
+                            var message = "تم تطبيق الخصم بنجاح بقيمة خصم"
+                             +response.discount.discountValue +
+                            " جنية";
+                            discount = response.discount.discountValue;
+                            $('#coupon-error').html("");
+                            $('#coupon-success').html("");
+                            $('#final_price').val("");
+                            $('#coupon-success').html(message);
+                            $('#final_price').val(response.discount.totalPriceAfterDiscount);
+                            $('#applyCoupon').addClass('d-none');
+                            $('#removeCoupon').removeClass('d-none');
+                            $('#coupon').attr('readonly','readonly');
+                        },
+                        error: function(xhr, status, error) {
+                            var message = xhr.responseJSON.errors.code[0];
+                            $('#coupon-error').html("");
+                            $('#coupon-success').html("");
+                            $('#coupon-error').html(message);
+                            $('#applyCoupon').addClass('d-none');
+                            $('#removeCoupon').removeClass('d-none');
+                            $('#coupon').attr('readonly','readonly');
+                        }
+                    });
+                }
+            });
+
+            $('#removeCoupon').on('click', function() {
+                $('#coupon-error').html("");
+                $('#coupon-success').html("");
+                $('#final_price').val("");
+                $("#coupon").val("");
+                $('#final_price').val($('#total_price').val());
+                $(this).addClass('d-none');
+                $('#applyCoupon').removeClass('d-none');
+                $('#coupon').removeAttr('readonly');
+            });
+
+            $('.paymentImage').on('click',function(){
+                $(this).addClass('border border-primary');
+                $('.paymentImage').not(this).removeClass('border border-primary');
             });
         });
     </script>
@@ -270,15 +342,14 @@ $oldInputs = session()->getOldInput();
                     "model_id": model_id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     $('select[name="products[' + index + '][product_id]"]').html(response.options);
                     $('select[name="products[' + index + '][product_id]"]').parent().removeClass('d-none');
                     $('.select2-container').width("100%");
-                    $('input[name="products[' + index + '][quantity]').val(1).parent().removeClass('d-none');
+                    $('input[name="products[' + index + '][quantity]').val(1).attr('max',response.products[0].quantity).parent().removeClass('d-none');
                     updateTotalPrice();
-
                 },
                 error: function(xhr, status, error) {
 
@@ -302,7 +373,7 @@ $oldInputs = session()->getOldInput();
                     "category_id": category_id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     $('select[name="products[' + index + '][model_id]"]').html(response.options);
@@ -310,7 +381,6 @@ $oldInputs = session()->getOldInput();
                     $('.select2-container').width("100%");
                 },
                 error: function(xhr, status, error) {
-
                 }
             });
         }
@@ -329,7 +399,7 @@ $oldInputs = session()->getOldInput();
                     "category_id": category_id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     $('select[name="products[' + index + '][brand_id]"]').html(response.options);
@@ -350,7 +420,7 @@ $oldInputs = session()->getOldInput();
                     "user_id": user_id,
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     // add addresses in DOM
@@ -362,19 +432,33 @@ $oldInputs = session()->getOldInput();
             });
         }
 
-        function updateTotalPrice(){
+        function updateTotalPrice() {
             var quantities = [];
             var prices = [];
             var subTotal = [];
             var total = 0;
-            $('.quantity').each(function() { quantities.push($(this).val()); });
-            $('.product_id').each(function() { prices.push($(this).find(':selected').data('price')); });
+            $('.quantity').each(function() {
+                quantities.push($(this).val());
+            });
+            $('.product_id').each(function() {
+                prices.push($(this).find(':selected').data('price'));
+            });
             for (let index = 0; index < prices.length; index++) {
                 subTotal.push(prices[index] * quantities[index]);
                 total += prices[index] * quantities[index];
             }
-            $('#total_price,#final_price').val(total);
+            $('#total_price').val(total);
+            if(discount != null){
+                total -= discount;
+            }
+            $('#final_price').val(total);
         }
+
+        function maxLengthCheck(object) {
+            if (parseInt(object.value) > parseInt(object.max))
+                object.value = object.value.slice(0,-1)
+        }
+
+
     </script>
 @endpush
-

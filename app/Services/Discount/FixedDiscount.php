@@ -12,9 +12,16 @@ class FixedDiscount extends MustCalculateDiscount{
         $this->discountValue = $this->coupon->discount;
         $this->priceAfterDiscount();
     }
-    public function details() :array
+    public function details() :self
     {
-       return [
+        $this->discount = $this->coupon->discount . __('translation.EGP');
+        $this->maxDiscountValue = $this->coupon->max_discount_value;
+        return $this;
+    }
+
+    public function ApiDetails() :array
+    {
+        return [
             'Totalprice' => $this->totalPrice,
             'discount'=>$this->coupon->discount . __('translation.EGP'),
             'max_discount_value'=>$this->coupon->max_discount_value,

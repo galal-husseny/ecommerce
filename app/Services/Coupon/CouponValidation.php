@@ -30,7 +30,7 @@ class CouponValidation {
      public function expired() :?self
      {
          if(date('Y-m-d H:i:s') > $this->coupon->end_at){
-             $this->errors[1] = __("errors.Expired Coupon");
+             $this->errors['code'][] = __("errors.Expired Coupon");
              return null;
          }
          return $this;
@@ -39,7 +39,7 @@ class CouponValidation {
      public function NotStarted() :?self
      {
          if($this->coupon->start_at > date('Y-m-d H:i:s')){
-            $this->errors[2] = __("errors.Expired Coupon");
+            $this->errors['code'][] = __("errors.Expired Coupon");
             return null;
          }
          return $this;
@@ -48,7 +48,7 @@ class CouponValidation {
      public function notActive() :?self
      {
          if($this->coupon->status == 0){
-            $this->errors[3] = __("errors.Expired Coupon");
+            $this->errors['code'][] = __("errors.Expired Coupon");
             return null;
          }
          return $this;
@@ -57,7 +57,7 @@ class CouponValidation {
      public function exceedMinOrderPrice() :?self
      {
          if($this->totalPrice < $this->coupon->mini_order_price){
-             $this->errors[4] = __("errors.Invalid Coupon");
+             $this->errors['code'][] = __("errors.Invalid Coupon");
              return null;
          }
          return $this;
@@ -67,7 +67,7 @@ class CouponValidation {
      {
          $currentlyNumberOfUsage = Order::where('coupon_id',$this->coupon->id)->count();
          if($currentlyNumberOfUsage >= $this->coupon->max_usage_count){
-            $this->errors[5] = __("errors.Invalid Coupon");
+            $this->errors['code'][] = __("errors.Invalid Coupon");
             return null;
          }
          return $this;
@@ -80,7 +80,7 @@ class CouponValidation {
          ->where('user_id',$this->user_id)
          ->count();
          if($currentlyNumberOfUsagePerUser >= $this->coupon->max_usage_count_per_user){
-            $this->errors[6] = __("errors.Invalid Coupon");
+            $this->errors['code'][] = __("errors.Invalid Coupon");
             return null;
          }
          return $this;

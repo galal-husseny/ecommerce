@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Coupon;
 use Illuminate\Http\Request;
+use App\Services\Coupon\Coupon AS CouponService;
+use App\Services\Discount\Discount;
 use App\Http\Controllers\Controller;
+use App\Models\Coupon;
+use App\Services\Discount\PercentageDiscount;
 use App\Http\Requests\Admin\Coupons\StoreCouponRequest;
 use App\Http\Requests\Admin\Coupons\UpdateCouponRequest;
+use App\Services\Discount\FixedDiscount;
 
 class CouponsController extends Controller
 {
     public const AVAILABLE_STATUS = ['مفعل' => 1, 'غير مفعل' => 0,];
+    public const FIXED = 'f';
+    public const PERCENTAGE = 'p';
     public function __construct() {
         $this->middleware('permission:Index Offers,admin')->only('index');
         $this->middleware('permission:Store Offers,admin')->only('create','store');
@@ -105,5 +111,26 @@ class CouponsController extends Controller
     {
         $coupon->delete();
         return redirect()->back()->with('success','تمت العملية بنجاح');
+    }
+
+    public function apply(Request $request)
+    {
+        $request->validate([
+            'code' => ['required', 'exists:coupons'],
+            'user_id'=>['required','integer','exists:users,id'],
+            'total_price'=>['required','numeric']
+        ]);
+        $coupon = Coupon::where('code',$request->code)->first();
+        $errors = CouponService::validate($coupon,$request->user_id,$request->total_price);
+        if(! empty($errors)){
+            return response()->json(compact('errors'),422);
+        }
+
+        $discount = Discount::makeApi($coupon->discount_type == self::PERCENTAGE ?
+        new PercentageDiscount($coupon,$request->total_price) :
+        new FixedDiscount($coupon,$request->total_price)
+        );
+        return response()->json(compact('discount'));
+
     }
 }

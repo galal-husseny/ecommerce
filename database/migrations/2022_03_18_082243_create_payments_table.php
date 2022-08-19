@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('type',32);
+            $table->json('type');
             $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>block');
             $table->timestamps();
         });

@@ -13,15 +13,21 @@ class PercentageDiscount extends MustCalculateDiscount{
         $this->validateDiscountValue();
         $this->priceAfterDiscount();
     }
-    public function details() :array
+    public function details() :self
+    {
+        $this->discount = $this->coupon->discount . "%";
+        $this->maxDiscountValue = $this->coupon->max_discount_value;
+        return $this;
+    }
+    public function ApiDetails() :array
     {
         return [
             'Totalprice' => $this->totalPrice,
-            'discount'=>"{$this->coupon->discount}%",
+            'discount'=>$this->coupon->discount . '%',
             'max_discount_value'=>$this->coupon->max_discount_value,
-            'discountValue'=>$this->discountValue ,
+            'discountValue'=> $this->discountValue ,
             'totalPriceAfterDiscount'=> $this->priceAfterDiscount
-        ];
+       ];
     }
     private function validateDiscountValue() :void{
         if($this->discountValue > $this->coupon->max_discount_value){

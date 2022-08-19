@@ -205,7 +205,7 @@
                     "id": offer_id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     options = response.options;

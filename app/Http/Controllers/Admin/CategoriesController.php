@@ -113,7 +113,7 @@ class CategoriesController extends Controller
         $products = Product::select('id','name','price','quantity')->where([['category_id','=',$request->category_id],['model_id','=',$request->model_id]])->get();
         $options = "";
          foreach($products AS $pro){
-            $options.= "<option value='{$pro->id}' data-price='{$pro->price}'> {$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
+            $options.= "<option value='{$pro->id}' data-price='{$pro->price}' data-quantity='{$pro->quantity}'> {$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
          }
         return response()->json(compact('options','products'));
     }

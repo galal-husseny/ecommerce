@@ -169,7 +169,7 @@ class UsersController extends Controller
                                         <div class='card'>
                                             <div class='card-header'>
                                                 <label for='address_id'>عنوان ({$index})</label>
-                                                <input type='radio' name='address_id' id='address_id'>
+                                                <input type='radio' name='address_id' id='address_id' value='{$address->id}'>
                                             </div>
                                             <div class='card-body'>
                                                 <h4 class='card-title'>{$address->getTranslation('city_name','ar')} - {$address->getTranslation('region_name','ar')}</h4>

@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 
@@ -39,10 +40,12 @@ class OrdersController extends Controller
     {
         $categories = Category::whereIsLeaf()->whereIn('id',function($subQuery){
             $subQuery->select('category_id')->from('products');
-        })->get();
-        $brands = Brand::all();
-        $users = User::all();
-        return view('Admin.orders.create',['categories'=>$categories,'brands'=>$brands,'users'=>$users]);
+        })->where('status',CategoriesController::AVAILABLE_STATUS['مفعل'])->get();
+        $users = User::where('status','!=',UsersController::AVAILABLE_STATUS['محظور'])
+        ->whereNotNull('email_verified_at')->get();
+        $payments = Payment::where('status',PaymentsController::AVAILABLE_STATUS['مفعل'])->get();
+        return view('Admin.orders.create',
+        compact('categories','users','payments'));
     }
 
     /**
@@ -53,7 +56,10 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validation
+        // save old values
+        // save data into db
+        dd($request->all());
     }
 
     /**

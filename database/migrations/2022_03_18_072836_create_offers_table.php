@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->json('title');
             $table->text('description')->nullable();
             $table->tinyInteger('max_discount');
             $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>not active');

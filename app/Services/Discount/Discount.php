@@ -9,6 +9,10 @@ class Discount {
     {
         return $MustCalculateDiscount->details();
     }
+    public static function makeApi(MustCalculateDiscount $MustCalculateDiscount)
+    {
+        return $MustCalculateDiscount->ApiDetails();
+    }
 }
 
 

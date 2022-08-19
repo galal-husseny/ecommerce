@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'setAdminLang' => \App\Http\Middleware\setAdminLang::class,
+        'lang'=>\App\Http\Middleware\ChangeLanguage::class,
         'superadmin.prevent.update' => \App\Http\Middleware\PreventUpdatesSuperAdmin::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

@@ -302,7 +302,7 @@
                     "id": id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     options = response.options;
@@ -363,7 +363,7 @@
                     "media_id": media_id
                 },
                 headers: {
-                    "accept": "application/json"
+                    "accept": "application/json","accept-language":'ar'
                 },
                 success: function(response, status) {
                     $('.ProductImage[number="' + media_id + '"]').addClass('d-none');

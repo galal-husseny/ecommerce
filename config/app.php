@@ -199,5 +199,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
 
     ])->toArray(),
-
+    'accepted-languages'=>[
+        'ar','en'
+    ]
 ];

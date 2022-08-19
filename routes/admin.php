@@ -76,7 +76,3 @@ Route::middleware('verified:admin')->group(function () {
     });
 });
 Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
-Route::get('test',function(){
-    $coupon = CouponModel::where('code','10000')->first();
-    dd(Coupon::validate($coupon,3,550),Discount::make(new PercentageDiscount($coupon,100)));
-});
