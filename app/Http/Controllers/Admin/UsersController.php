@@ -161,7 +161,7 @@ class UsersController extends Controller
             $join->on('cities.id', '=', 'regions.city_id');
             $join->where('cities.status', '=', 1);
         })->select('addresses.*', 'regions.name AS region_name', 'cities.name AS city_name')
-            ->where('user_id', $request->user_id)->get();
+            ->where('user_id', $request->user_id)->where('addresses.status',1)->get();
             $addressCards = "";
             foreach($addresses AS $index=>$address){
                 $index++;

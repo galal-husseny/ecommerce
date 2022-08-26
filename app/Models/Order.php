@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
+    protected $fillable = ['total_price','final_price','code','status','payment_id','address_id','coupon_id'];
     use HasFactory;
 
     public function coupon()

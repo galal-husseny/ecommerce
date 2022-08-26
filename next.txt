@@ -9,6 +9,7 @@
 2. datatables
 3. products select (X price => price after discount if this product in any offers)
 4. alerts all deletes (try catch)
+5. addresses Status !
 
 6. test validation errors in all modules ( translate validation attributes - old values )
 7. plan to change price & quantity of products

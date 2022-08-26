@@ -117,6 +117,9 @@ return [
     'uploaded'             => 'فشل في تحميل الـ :attribute.',
     'url'                  => 'صيغة رابط :attribute غير صحيحة.',
     'uuid'                 => ':attribute يجب أن يكون بصيغة UUID سليمة.',
+    'active_status' => 'ال :attribute لابد ان يكون مفعل.',
+    'valid_quantity' => 'ال :attribute يجب ان يكون اقل او يساوي :value.',
+
 
     /*
     |--------------------------------------------------------------------------

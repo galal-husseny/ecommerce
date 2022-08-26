@@ -110,7 +110,12 @@ class CategoriesController extends Controller
             'category_id'=>['required','integer','exists:categories,id'],
             'model_id'=>['required','integer','exists:models,id']
         ]);
-        $products = Product::select('id','name','price','quantity')->where([['category_id','=',$request->category_id],['model_id','=',$request->model_id]])->get();
+        // status = 1
+        $products = Product::select('id','name','price','quantity')->where([
+            ['category_id','=',$request->category_id],
+            ['model_id','=',$request->model_id],
+            ['status','=',ProductsController::AVAILABLE_STATUS['مفعل']]
+        ])->get();
         $options = "";
          foreach($products AS $pro){
             $options.= "<option value='{$pro->id}' data-price='{$pro->price}' data-quantity='{$pro->quantity}'> {$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
@@ -131,7 +136,9 @@ class CategoriesController extends Controller
                 $subquery2->select('model_id')
                 ->distinct()
                 ->from('products')
-                ->where('category_id', $request->category_id);
+                ->where('category_id', $request->category_id)
+                ->where('status',ProductsController::AVAILABLE_STATUS['مفعل']);
+                // status = 1
             });
         })->get();
         $options = "<option value=''></option>";

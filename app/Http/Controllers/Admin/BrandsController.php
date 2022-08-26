@@ -81,7 +81,9 @@ class BrandsController extends Controller
             $subquery->select('model_id')
             ->distinct()
             ->from('products')
-            ->where('category_id',$request->category_id);
+            ->where('category_id',$request->category_id)
+            ->where('status',ProductsController::AVAILABLE_STATUS['مفعل']);
+            // status = 1
         })->get();
         $options = "<option value=''></option>";
          foreach($models AS $model){

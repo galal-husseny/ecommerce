@@ -93,6 +93,10 @@ class CouponValidation {
          return $this->errors;
      }
 
+     public function getError() :?string
+     {
+         return $this->errors['code'][0] ?? null;
+     }
     /**
      * Get the value of coupon
      */

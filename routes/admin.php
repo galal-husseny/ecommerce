@@ -16,15 +16,19 @@ use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\ModelsController;
 use App\Http\Controllers\Admin\OffersController;
+use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Controllers\Admin\RegionsController;
 use App\Http\Controllers\Admin\ReviewsController;
 use App\Http\Controllers\Admin\SellersController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\AddressesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\Auth\ProfileController;
 use App\Http\Controllers\Admin\Auth\SettingsController;
+use App\Services\OrderCode;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -76,3 +80,5 @@ Route::middleware('verified:admin')->group(function () {
     });
 });
 Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
+
+

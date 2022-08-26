@@ -1,5 +1,8 @@
 @php
 $oldInputs = session()->getOldInput();
+if(! empty($oldInputs)){
+    // dd($oldInputs);
+}
 @endphp
 @extends('layouts.admin')
 @section('title', ' إنشاء طلب جديد')
@@ -15,49 +18,83 @@ $oldInputs = session()->getOldInput();
     </div>
     @include('includes.validation-errors')
     <div class="col-12">
+        <div class="alert alert-danger print-error-msg" style="display:none">
+            <ul></ul>
+        </div>
+    </div>
+    <div class="col-12">
         <form method="post" action="{{ route('orders.store') }}" id="form">
             @csrf
             <div class="repeater">
                 <div data-repeater-list="products">
                     @if (isset($oldInputs['products']))
-                        @foreach ($oldInputs['products'] as $spec)
+                        {{-- @foreach ($oldInputs['products'] as $oldRow)
                             <div data-repeater-item class="my-3">
                                 <div class="row">
-                                    <div class="col-3">
-                                        <label for="product_id">المنتج</label>
-                                        <select name="product_id" class="form-control select2">
-                                            @foreach ($products as $product)
-                                                <option value="{{ $product->id }}">
-                                                    {{ $product->getTranslation('name', 'en') }} -
-                                                    {{ $product->getTranslation('name', 'ar') }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-3">
+                                    <div class="col-2">
                                         <label for="category_id"> القسم</label>
-                                        <select name="category_id" class="form-control select2">
+                                        <select name="category_id" class="form-control select2 category_id">
+                                            <option value="" readonly></option>
                                             @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">
+                                                <option @selected(! is_null($oldRow['category_id']) && $oldRow['category_id'] == $category->id) value="{{ $category->id }}">
+                                                    {{ $category->id }} -
                                                     {{ $category->getTranslation('name', 'en') }} -
                                                     {{ $category->getTranslation('name', 'ar') }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-
-
-
-                                    <div class="col-3">
-                                        <label for="quantity"> الكمية</label>
-                                        <input type="number" name="quantity" class="form-control" id="quantity">
+                                    <div class="col-2 @if( is_null($oldRow['brand_id'])) d-none @endif  brand_div">
+                                        <label for="brand_id"> العلامة التجارية</label>
+                                        <select name="brand_id" class="form-control select2 brand_id">
+                                            <option value="" readonly></option>
+                                            @foreach ($brands as $brand)
+                                                <option @selected(! is_null($oldRow['brand_id']) && $oldRow['brand_id'] == $brand->id) value="{{ $brand->id }}">
+                                                    {{ $brand->id }} -
+                                                    {{ $brand->getTranslation('name', 'en') }} -
+                                                    {{ $brand->getTranslation('name', 'ar') }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="col-3">
-                                        <label for=""> </label>
-                                        <input class="btn btn-danger btn-lg form-control" data-repeater-delete
-                                            type="button" value="مسح المنتج " />
+                                    <div class="col-2 @if( is_null($oldRow['model_id'])) d-none @endif   model_div">
+                                        <label for="model_id"> الموديل</label>
+                                        <select name="model_id" class="form-control select2 model_id">
+                                            <option value="" readonly></option>
+                                            @foreach ($models as $model)
+                                                <option @selected(! is_null($oldRow['model_id']) && $oldRow['model_id'] == $model->id) value="{{ $model->id }}">
+                                                    {{ $model->id }} -
+                                                    {{ $model->getTranslation('name', 'en') }} -
+                                                    {{ $model->getTranslation('name', 'ar') }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-4 @if( is_null($oldRow['product_id'])) d-none @endif  product_div">
+                                        <label for="product_id">المنتج</label>
+                                        <select name="product_id" class="form-control select2 product_id">
+                                            @foreach ($products as $product)
+                                                <option @selected(! is_null($oldRow['product_id']) && $oldRow['product_id'] == $product->id) value="{{ $product->id }}">
+                                                    {{ $product->id }} -
+                                                    {{ $product->getTranslation('name', 'en') }} -
+                                                    {{ $product->getTranslation('name', 'ar') }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-1  product_div">
+                                        <label for="quantity"> الكمية</label>
+                                        <input type="number" name="quantity" min=1 class="form-control quantity">
+                                    </div>
+                                    <div class="col-1">
+                                        <label for="" class="d-block text-danger"> مسح </label>
+                                        <button class="close removeRow text-danger" data-repeater-delete style="float: initial;opacity:1;font-size:2rem;"
+                                            type="button">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        @endforeach --}}
                     @else
                         <div data-repeater-item class="my-3">
                             <div class="row">
@@ -146,7 +183,7 @@ $oldInputs = session()->getOldInput();
                     <div class="form-group">
                         <label for="coupon">كود الخصم </label>
                         <div class="input-group mb-3">
-                            <input type="text" name="coupon" id="coupon" class="form-control"
+                            <input type="text"  id="coupon" class="form-control"
                                 aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary rounded-right" id="applyCoupon" type="button">تطبيق</button>
@@ -174,7 +211,7 @@ $oldInputs = session()->getOldInput();
                             <label for="payment_id_{{$index}}" class="col-6">
                                 <img style="cursor: pointer" class="@if( $loop->first) border border-primary @endif w-100 h-50 paymentImage" src="{{ $payment->getTranslation('type','en') == 'Credit Card' ? asset('25630-8-credit-card-visa-and-master-card-hd.png') : asset('—Pngtree—cash on delivery png_6271116.png')}}" alt="">
                             </label>
-                            <input type="radio" class="d-none" name="payment_id" id="payment_id_{{$index}}" value="{{$payment->id}}">
+                            <input type="radio" {{$loop->first ? 'checked' : ''}} class="d-none" name="payment_id" id="payment_id_{{$index}}" value="{{$payment->id}}">
                         @endforeach
                         </div>
                     </div>
@@ -188,7 +225,9 @@ $oldInputs = session()->getOldInput();
     <script src="{{ asset('assets/admin/js/select2.js') }}"></script>
     <script>
         var discount = null;
+        var row = 0;
         $(document).ready(function() {
+
             $(".select2").select2({
                 allowClear: true,
             });
@@ -223,6 +262,8 @@ $oldInputs = session()->getOldInput();
                             maxLengthCheck(this);
                             updateTotalPrice();
                         });
+                        row++;
+                        console.log(row);
                     });
                 },
                 hide: function(remove) {
@@ -286,7 +327,7 @@ $oldInputs = session()->getOldInput();
                             $('#final_price').val(response.discount.totalPriceAfterDiscount);
                             $('#applyCoupon').addClass('d-none');
                             $('#removeCoupon').removeClass('d-none');
-                            $('#coupon').attr('readonly','readonly');
+                            $('#coupon').attr('readonly','readonly').attr('name','coupon');
                         },
                         error: function(xhr, status, error) {
                             var message = xhr.responseJSON.errors.code[0];
@@ -295,7 +336,7 @@ $oldInputs = session()->getOldInput();
                             $('#coupon-error').html(message);
                             $('#applyCoupon').addClass('d-none');
                             $('#removeCoupon').removeClass('d-none');
-                            $('#coupon').attr('readonly','readonly');
+                            $('#coupon').attr('disabled','disabled');
                         }
                     });
                 }
@@ -309,14 +350,33 @@ $oldInputs = session()->getOldInput();
                 $('#final_price').val($('#total_price').val());
                 $(this).addClass('d-none');
                 $('#applyCoupon').removeClass('d-none');
-                $('#coupon').removeAttr('readonly');
+                $('#coupon').removeAttr('readonly').removeAttr('disabled');
             });
 
             $('.paymentImage').on('click',function(){
                 $(this).addClass('border border-primary');
                 $('.paymentImage').not(this).removeClass('border border-primary');
             });
+
+            $('#form').on('submit',function(e){
+                    e.preventDefault();
+                    var data = collectFormData();
+                    $.ajax({
+                    url: "{{ route('orders.store') }}",
+                    type:'POST',
+                    data: data,
+                    success: function(response, status) {
+                        window.open(response.redirect,"_self");
+                    },
+                    error: function(xhr, status, error) {
+                        window.scrollTo(0,0);
+                        printErrorMsg(xhr.responseJSON.errors);
+                    }
+                });
+
+            });
         });
+
     </script>
     <script>
         function getIndex(name) {
@@ -458,7 +518,44 @@ $oldInputs = session()->getOldInput();
             if (parseInt(object.value) > parseInt(object.max))
                 object.value = object.value.slice(0,-1)
         }
+        
+        var data = {"products":[]};
+        function collectFormData (){
 
+                for(var i=0 ; i <= row; i++){
+                    var categroy_id = $('select[name="products['+i+'][category_id]"]').val() == '' ? null : $('select[name="products['+i+'][category_id]"]').val();
+                    var brand_id = $('select[name="products['+i+'][brand_id]"]').val() == '' ? null : $('select[name="products['+i+'][brand_id]"]').val();
+                    var model_id = $('select[name="products['+i+'][model_id]"]').val() == '' ? null : $('select[name="products['+i+'][model_id]"]').val();
+                    var product_id = $('select[name="products['+i+'][product_id]"]').val() == '' ? null : $('select[name="products['+i+'][product_id]"]').val();
+                    var quantity = $('input[name="products['+i+'][quantity]"]').val() == '' ? null : $('input[name="products['+i+'][quantity]"]').val();
+                    data.products.push({category_id:categroy_id,brand_id:brand_id,model_id:model_id,product_id:product_id,quantity:quantity})
+                }
+                var user_id = $('#user_id').val() == '' ? null : $('#user_id').val();
+                var payment_id = $('input[name="payment_id"]:checked').val() == '' ? null : $('input[name="payment_id"]:checked').val();
+                var address_id = $('input[name="address_id"]:checked').val() == '' ? null : $('input[name="address_id"]:checked').val();
+                var coupon = $('#coupon').val() == '' ? null : $('#coupon').val();
+                var _token = $("input[name='_token']").val();
+
+                data.address_id = address_id;
+                data.user_id = user_id;
+                data.coupon = coupon;
+                data.payment_id = payment_id;
+                data._token = _token;
+
+                console.log(data);
+                return data;
+        }
+        $('button[name="create"],button[name="create-return"]').click(function(){
+            data[this.name] = null;
+        });
+
+         function printErrorMsg (errors) {
+            $(".print-error-msg").find("ul").html('');
+            $(".print-error-msg").css('display','block');
+            $.each( errors, function( key, value ) {
+                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+            });
+        }
 
     </script>
 @endpush

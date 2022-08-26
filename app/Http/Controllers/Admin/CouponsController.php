@@ -121,7 +121,7 @@ class CouponsController extends Controller
             'total_price'=>['required','numeric']
         ]);
         $coupon = Coupon::where('code',$request->code)->first();
-        $errors = CouponService::validate($coupon,$request->user_id,$request->total_price);
+        $errors = CouponService::validateApi($coupon,$request->user_id,$request->total_price);
         if(! empty($errors)){
             return response()->json(compact('errors'),422);
         }

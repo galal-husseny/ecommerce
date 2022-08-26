@@ -21,7 +21,7 @@ return new class extends Migration
             $table->json('slug');
             $table->decimal('price');
             $table->tinyInteger('quantity');
-            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>block');
+            $table->tinyInteger('status')->default(1)->comment('1=>active (default),0=>not active');
             $table->foreignId('shop_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('model_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();

@@ -129,6 +129,8 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    'active_status' => 'The :attribute must be Active.',
+    'valid_quantity' => 'The :attribute must be less than or equal :value.',
 
     /*
     |--------------------------------------------------------------------------
