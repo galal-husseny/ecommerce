@@ -358,23 +358,23 @@ if(! empty($oldInputs)){
                 $('.paymentImage').not(this).removeClass('border border-primary');
             });
 
-            $('#form').on('submit',function(e){
-                    e.preventDefault();
-                    var data = collectFormData();
-                    $.ajax({
-                    url: "{{ route('orders.store') }}",
-                    type:'POST',
-                    data: data,
-                    success: function(response, status) {
-                        window.open(response.redirect,"_self");
-                    },
-                    error: function(xhr, status, error) {
-                        window.scrollTo(0,0);
-                        printErrorMsg(xhr.responseJSON.errors);
-                    }
-                });
-
-            });
+            // $('#form').on('submit',function(e){
+            //         e.preventDefault();
+            //         var data = collectFormData();
+            //         $.ajax({
+            //         url: "{{ route('orders.store') }}",
+            //         type:'POST',
+            //         data: data,
+            //         success: function(response, status) {
+            //             window.open(response.redirect,"_self");
+            //         },
+            //         error: function(xhr, status, error) {
+            //             window.scrollTo(0,0);
+            //             printErrorMsg(xhr.responseJSON.errors);
+            //         }
+            //     });
+            // });
+            
         });
 
     </script>
@@ -518,7 +518,7 @@ if(! empty($oldInputs)){
             if (parseInt(object.value) > parseInt(object.max))
                 object.value = object.value.slice(0,-1)
         }
-        
+
         var data = {"products":[]};
         function collectFormData (){
 

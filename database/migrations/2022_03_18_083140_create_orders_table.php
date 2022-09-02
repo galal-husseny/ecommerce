@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('payment_id')->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->foreignId('coupon_id')->nullable()->constrained()->cascadeOnUpdate()->restrictOnDelete();
             $table->decimal('final_price');
+            $table->decimal('shipping');
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });

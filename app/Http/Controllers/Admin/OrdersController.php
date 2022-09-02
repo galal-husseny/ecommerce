@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Services\Order\OrderCode;
 use Illuminate\Support\Facades\DB;
 use App\Services\Discount\Discount;
 use App\Http\Controllers\Controller;
+use App\Services\Order\OrderProducts;
 use App\Services\Discount\FixedDiscount;
 use App\Services\Discount\PercentageDiscount;
 use App\Services\Coupon\Coupon AS CouponService;
 use App\Http\Controllers\Admin\CouponsController;
 use App\Http\Requests\Admin\Orders\StoreOrderRequest;
-use App\Services\OrderCode;
-use App\Services\TotalOrderPrice;
+use App\Services\Order\OrderMails;
 
 class OrdersController extends Controller
 {
@@ -72,7 +72,8 @@ class OrdersController extends Controller
     public function store(StoreOrderRequest $request)
     {
         // validation
-        $total_price = TotalOrderPrice::get($request->products);
+        $shipping = 0;
+        $total_price = OrderProducts::set($request->products)->totalPrice();
         $final_price = $total_price;
         if($request->filled('coupon')){
             $coupon = Coupon::where('code',$request->coupon)->first();
@@ -90,27 +91,36 @@ class OrdersController extends Controller
         }
         $code = OrderCode::generate();
         DB::beginTransaction();
+        $orderProducts = OrderProducts::set($request->products)->orderProductsData();
         try{
             $newOrder = Order::create([
                 'total_price'=>$total_price,
                 'final_price'=>$final_price,
+                'shipping'=>$shipping,
                 'code'=>$code,
                 'coupon_id'=>$coupon->id ?? null,
                 'address_id'=>$request->address_id,
                 'payment_id'=>$request->payment_id,
             ]);
-            $newOrder->products()->attach(TotalOrderPrice::$productsData);
+            $newOrder->products()->attach($orderProducts);
+            foreach($orderProducts AS $productId=>$values){
+                Product::where('id',$productId)->decrement('quantity', $values['quantity']);
+            }
             DB::commit();
-            return response()->json(['success'=>true,'redirect'=>$request->has('create-return') ? url()->previous() : route('orders.index')]);
+            $dbTransactions = true;
 
         }catch(\Exception $e){
-            // dd($e->getMessage());
+            dd($e->getMessage());
+            $dbTransactions = false;
             DB::rollBack();
-            return response()->json(['errors'=>['something'=>'Something Went Wrong']],500);
-
         }
-
-
+        if($dbTransactions){
+            $mailData = OrderProducts::set($request->products)->mailData($request->address_id,$newOrder);
+            // dd($mailData);
+            OrderMails::set($mailData)->sendMails();
+        }
+        // return response()->json(['errors'=>['something'=>'Something Went Wrong']],500);
+        // return response()->json(['success'=>true,'redirect'=>$request->has('create-return') ? url()->previous() : route('orders.index')]);
 
         // save data into db
     }

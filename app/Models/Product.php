@@ -70,4 +70,9 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Models::class,'model_id');
     }
 
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
 }
