@@ -24,7 +24,16 @@ use App\Http\Controllers\Admin\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/',function(){
+    echo "user";
 });
 
+Route::name('users.')->prefix('users')->group(function(){
+    Route::middleware('verified')->group(function(){
+        Route::view('/','home');
+    });
+    Auth::routes(['verify' => true]);
+});

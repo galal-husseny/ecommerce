@@ -114,11 +114,12 @@ class CategoriesController extends Controller
         $products = Product::select('id','name','price','quantity')->where([
             ['category_id','=',$request->category_id],
             ['model_id','=',$request->model_id],
+            ['quantity','<>',0],
             ['status','=',ProductsController::AVAILABLE_STATUS['مفعل']]
         ])->get();
         $options = "";
          foreach($products AS $pro){
-            $options.= "<option value='{$pro->id}' data-price='{$pro->price}' data-quantity='{$pro->quantity}'> {$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
+            $options.= "<option value='{$pro->id}' data-price='{$pro->price}' data-quantity='{$pro->quantity}'> {$pro->id} - {$pro->getTranslation('name','ar')} - {$pro->getTranslation('name','en')} - قطعة  {$pro->quantity} - {$pro->price} جنيه</option>";
          }
         return response()->json(compact('options','products'));
     }
@@ -137,7 +138,8 @@ class CategoriesController extends Controller
                 ->distinct()
                 ->from('products')
                 ->where('category_id', $request->category_id)
-                ->where('status',ProductsController::AVAILABLE_STATUS['مفعل']);
+                ->where('status',ProductsController::AVAILABLE_STATUS['مفعل'])
+                ->where('quantity','<>',0);
                 // status = 1
             });
         })->get();

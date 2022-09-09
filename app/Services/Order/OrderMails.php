@@ -1,8 +1,9 @@
 <?php
 namespace App\Services\Order;
 
-use App\Mail\OrderAdminMail;
-use App\Mail\OrderUserMail;
+use App\Jobs\SendAdminOrderInvoice;
+use App\Jobs\SendSellersOrderInvoice;
+use App\Jobs\SendUserOrderInvoice;
 use Illuminate\Support\Facades\Mail;
 
 class OrderMails {
@@ -15,8 +16,8 @@ class OrderMails {
 
     public function sendMails()
     {
-        Mail::to(self::$mailData['user']['email'])->send(new OrderUserMail(self::$mailData));
-        Mail::to(self::$mailData['settings']['email'])->send(new OrderAdminMail(self::$mailData));
-        // mail to sellers
+        SendUserOrderInvoice::dispatch(self::$mailData)->onQueue('order-mails')->delay(now()->addSeconds(15));
+        SendAdminOrderInvoice::dispatch(self::$mailData)->onQueue('order-mails')->delay(now()->addSeconds(15));
+        SendSellersOrderInvoice::dispatch(self::$mailData)->onQueue('order-mails')->delay(now()->addSeconds(60));
     }
 }

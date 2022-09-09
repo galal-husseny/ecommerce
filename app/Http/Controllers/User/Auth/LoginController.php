@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::AdminHOME;
+    protected $redirectTo = RouteServiceProvider::UserHOME;
 
     /**
      * Create a new controller instance.
@@ -38,7 +38,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:admin')->except('logout');
+        $this->middleware('guest:web')->except('logout');
     }
 
     /**
@@ -48,7 +48,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('Admin.auth.login');
+        return view('User.auth.login');
     }
     /**
      * Log the user out of the application.
@@ -70,7 +70,7 @@ class LoginController extends Controller
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)
-            : redirect()->route('login');
+            : redirect()->route('users.login');
     }
     /**
      * Get the guard to be used during authentication.
@@ -79,7 +79,7 @@ class LoginController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admin');
+        return Auth::guard('web');
     }
 
     protected function validateLogin(Request $request)
@@ -88,7 +88,7 @@ class LoginController extends Controller
         $request->validate([
             $this->username() => 'required|string',
             'password' => 'required|string',
-            'g-recaptcha-response' => ['required','recaptcha'],
+            // 'g-recaptcha-response' => ['required','recaptcha'],
         ]);
     }
 }

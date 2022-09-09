@@ -49,7 +49,10 @@ class OrdersController extends Controller
     public function create()
     {
         $categories = Category::whereIsLeaf()->whereIn('id',function($subQuery){
-            $subQuery->select('category_id')->from('products')->where('status',ProductsController::AVAILABLE_STATUS['مفعل']);
+            $subQuery->select('category_id')
+            ->from('products')
+            ->where('status',ProductsController::AVAILABLE_STATUS['مفعل'])
+            ->where('quantity','<>',0);
             // status = 1
         })->where('status',CategoriesController::AVAILABLE_STATUS['مفعل'])->get();
         $users = User::join('addresses', function ($join) {
@@ -110,17 +113,17 @@ class OrdersController extends Controller
             $dbTransactions = true;
 
         }catch(\Exception $e){
-            dd($e->getMessage());
+            // dd($e->getMessage());
             $dbTransactions = false;
             DB::rollBack();
         }
         if($dbTransactions){
             $mailData = OrderProducts::set($request->products)->mailData($request->address_id,$newOrder);
-            // dd($mailData);
             OrderMails::set($mailData)->sendMails();
+            return response()->json(['success'=>true,'redirect'=>$request->has('create-return') ? url()->previous() : route('orders.index')]);
+        }else{
+            return response()->json(['errors'=>['something'=>'Something Went Wrong']],500);
         }
-        // return response()->json(['errors'=>['something'=>'Something Went Wrong']],500);
-        // return response()->json(['success'=>true,'redirect'=>$request->has('create-return') ? url()->previous() : route('orders.index')]);
 
         // save data into db
     }

@@ -15,7 +15,7 @@ class ProfileController extends Controller
     public function index()
     {
         $admin = Admin::findOrFail(Auth::guard('admin')->id());
-        return view('admin.admins.profile',compact('admin'));
+        return view('Admin.admins.profile',compact('admin'));
     }
     public function update(UpdateAdminProfileRequest $request)
     {

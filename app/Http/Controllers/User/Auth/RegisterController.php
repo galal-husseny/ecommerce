@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\User\Auth;
 
 use App\Models\User;
 use App\Models\Admin;
@@ -31,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::AdminHOME;
+    protected $redirectTo = RouteServiceProvider::UserHOME;
 
     /**
      * Create a new controller instance.
@@ -40,7 +40,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:admin');
+        $this->middleware('guest:web');
     }
 
     /**
@@ -53,8 +53,9 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', "regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/", 'confirmed'],
+            'phone'=>['required','unique:users']
         ], [
             'password.regex' => 'يجب أن تتكون كلمة المرور من 8 أحرف كحد أدنى و 32 أحرف كحد أقصى ، وحرف واحد كبير على الأقل ، وحرف صغير واحد ، ورقم واحد ، ورمز واحد'
         ]);
@@ -68,9 +69,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return Admin::create([
+        return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
     }
@@ -81,7 +83,7 @@ class RegisterController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admin');
+        return Auth::guard('web');
     }
 
     /**
@@ -91,6 +93,6 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('Admin.auth.register');
+        return view('User.auth.register');
     }
 }

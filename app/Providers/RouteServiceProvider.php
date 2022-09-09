@@ -17,8 +17,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/admin';
-    protected $namespace = "App\Http\Controllers\Admin";
+    public const AdminHOME = '/admin';
+    public const UserHOME = '/users';
+    protected $userNamespace = "App\Http\Controllers\User";
+    protected $adminNamespace = "App\Http\Controllers\Admin";
+    protected $sellerNamespace = "App\Http\Controllers\Seller";
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -34,12 +37,20 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
+                ->namespace($this->userNamespace)
+                ->domain('user.carparts.com')
                 ->group(base_path('routes/web.php'));
 
             Route::middleware(['web','setAdminLang'])
-                ->namespace($this->namespace)
-                ->prefix('admin')
+                ->namespace($this->adminNamespace)
+                // ->prefix('admin')
+                ->domain('admin.carparts.com')
                 ->group(base_path('routes/admin.php'));
+            Route::middleware(['web'])
+            ->namespace($this->sellerNamespace)
+                // ->prefix('seller')
+                ->domain('seller.carparts.com')
+                ->group(base_path('routes/seller.php'));
         });
     }
 

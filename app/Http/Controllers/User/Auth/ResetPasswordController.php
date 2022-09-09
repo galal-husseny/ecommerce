@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\User\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -29,10 +29,10 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::AdminHOME;
+    protected $redirectTo = RouteServiceProvider::UserHOME;
     public function __construct()
     {
-        $this->middleware('guest:admin');
+        $this->middleware('guest:web');
     }
     /**
      * Get the guard to be used during password reset.
@@ -41,7 +41,7 @@ class ResetPasswordController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('admin');
+        return Auth::guard('web');
     }
     /**
      * Get the broker to be used during password reset.
@@ -51,7 +51,7 @@ class ResetPasswordController extends Controller
 
     public function broker()
     {
-        return Password::broker('admins');
+        return Password::broker('users');
     }
 
     /**
@@ -66,7 +66,7 @@ class ResetPasswordController extends Controller
     {
         $token = $request->route()->parameter('token');
 
-        return view('Admin.auth.passwords.reset')->with(
+        return view('User.auth.passwords.reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

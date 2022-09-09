@@ -7,6 +7,7 @@ use App\Models\Address;
 use App\Models\Product;
 use App\Models\Setting;
 
+
 class OrderProducts {
     public static $orderProductsData = [];
     public static $products = null;
@@ -52,7 +53,16 @@ class OrderProducts {
             'region:id,name,city_id',
             'region.city:id,name'
         ])->where('id',$address_id)->first();
-
+        $sellerInvoices = Order::join('order_product','orders.id' , '=' , 'order_product.order_id')
+        ->join('products','order_product.product_id','=','products.id')
+        ->join('shops','products.shop_id' , '=','shops.id')
+        ->join('sellers','shops.seller_id','=','sellers.id')
+        ->select('orders.code','orders.created_at','sellers.email')
+        ->selectRaw('SUM(order_product.price * order_product.quantity) AS total_price,
+        SUM(order_product.price * order_product.quantity) - 0 AS final_price')
+        ->where('orders.id',$newOrder->id)
+        ->groupBy('sellers.email')
+        ->get()->groupBy('email');
         self::$mailData['user'] = [
             'id'=>$address->user->id,
             'name'=>$address->user->name,
@@ -101,6 +111,19 @@ class OrderProducts {
                 ],
             ];
         }
+        foreach(self::$mailData['products'] AS $product){
+            self::$mailData['sellers'][$product['seller']['email']]['products'][] = [
+                'id'=>$product['id'],
+                'name'=>$product['name'],
+                'price'=>$product['price'],
+                'quantity'=>$product['quantity'],
+                'image'=>$product['image'],
+                'shop'=>$product['shop'],
+            ];
+            self::$mailData['sellers'][$product['seller']['email']]['order'] = $sellerInvoices[$product['seller']['email']][0];
+        }
+
         return self::$mailData;
     }
 }
+

@@ -30,7 +30,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::AdminHOME;
 
     /**
      * Create a new controller instance.
@@ -59,7 +59,7 @@ class VerificationController extends Controller
     {
         return $request->user()->hasVerifiedEmail()
                         ? redirect($this->redirectPath())
-                        : view('admin.auth.verify');
+                        : view('Admin.auth.verify');
     }
 
     /**

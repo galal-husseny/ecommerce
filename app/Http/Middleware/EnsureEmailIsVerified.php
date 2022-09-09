@@ -22,9 +22,16 @@ class EnsureEmailIsVerified
         if (! $request->user($guard) ||
             ($request->user($guard) instanceof MustVerifyEmail &&
             ! $request->user($guard)->hasVerifiedEmail())) {
-            return $request->expectsJson()
-                    ? abort(403, 'Your email address is not verified.')
-                    : Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
+            if($guard == 'web'){
+                return $request->expectsJson()
+                ? abort(403, 'Your email address is not verified.')
+                : Redirect::guest(URL::route($redirectToRoute ?: 'users.verification.notice'));
+
+            }elseif($guard=='admin'){
+                return $request->expectsJson()
+                ? abort(403, 'Your email address is not verified.')
+                : Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
+            }
         }
 
         return $next($request);

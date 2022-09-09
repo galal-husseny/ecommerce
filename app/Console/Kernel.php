@@ -16,6 +16,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('queue:restart')->everyTwoMinutes();
+        $schedule->command('queue:retry --queue=order-mails')->everyFiveMinutes();
+        $schedule->command('queue:work --queue=order-mails')->everyMinute();
     }
 
     /**

@@ -82,7 +82,9 @@ class BrandsController extends Controller
             ->distinct()
             ->from('products')
             ->where('category_id',$request->category_id)
-            ->where('status',ProductsController::AVAILABLE_STATUS['مفعل']);
+            ->where('status',ProductsController::AVAILABLE_STATUS['مفعل'])
+            ->where('quantity','<>',0);
+
             // status = 1
         })->get();
         $options = "<option value=''></option>";
