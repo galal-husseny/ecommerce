@@ -29,7 +29,7 @@ class Product extends Model implements HasMedia
         ProductSpecs,
         ProductImages;
 
-    protected $fillable = ['name', 'status', 'slug','description',
+    public $fillable = ['name', 'status', 'slug','description',
     'code','price','quantity','model_id','category_id','shop_id'];
     public $translatable = ['name', 'slug','description','brand_name','value','category_name','model_name'];
     // /**

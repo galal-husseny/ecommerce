@@ -64,8 +64,8 @@
                                     <input type="checkbox" class="form-control" name="remember" id="remember"
                                         {{ old('remember') ? 'checked' : '' }} />
                                     <label for="remember"> تذكرني</label>
-                                    @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="float-right">هل نسيت كلمة
+                                    @if (Route::has('users.password.request'))
+                                        <a href="{{ route('users.password.request') }}" class="float-right">هل نسيت كلمة
                                             المرور؟</a>
                                     @endif
                                 </div>
@@ -74,6 +74,19 @@
                                 <span>تسجيل الدخول</span>
                                 <i class="fa fa-check"></i>
                             </button>
+
+                            <p class="text-center my-4"> OR </p>
+                            <a href="{{route('users.google.login')}}" class="btn bg-danger my-2 text-light form-control">
+                                Login With Google
+                            </a>
+                            <a href="{{route('users.facebook.login')}}" class="btn bg-primary my-2 text-light form-control">
+                                Login With Facebook
+                            </a>
+                            <a href="{{route('users.github.login')}}" class="btn bg-dark my-2 text-light form-control">
+                                Login With Github
+                            </a>
+
+
                         </div>
                     </form>
                 </div>

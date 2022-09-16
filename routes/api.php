@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\OffersController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\SpecsController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Apis\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,5 @@ Route::get('category/brands/',[CategoriesController::class,'brands']);
 Route::get('brand/models/',[BrandsController::class,'models']);
 Route::get('user/addresses/',[UsersController::class,'addresses']);
 Route::post('apply/coupon/',[CouponsController::class,'apply']);
+
+Route::get('products/search',[ProductController::class,'search']);

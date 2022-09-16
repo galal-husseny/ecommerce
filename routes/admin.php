@@ -81,6 +81,6 @@ Route::prefix('admin')->group(function(){
             Route::put('/password/change','passwordUpdate')->name('.update.password');
         });
     });
-    // Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
+    Auth::routes(['register' => (bool)config('app.admins'), 'verify' => true]);
 });
 

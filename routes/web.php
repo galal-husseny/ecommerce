@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\CitiesController;
 use App\Http\Controllers\Admin\ModelsController;
 use App\Http\Controllers\Admin\RegionsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\Auth\Services\GithubLoginController;
+use App\Http\Controllers\User\Auth\Services\GoogleLoginController;
+use App\Http\Controllers\User\Auth\Services\FacebookLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +35,16 @@ Route::get('/',function(){
 });
 
 Route::name('users.')->prefix('users')->group(function(){
-    Route::middleware('verified')->group(function(){
-        Route::view('/','home');
-    });
+    // Route::middleware('verified')->group(function(){
+        Route::view('/','User.home');
+    // });
     Auth::routes(['verify' => true]);
+    Route::get('redirect/google',[GoogleLoginController::class,'redirectTo'])->name('google.login');
+    Route::get('handle/google/callback',[GoogleLoginController::class,'handleCallback']);
+
+    Route::get('redirect/github',[GithubLoginController::class,'redirectTo'])->name('github.login');
+    Route::get('handle/github/callback',[GithubLoginController::class,'handleCallback']);
+
+    Route::get('redirect/facebook',[FacebookLoginController::class,'redirectTo'])->name('facebook.login');
+    Route::get('handle/facebook/callback',[FacebookLoginController::class,'handleCallback']);
 });

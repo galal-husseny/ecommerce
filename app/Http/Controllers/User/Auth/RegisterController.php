@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\User\Auth;
 
+use App\Events\UserRegistered;
 use App\Models\User;
 use App\Models\Admin;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -94,5 +97,22 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         return view('User.auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new UserRegistered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        if ($response = $this->registered($request, $user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+                    ? new JsonResponse([], 201)
+                    : redirect($this->redirectPath());
     }
 }
